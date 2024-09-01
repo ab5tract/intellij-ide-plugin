@@ -1,0 +1,6 @@
+package edument.rakuidea.cro.template.psi;
+
+import com.intellij.psi.PsiNamedElement;
+
+public interface CroTemplateApply extends PsiNamedElement {
+}

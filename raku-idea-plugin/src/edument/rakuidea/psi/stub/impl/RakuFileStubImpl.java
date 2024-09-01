@@ -1,0 +1,51 @@
+package edument.rakuidea.psi.stub.impl;
+
+import com.intellij.psi.stubs.PsiFileStubImpl;
+import com.intellij.psi.stubs.Stub;
+import com.intellij.psi.tree.IStubFileElementType;
+import edument.rakuidea.parsing.RakuElementTypes;
+import edument.rakuidea.psi.RakuFile;
+import edument.rakuidea.psi.RakuPsiDeclaration;
+import edument.rakuidea.psi.stub.*;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class RakuFileStubImpl extends PsiFileStubImpl<RakuFile> implements RakuFileStub {
+    private final String compilationUnitName;
+
+    public RakuFileStubImpl(RakuFile file, String compilationUnitName) {
+        super(file);
+        this.compilationUnitName = compilationUnitName;
+    }
+
+    @NotNull
+    @Override
+    public IStubFileElementType<?> getType() {
+        return RakuElementTypes.FILE;
+    }
+
+    @Override
+    public String getCompilationUnitName() {
+        return compilationUnitName;
+    }
+
+    @Override
+    public List<RakuPsiDeclaration> getExports() {
+        List<RakuPsiDeclaration> exports = new ArrayList<>();
+        List<Stub> toTry = new ArrayList<>();
+        toTry.add(this);
+        while (!toTry.isEmpty()) {
+            Stub current = toTry.remove(0);
+            for (Stub child : current.getChildrenStubs()) {
+                if (child instanceof RakuDeclStub<?> declStub) {
+                    if (declStub.isExported())
+                        exports.add(declStub.getPsi());
+                }
+                toTry.add(child);
+            }
+        }
+        return exports;
+    }
+}

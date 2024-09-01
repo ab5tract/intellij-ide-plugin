@@ -1,0 +1,16 @@
+<idea-plugin>
+  <extensionPoints>
+    <extensionPoint qualifiedName="edument.rakuidea.frameworkCall"
+                    interface="edument.rakuidea.extensions.RakuFrameworkCall"/>
+  </extensionPoints>
+
+  <module-components>
+  </module-components>
+
+  <project-components>
+  </project-components>
+
+  <applicationListeners>
+  </applicationListeners>
+
+</idea-plugin>
