@@ -9,8 +9,8 @@ GOTO :CMDSCRIPT
 
 set -eux
 root="$(cd "$(dirname "$0")"; pwd)"
-exec "$root/../platform/jps-bootstrap/jps-bootstrap.sh" "$@" "$root" edument.perl6.comma.build CommaCommunityRunTestsBuildTarget
+exec "$root/../platform/jps-bootstrap/jps-bootstrap.sh" "$@" "$root" edument.raku.comma.build CommaCommunityRunTestsBuildTarget
 :CMDSCRIPT
 
-call "%~dp0\..\platform\jps-bootstrap\jps-bootstrap.cmd" %* "%~dp0." edument.perl6.comma.build CommaCommunityRunTestsBuildTarget
+call "%~dp0\..\platform\jps-bootstrap\jps-bootstrap.cmd" %* "%~dp0." edument.raku.comma.build CommaCommunityRunTestsBuildTarget
 EXIT /B %ERRORLEVEL%

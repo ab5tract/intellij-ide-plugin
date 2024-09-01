@@ -1,4 +1,4 @@
-import edument.perl6idea.build.community.CommaCommunityProperties
+import edument.rakuidea.build.community.CommaCommunityProperties
 import org.jetbrains.intellij.build.*
 import org.jetbrains.intellij.build.impl.BuildContextImpl
 import kotlinx.coroutines.Dispatchers

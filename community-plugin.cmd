@@ -5,8 +5,8 @@ GOTO :CMDSCRIPT
 
 set -eux
 root="$(cd "$(dirname "$0")/.."; pwd)"
-exec "$root/platform/jps-bootstrap/jps-bootstrap.sh" "$@" "$root" edument.perl6.comma.build CommaCommunityPluginBuildTarget
+exec "$root/platform/jps-bootstrap/jps-bootstrap.sh" "$@" "$root" edument.raku.comma.build CommaCommunityPluginBuildTarget
 :CMDSCRIPT
 
-call "%~dp0\..\platform\jps-bootstrap\jps-bootstrap.cmd" %* edument.perl6.comma.build CommaCommunityPluginBuildTarget
+call "%~dp0\..\platform\jps-bootstrap\jps-bootstrap.cmd" %* edument.raku.comma.build CommaCommunityPluginBuildTarget
 EXIT /B %ERRORLEVEL%

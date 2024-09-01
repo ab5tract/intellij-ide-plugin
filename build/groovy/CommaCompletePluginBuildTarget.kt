@@ -1,6 +1,5 @@
-import edument.perl6idea.build.complete.Perl6CompletePluginBuilder
+import edument.rakuidea.build.complete.Perl6CompletePluginBuilder
 import org.jetbrains.intellij.build.IdeaProjectLoaderUtil
-import kotlin.io.path.Path
 
 object CommaCompletePluginBuildTarget {
   @JvmStatic

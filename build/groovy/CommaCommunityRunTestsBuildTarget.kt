@@ -27,9 +27,9 @@ object CommaCommunityRunTestsBuildTarget {
       val options = TestingOptions()
       options.testGroups = "COMMA_COMMUNITY_TESTS"
       options.platformPrefix = "CommaCore"
-      options.mainModule = "edument.perl6.comma.community"
+      options.mainModule = "edument.raku.comma.community"
       // options.preferAntRunner = true
-      TestingTasks.create(context, options).runTests(emptyList(), "edument.perl6.comma.community", null)
+      TestingTasks.create(context, options).runTests(emptyList(), "edument.raku.comma.community", null)
     }
   }
 }

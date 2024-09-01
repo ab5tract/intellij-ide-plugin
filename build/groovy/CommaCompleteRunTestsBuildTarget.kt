@@ -26,8 +26,8 @@ object CommaCompleteRunTestsBuildTarget {
     val options = TestingOptions()
     options.testGroups = "COMMA_COMPLETE_TESTS"
     options.platformPrefix = "CommaCore"
-    options.mainModule = "edument.perl6.comma.complete"
+    options.mainModule = "edument.raku.comma.complete"
     // options.preferAntRunner = true
-    TestingTasks.create(context, options).runTests(emptyList(), "edument.perl6.comma.complete", null)
+    TestingTasks.create(context, options).runTests(emptyList(), "edument.raku.comma.complete", null)
   }
 }

@@ -1,4 +1,4 @@
-import edument.perl6idea.build.complete.CommaCompleteProperties
+import edument.rakuidea.build.complete.CommaCompleteProperties
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.intellij.build.*

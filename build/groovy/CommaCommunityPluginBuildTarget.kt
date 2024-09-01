@@ -1,4 +1,4 @@
-import edument.perl6idea.build.community.Perl6CommunityPluginBuilder
+import edument.rakuidea.build.community.Perl6CommunityPluginBuilder
 import org.jetbrains.intellij.build.IdeaProjectLoaderUtil
 
 object CommaCommunityPluginBuildTarget {
