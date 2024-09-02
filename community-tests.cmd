@@ -3,7 +3,7 @@
 GOTO :CMDSCRIPT
 ::CMDLITERAL
 
-# tests.cmd builds and runs IDEA Community tests in way suitable for calling from CI/CD like TeamCity
+# community-tests.cmd builds and runs IDEA Community tests in way suitable for calling from CI/CD like TeamCity
 # THIS SCRIPTS WORKS FOR ALL SYSTEMS Linux/Windows/macOS
 # See README.md for usage scenarios
 
