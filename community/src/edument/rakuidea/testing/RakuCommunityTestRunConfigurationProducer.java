@@ -23,7 +23,7 @@ import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicReference;
 
 @InternalIgnoreDependencyViolation
-public class RakuCommunityTestRunConfigurationProducer extends LazyRunConfigurationProducer<Perl6TestRunConfiguration> {
+public class RakuCommunityTestRunConfigurationProducer extends LazyRunConfigurationProducer<RakuTestRunConfiguration> {
     @NotNull
     @Override
     public ConfigurationFactory getConfigurationFactory() {
@@ -31,7 +31,7 @@ public class RakuCommunityTestRunConfigurationProducer extends LazyRunConfigurat
     }
 
     @Override
-    protected boolean setupConfigurationFromContext(@NotNull Perl6TestRunConfiguration configuration,
+    protected boolean setupConfigurationFromContext(@NotNull RakuTestRunConfiguration configuration,
                                                     @NotNull ConfigurationContext context,
                                                     @NotNull Ref<PsiElement> sourceElement) {
         final Location location = context.getLocation();
@@ -89,7 +89,7 @@ public class RakuCommunityTestRunConfigurationProducer extends LazyRunConfigurat
     }
 
     @Override
-    public boolean isConfigurationFromContext(@NotNull Perl6TestRunConfiguration configuration, @NotNull ConfigurationContext context) {
+    public boolean isConfigurationFromContext(@NotNull RakuTestRunConfiguration configuration, @NotNull ConfigurationContext context) {
         if (configuration.getTestKind() != RakuTestKind.FILE && configuration.getTestKind() != RakuTestKind.DIRECTORY)
             return false;
 

@@ -12,9 +12,9 @@ import com.intellij.openapi.extensions.InternalIgnoreDependencyViolation;
 import com.intellij.openapi.project.Project;
 import edument.rakuidea.RakuIcons;
 import edument.rakuidea.debugger.RakuDebugCommandLineState;
-import edument.rakuidea.run.Perl6RunCommandLineState;
-import edument.rakuidea.timeline.Perl6TimelineCommandLineState;
-import edument.rakuidea.timeline.Perl6TimelineExecutor;
+import edument.rakuidea.run.RakuRunCommandLineState;
+import edument.rakuidea.timeline.RakuTimelineCommandLineState;
+import edument.rakuidea.timeline.RakuTimelineExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,10 +55,10 @@ public class RakuCommunityCroRunConfigurationType extends ConfigurationTypeBase 
             if (executor instanceof DefaultDebugExecutor) {
                 return new RakuDebugCommandLineState(environment);
             }
-            else if (executor instanceof Perl6TimelineExecutor) {
-                return new Perl6TimelineCommandLineState(environment);
+            else if (executor instanceof RakuTimelineExecutor) {
+                return new RakuTimelineCommandLineState(environment);
             }
-            return new Perl6RunCommandLineState(environment);
+            return new RakuRunCommandLineState(environment);
         }
     }
 }
