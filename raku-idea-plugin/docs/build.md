@@ -34,7 +34,7 @@ While in the `intellij-community` directory.
 #### How to build a standalone Comma
 
 While in the `intellij-community` directory.
-* `./comma-build/complete-build.cmd -Dintellij.build.use.compiled.classes=false -Dintellij.build.target.os=linux`
+* `./comma-build/complete-build.cmd -Dintellij.build.use.compiled.classes=false -Dintellij.build.target.os=current`
 * Built images will be in `../out/comma/artifacts` directory.
 
 #### How to run Comma from IDEA Run Configuration for testing features during development
