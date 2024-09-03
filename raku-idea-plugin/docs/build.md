@@ -13,7 +13,7 @@ Do the following steps inside a work-related directory, for example, `comma`.
 * `cd intellij-ide-fork`
 * `git checkout comma-223.4884`
 * Run the `getPlugins.sh` script
-* `git clone https://github.com/edumentab/intellij-ide-plugin.git comma-build` (so the structure is `intellij-community/comma-build`)
+* `git clone https://github.com/edumentab/intellij-ide-plugin.git comma-build` (so the structure is `intellij-ide-fork/comma-build`)
 * Make sure revisions of android-related repos are fresh enough for the IDEA checkout:
   * `cd android; git checkout 223.4884`
   * `cd ..`
