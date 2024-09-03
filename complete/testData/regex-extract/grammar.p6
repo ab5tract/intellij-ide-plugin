@@ -1,4 +1,4 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 
 given /\w+ <[abcd]> \n? / {
     when / \w+ $foo { $bar } \n? / {}

@@ -44,7 +44,7 @@ public class RakuTypeNameImpl extends StubBasedPsiElementBase<RakuTypeNameStub> 
     }
 
     public String toString() {
-        return getClass().getSimpleName() + "(Perl6:TYPE_NAME)";
+        return getClass().getSimpleName() + "(Raku:TYPE_NAME)";
     }
 
     @Override

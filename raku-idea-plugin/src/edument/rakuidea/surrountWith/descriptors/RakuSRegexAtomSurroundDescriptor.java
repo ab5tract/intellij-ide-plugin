@@ -9,11 +9,11 @@ import edument.rakuidea.psi.RakuRegex;
 import edument.rakuidea.psi.RakuRegexAtom;
 import org.jetbrains.annotations.NotNull;
 
-public class Perl6SRegexAtomSurroundDescriptor implements SurroundDescriptor {
+public class RakuSRegexAtomSurroundDescriptor implements SurroundDescriptor {
     private static final Surrounder[] SURROUNDERS = {
-        new Perl6RegexGroupSurrounder(),
-        new Perl6RegexPositionalSurrounder(),
-        new Perl6RegexNamedSurrounder()
+        new RakuRegexGroupSurrounder(),
+        new RakuRegexPositionalSurrounder(),
+        new RakuRegexNamedSurrounder()
     };
 
     @Override

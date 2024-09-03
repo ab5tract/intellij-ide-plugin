@@ -37,7 +37,7 @@ public class RakuModuleListFetcher {
                                     "CompUnit::Repository::Installation",
                                     "CompUnit::Repository::AbsolutePath",
                                     "CompUnit::Repository::Unknown",
-                                    "CompUnit::Repository::NQP", "CompUnit::Repository::Perl6",
+                                    "CompUnit::Repository::NQP", "CompUnit::Repository::Raku",
                                     "CompUnit::Repository::RepositoryRegistry",
                                     "NativeCall", "NativeCall::Types", "NativeCall::Compiler::GNU",
                                     "NativeCall::Compiler::MSVC",

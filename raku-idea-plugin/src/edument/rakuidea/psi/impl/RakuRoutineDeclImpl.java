@@ -228,7 +228,7 @@ public class RakuRoutineDeclImpl extends RakuMemberStubBasedPsi<RakuRoutineDeclS
     }
 
     public String toString() {
-        return getClass().getSimpleName() + "(Perl6:ROUTINE_DECLARATION)";
+        return getClass().getSimpleName() + "(Raku:ROUTINE_DECLARATION)";
     }
 
     @Override

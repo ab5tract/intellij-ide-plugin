@@ -10,6 +10,6 @@ public class RakuElementType extends IElementType {
     }
 
     public String toString() {
-        return "Perl6:" + super.toString();
+        return "Raku:" + super.toString();
     }
 }

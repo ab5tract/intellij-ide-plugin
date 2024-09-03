@@ -7,7 +7,7 @@ public class RakuLanguage extends Language {
     public static final RakuLanguage INSTANCE = new RakuLanguage();
 
     private RakuLanguage() {
-        super("Perl6");
+        super("Raku");
     }
 
     @NotNull

@@ -35,7 +35,7 @@ public class RakuRoutineDeclStubElementType extends IStubElementType<RakuRoutine
     @NotNull
     @Override
     public String getExternalId() {
-        return "perl6.stub.routineDeclaration";
+        return "raku.stub.routineDeclaration";
     }
 
     @Override

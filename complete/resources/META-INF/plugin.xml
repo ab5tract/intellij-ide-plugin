@@ -46,7 +46,7 @@
   <depends>com.intellij.modules.lang</depends>
 
   <extensionPoints>
-    <xi:include href="/META-INF/meta/perl6-common.xml" xpointer="xpointer(/idea-plugin/extensionPoints/*)"/>
+    <xi:include href="/META-INF/meta/raku-common.xml" xpointer="xpointer(/idea-plugin/extensionPoints/*)"/>
   </extensionPoints>
 
   <extensions defaultExtensionNs="edument.rakuidea">
@@ -56,91 +56,91 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <postFormatProcessor implementation="edument.rakuidea.formatter.RakuFormatPostprocessor"/>
-    <fileType name="Raku Script" language="Perl6" implementationClass="edument.rakuidea.filetypes.RakuScriptFileType" fieldName="INSTANCE"
+    <fileType name="Raku Script" language="Raku" implementationClass="edument.rakuidea.filetypes.RakuScriptFileType" fieldName="INSTANCE"
               extensions="p6;pl6;raku"/>
-    <fileType name="Raku Module" language="Perl6" implementationClass="edument.rakuidea.filetypes.RakuModuleFileType" fieldName="INSTANCE"
+    <fileType name="Raku Module" language="Raku" implementationClass="edument.rakuidea.filetypes.RakuModuleFileType" fieldName="INSTANCE"
               extensions="pm6;rakumod"/>
-    <fileType name="Raku Test" language="Perl6" implementationClass="edument.rakuidea.filetypes.RakuTestFileType" fieldName="INSTANCE"
+    <fileType name="Raku Test" language="Raku" implementationClass="edument.rakuidea.filetypes.RakuTestFileType" fieldName="INSTANCE"
               extensions="t;t6;rakutest"/>
-    <fileType name="Raku Pod" language="Perl6" implementationClass="edument.rakuidea.filetypes.RakuPodFileType" fieldName="INSTANCE"
+    <fileType name="Raku Pod" language="Raku" implementationClass="edument.rakuidea.filetypes.RakuPodFileType" fieldName="INSTANCE"
               extensions="pod6;rakudoc"/>
     <fileTypeDetector order="FIRST" implementation="edument.rakuidea.filetypes.RakuFileTypeDetector"/>
-    <fileTypeDetector implementation="edument.rakuidea.filetypes.Perl6FileShebangTypeDetector"/>
+    <fileTypeDetector implementation="edument.rakuidea.filetypes.RakuFileShebangTypeDetector"/>
     <fileTypeDetector implementation="edument.rakuidea.filetypes.RakuFileShebangTypeDetector"/>
     <fileTypeDetector implementation="edument.rakuidea.filetypes.RakudoFileShebangTypeDetector"/>
-    <moduleType id="PERL6_MODULE_TYPE" implementationClass="edument.rakuidea.module.RakuModuleType"/>
+    <moduleType id="Raku_MODULE_TYPE" implementationClass="edument.rakuidea.module.RakuModuleType"/>
     <sdkType implementation="edument.rakuidea.sdk.RakuSdkType"/>
     <programRunner implementation="edument.rakuidea.debugger.RakuDebugRunner"/>
     <xdebugger.breakpointType implementation="edument.rakuidea.debugger.RakuLineBreakpointType"/>
-    <lang.syntaxHighlighterFactory language="Perl6" implementationClass="edument.rakuidea.highlighter.RakuSyntaxHighlighterFactory"/>
-    <lang.parserDefinition language="Perl6" implementationClass="edument.rakuidea.parsing.RakuParserDefinition"/>
+    <lang.syntaxHighlighterFactory language="Raku" implementationClass="edument.rakuidea.highlighter.RakuSyntaxHighlighterFactory"/>
+    <lang.parserDefinition language="Raku" implementationClass="edument.rakuidea.parsing.RakuParserDefinition"/>
     <colorSettingsPage implementation="edument.rakuidea.highlighter.RakuColorSettingsPage"/>
-    <lang.formatter language="Perl6" implementationClass="edument.rakuidea.formatter.RakuFormattingModelBuilder"/>
+    <lang.formatter language="Raku" implementationClass="edument.rakuidea.formatter.RakuFormattingModelBuilder"/>
     <langCodeStyleSettingsProvider implementation="edument.rakuidea.formatter.RakuCodeStyleSettingsProvider"/>
-    <lang.braceMatcher language="Perl6" implementationClass="edument.rakuidea.editor.RakuBraceMatcher"/>
-    <lang.psiStructureViewFactory language="Perl6" implementationClass="edument.rakuidea.structureView.RakuStructureViewFactory"/>
+    <lang.braceMatcher language="Raku" implementationClass="edument.rakuidea.editor.RakuBraceMatcher"/>
+    <lang.psiStructureViewFactory language="Raku" implementationClass="edument.rakuidea.structureView.RakuStructureViewFactory"/>
     <declarationRangeHandler key="edument.rakuidea.psi.RakuPackageDecl"
                              implementationClass="edument.rakuidea.structureView.PackageDeclarationRangeHandler"/>
     <declarationRangeHandler key="edument.rakuidea.psi.RakuRoutineDecl"
                              implementationClass="edument.rakuidea.structureView.RoutineDeclarationRangeHandler"/>
-    <lang.commenter language="Perl6" implementationClass="edument.rakuidea.editor.RakuCommenter"/>
+    <lang.commenter language="Raku" implementationClass="edument.rakuidea.editor.RakuCommenter"/>
     <lang.commenter language="CroTemplate" implementationClass="edument.rakuidea.cro.template.editor.CroTemplateCommenter"/>
-    <lang.foldingBuilder language="Perl6" implementationClass="edument.rakuidea.editor.RakuFoldingBuilder"/>
+    <lang.foldingBuilder language="Raku" implementationClass="edument.rakuidea.editor.RakuFoldingBuilder"/>
     <typedHandler implementation="edument.rakuidea.editor.SigilCompletionAutoPopupHandler"/>
     <typedHandler implementation="edument.rakuidea.editor.UnicodeReplacementHandler"/>
     <backspaceHandlerDelegate implementation="edument.rakuidea.editor.BackspaceUnicodeHandler"/>
-    <additionalTextAttributes scheme="Default" file="colorSchemes/DefaultPerl6.xml"/>
-    <additionalTextAttributes scheme="Darcula" file="colorSchemes/DarculaPerl6.xml"/>
+    <additionalTextAttributes scheme="Default" file="colorSchemes/DefaultRaku.xml"/>
+    <additionalTextAttributes scheme="Darcula" file="colorSchemes/DarculaRaku.xml"/>
     <additionalTextAttributes scheme="Default" file="colorSchemes/DefaultCroTemplate.xml"/>
     <additionalTextAttributes scheme="Darcula" file="colorSchemes/DarculaCroTemplate.xml"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.NullRegexAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.UndeclaredVariableAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.UndeclaredOrDeprecatedRoutineAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.UndeclaredPrivateMethodAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.UndeclaredAttributeAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.editor.SigSpaceAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.LeadingZeroAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.MethodNotOnRangeAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.MissingUnitKeywordAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.PodFormatAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.SignatureAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.UsedModuleAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.WheneverOutsideOfReactAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.IllegalVariableDeclarationAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.UnitSubAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.NoEndpointRangeAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.InterpolatedEVALAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.MissingRoleMethodAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.MyScopedVariableExportedAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.IncomposableDoesAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.MonitorUsageAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.NonInheritableComposableDeclAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.ProblematicReturnAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.MissingThingsAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.NamedPairArgumentAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.IdiomaticLoopAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.WithConstructionAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.SimplifiedRangeAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.GrepFirstAnnotation"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.BuiltinSubmethodAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.EmptyInitializationAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.Perl6ExecutableStringAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.NonNillReturnAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.ListAssignmentAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.UnusedVariableAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.UnusedRoutineAnnotation"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.SelfAvailabilityAnnotation"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.UselessMethodDeclarationAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.AssignmentToImmutableAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.CallArityIssuesAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.UnknownRegexModAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.DeprecatedMethodAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.HashOrBlockAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.DuplicateConditionAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.UselessUseAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.HyphenInCharacterClassAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.NotProgressingRegexAnnotator"/>
-    <annotator language="Perl6" implementationClass="edument.rakuidea.annotation.RakudoImplementationDetailAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.NullRegexAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.UndeclaredVariableAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.UndeclaredOrDeprecatedRoutineAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.UndeclaredPrivateMethodAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.UndeclaredAttributeAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.editor.SigSpaceAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.LeadingZeroAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.MethodNotOnRangeAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.MissingUnitKeywordAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.PodFormatAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.SignatureAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.UsedModuleAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.WheneverOutsideOfReactAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.IllegalVariableDeclarationAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.UnitSubAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.NoEndpointRangeAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.InterpolatedEVALAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.MissingRoleMethodAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.MyScopedVariableExportedAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.IncomposableDoesAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.MonitorUsageAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.NonInheritableComposableDeclAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.ProblematicReturnAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.MissingThingsAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.NamedPairArgumentAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.IdiomaticLoopAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.WithConstructionAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.SimplifiedRangeAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.GrepFirstAnnotation"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.BuiltinSubmethodAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.EmptyInitializationAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.RakuExecutableStringAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.NonNillReturnAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.ListAssignmentAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.UnusedVariableAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.UnusedRoutineAnnotation"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.SelfAvailabilityAnnotation"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.UselessMethodDeclarationAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.AssignmentToImmutableAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.CallArityIssuesAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.UnknownRegexModAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.DeprecatedMethodAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.HashOrBlockAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.DuplicateConditionAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.UselessUseAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.HyphenInCharacterClassAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.NotProgressingRegexAnnotator"/>
+    <annotator language="Raku" implementationClass="edument.rakuidea.annotation.RakudoImplementationDetailAnnotator"/>
     <annotator language="CroTemplate" implementationClass="edument.rakuidea.cro.template.annotation.DuplicateSeparatorAnnotator"/>
     <annotator language="CroTemplate" implementationClass="edument.rakuidea.cro.template.annotation.MisplacedSeparatorAnnotation"/>
     <stubElementTypeHolder class="edument.rakuidea.parsing.RakuElementTypes"/>
@@ -153,31 +153,31 @@
     <stubIndex implementation="edument.rakuidea.psi.stub.index.RakuAllRegexesStubIndex"/>
     <stubIndex implementation="edument.rakuidea.psi.stub.index.RakuDynamicVariablesStubIndex"/>
     <stubIndex implementation="edument.rakuidea.psi.stub.index.CroTemplatePartStubIndex"/>
-    <gotoClassContributor implementation="edument.rakuidea.contribution.Perl6ClassNameContributor"/>
-    <gotoSymbolContributor implementation="edument.rakuidea.contribution.Perl6SymbolNameContributor"/>
+    <gotoClassContributor implementation="edument.rakuidea.contribution.RakuClassNameContributor"/>
+    <gotoSymbolContributor implementation="edument.rakuidea.contribution.RakuSymbolNameContributor"/>
     <errorHandler implementation="edument.rakuidea.utils.RakuErrorReportSubmitter"/>
     <statementUpDownMover implementation="edument.rakuidea.editor.RakuStatementMover"/>
     <treeStructureProvider implementation="edument.rakuidea.structureView.RakuProjectStructureProvider"/>
-    <spellchecker.support language="Perl6" implementationClass="edument.rakuidea.editor.RakuSpellCheckingStrategy"/>
+    <spellchecker.support language="Raku" implementationClass="edument.rakuidea.editor.RakuSpellCheckingStrategy"/>
     <enterHandlerDelegate implementation="edument.rakuidea.editor.RakuEnterDelegate"/>
-    <lang.findUsagesProvider language="Perl6" implementationClass="edument.rakuidea.findUsages.RakuFindUsagesProvider"/>
-    <lang.namesValidator language="Perl6" implementationClass="edument.rakuidea.rename.RakuInputValidator"/>
+    <lang.findUsagesProvider language="Raku" implementationClass="edument.rakuidea.findUsages.RakuFindUsagesProvider"/>
+    <lang.namesValidator language="Raku" implementationClass="edument.rakuidea.rename.RakuInputValidator"/>
     <lang.namesValidator language="CroTemplate" implementationClass="edument.rakuidea.rename.RakuInputValidator"/>
     <renamePsiElementProcessor implementation="edument.rakuidea.rename.RakuModuleRenameProcessor"/>
     <renamePsiElementProcessor implementation="edument.rakuidea.rename.RakuPsiElementProcessor"/>
     <usageTypeProvider implementation="edument.rakuidea.findUsages.RakuUsageTypeProvider"/>
-    <lang.smartEnterProcessor language="Perl6" implementationClass="edument.rakuidea.editor.smartEnter.RakuSmartEnterProcessor"/>
-    <enterBetweenBracesDelegate language="Perl6" implementationClass="edument.rakuidea.editor.RakuEnterBetweenBracesDelegate"/>
+    <lang.smartEnterProcessor language="Raku" implementationClass="edument.rakuidea.editor.smartEnter.RakuSmartEnterProcessor"/>
+    <enterBetweenBracesDelegate language="Raku" implementationClass="edument.rakuidea.editor.RakuEnterBetweenBracesDelegate"/>
     <consoleFilterProvider implementation="edument.rakuidea.run.RakuOutputLinkProvider"/>
-    <codeInsight.lineMarkerProvider language="Perl6" implementationClass="edument.rakuidea.providers.RakuLineMarkerProvider"/>
-    <runLineMarkerContributor language="Perl6" implementationClass="edument.rakuidea.testing.RakuTestLineMarkerContributor"/>
+    <codeInsight.lineMarkerProvider language="Raku" implementationClass="edument.rakuidea.providers.RakuLineMarkerProvider"/>
+    <runLineMarkerContributor language="Raku" implementationClass="edument.rakuidea.testing.RakuTestLineMarkerContributor"/>
     <executor implementation="edument.rakuidea.timeline.RakuTimelineExecutor"/>
     <programRunner implementation="edument.rakuidea.timeline.RakuTimelineRunner"/>
     <stubIndex implementation="edument.rakuidea.cro.CroRouteIndex"/>
     <stubIndex implementation="edument.rakuidea.cro.CroTemplateIndex"/>
-    <codeInsight.parameterInfo language="Perl6" implementationClass="edument.rakuidea.RakuParameterInfoHandler"/>
+    <codeInsight.parameterInfo language="Raku" implementationClass="edument.rakuidea.RakuParameterInfoHandler"/>
     <projectExtension implementation="edument.rakuidea.event.SdkChangeListener"/>
-    <lang.inspectionSuppressor language="Perl6" implementationClass="edument.rakuidea.inspection.RakuInspectionSuppressor"/>
+    <lang.inspectionSuppressor language="Raku" implementationClass="edument.rakuidea.inspection.RakuInspectionSuppressor"/>
     <moduleConfigurationEditorProvider implementation="edument.rakuidea.project.structure.module.RakuModuleConfigurationEditorProvider"
       order="FIRST"/>
 
@@ -275,13 +275,13 @@
       <category>Raku intentions</category>
     </intentionAction>
 
-    <lang.surroundDescriptor language="Perl6"
-                             implementationClass="edument.rakuidea.surrountWith.descriptors.Perl6StatementSurroundDescriptor"/>
-    <lang.surroundDescriptor language="Perl6"
-                             implementationClass="edument.rakuidea.surrountWith.descriptors.Perl6ExpressionSurroundDescriptor"/>
-    <lang.surroundDescriptor language="Perl6"
-                             implementationClass="edument.rakuidea.surrountWith.descriptors.Perl6SRegexAtomSurroundDescriptor"/>
-    <lang.documentationProvider language="Perl6" implementationClass="edument.rakuidea.docs.RakuDocumentationProvider"/>
+    <lang.surroundDescriptor language="Raku"
+                             implementationClass="edument.rakuidea.surrountWith.descriptors.RakuStatementSurroundDescriptor"/>
+    <lang.surroundDescriptor language="Raku"
+                             implementationClass="edument.rakuidea.surrountWith.descriptors.RakuExpressionSurroundDescriptor"/>
+    <lang.surroundDescriptor language="Raku"
+                             implementationClass="edument.rakuidea.surrountWith.descriptors.RakuSRegexAtomSurroundDescriptor"/>
+    <lang.documentationProvider language="Raku" implementationClass="edument.rakuidea.docs.RakuDocumentationProvider"/>
     <virtualFileSystem key="raku" implementationClass="edument.rakuidea.vfs.RakuFileSystem"/>
     <library.type implementation="edument.rakuidea.library.RakuLibraryType"/>
 
@@ -329,7 +329,7 @@
     <notificationGroup displayType="BALLOON" id="raku.misc"/>
     <appStarter implementation="edument.rakuidea.application.RakuDocStarter"/>
     <projectOpenProcessor implementation="edument.rakuidea.project.RakuProjectOpenProcessor"/>
-    <completion.contributor language="Perl6" implementationClass="edument.rakuidea.pod.PodCompletionContributor"/>
+    <completion.contributor language="Raku" implementationClass="edument.rakuidea.pod.PodCompletionContributor"/>
     <highlightVisitor implementation="edument.rakuidea.highlighter.RakuHighlightVisitor"/>
     <configurationType implementation="edument.rakuidea.run.RakuCompleteRunConfigurationType"/>
     <configurationType implementation="edument.rakuidea.testing.RakuCompleteTestConfigurationType"/>
@@ -342,7 +342,7 @@
     <programRunner implementation="edument.rakuidea.heapsnapshot.run.RakuHeapSnapshotRunner"/>
     <executor implementation="edument.rakuidea.run.RakuProfileExecutor"/>
     <executor implementation="edument.rakuidea.run.RakuHeapSnapshotExecutor"/>
-    <lang.refactoringSupport language="Perl6" implementationClass="edument.rakuidea.refactoring.RakuCompleteRefactoringSupportProvider"/>
+    <lang.refactoringSupport language="Raku" implementationClass="edument.rakuidea.refactoring.RakuCompleteRefactoringSupportProvider"/>
     <inlineActionHandler implementation="edument.rakuidea.refactoring.inline.variable.RakuInlineVariableActionHandler"/>
     <inlineActionHandler implementation="edument.rakuidea.refactoring.inline.call.RakuInlineCallActionHandler"/>
     <projectService serviceImplementation="edument.rakuidea.coverage.RakuCoverageDataManagerImpl"
@@ -356,36 +356,36 @@
     <todoIndexer filetype="Raku Pod" implementationClass="edument.rakuidea.editor.RakuTodoIndexer"/>
     <todoIndexer filetype="Cro Template" implementationClass="edument.rakuidea.editor.CroTemplateTodoIndexer"/>
     <codeInsight.daemonBoundCodeVisionProvider implementation="edument.rakuidea.codeInsights.RakuReferencesCodeVisionProvider"/>
-    <vcs.codeVisionLanguageContext language="Perl6" implementationClass="edument.rakuidea.codeInsights.RakuVcsCodeVisionLanguageContext"/>
+    <vcs.codeVisionLanguageContext language="Raku" implementationClass="edument.rakuidea.codeInsights.RakuVcsCodeVisionLanguageContext"/>
     <navbar implementation="edument.rakuidea.structureView.RakuStructureAwareNavbar"/>
   </extensions>
 
   <actions>
-    <action id="Perl6Plugin.NewScriptAction" class="edument.rakuidea.actions.NewScriptAction" text="Raku Script"
+    <action id="RakuPlugin.NewScriptAction" class="edument.rakuidea.actions.NewScriptAction" text="Raku Script"
             description="Create new Raku script in current project" icon="/icons/camelia.png">
       <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewDir"/>
     </action>
-    <action id="Perl6Plugin.NewModuleAction" class="edument.rakuidea.actions.NewModuleAction" text="Raku Module"
+    <action id="RakuPlugin.NewModuleAction" class="edument.rakuidea.actions.NewModuleAction" text="Raku Module"
             description="Create new Raku module in current project" icon="/icons/camelia.png">
-      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="Perl6Plugin.NewScriptAction"/>
+      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="RakuPlugin.NewScriptAction"/>
     </action>
-    <action id="Perl6Plugin.NewTestAction" class="edument.rakuidea.actions.NewTestAction" text="Raku Test"
+    <action id="RakuPlugin.NewTestAction" class="edument.rakuidea.actions.NewTestAction" text="Raku Test"
             description="Create new Raku test in current project" icon="/icons/camelia.png">
-      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="Perl6Plugin.NewModuleAction"/>
+      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="RakuPlugin.NewModuleAction"/>
     </action>
-    <action id="Perl6Plugin.NewPodDocumentation" class="edument.rakuidea.actions.NewDocumentationAction" text="Raku Documentation (Pod6)"
+    <action id="RakuPlugin.NewPodDocumentation" class="edument.rakuidea.actions.NewDocumentationAction" text="Raku Documentation (Pod6)"
             description="Create new Raku documentation file in current project" icon="/icons/camelia.png">
-      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="Perl6Plugin.NewTestAction"/>
+      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="RakuPlugin.NewTestAction"/>
     </action>
-    <action id="Perl6Plugin.NewCroTemplateAction" class="edument.rakuidea.cro.actions.NewCroTemplateAction" text="Cro Template"
+    <action id="RakuPlugin.NewCroTemplateAction" class="edument.rakuidea.cro.actions.NewCroTemplateAction" text="Cro Template"
             description="Create new Cro template in current project" icon="/icons/cro.png">
-      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="Perl6Plugin.NewPodDocumentation"/>
+      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="RakuPlugin.NewPodDocumentation"/>
     </action>
     <action id="edument.rakuidea.repl.RakuLaunchReplAction" class="edument.rakuidea.repl.RakuLaunchReplAction" text="Launch Raku REPL"
             description="Runs the Raku REPL associated with the current project&#39;s SDK.">
       <add-to-group group-id="ToolsMenu" anchor="after" relative-to-action="ExternalToolsGroup"/>
     </action>
-    <action id="Perl6ReplExecute" class="com.intellij.openapi.actionSystem.EmptyAction"
+    <action id="RakuReplExecute" class="com.intellij.openapi.actionSystem.EmptyAction"
             text="Execute Raku Code"
             description="Execute Raku code in REPL console">
       <keyboard-shortcut first-keystroke="control ENTER" keymap="$default"/>
@@ -409,23 +409,23 @@
             description="Renames files with obsolete Raku extensions to use official replacement ones">
       <add-to-group group-id="ToolsMenu" anchor="after" relative-to-action="ExternalToolsGroup"/>
     </action>
-    <action id="Perl6Plugin.ExtractPrivateMethod" class="edument.rakuidea.actions.ExtractPrivateMethodAction" text="Private Method..."
+    <action id="RakuPlugin.ExtractPrivateMethod" class="edument.rakuidea.actions.ExtractPrivateMethodAction" text="Private Method..."
             description="Turn this selected code fragment into a private method">
       <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt P"/>
       <add-to-group group-id="IntroduceActionsGroup" anchor="after" relative-to-action="ExtractMethod"/>
     </action>
-    <action id="Perl6Plugin.ExtractRoutine" class="edument.rakuidea.actions.ExtractRoutineAction" text="Subroutine..."
+    <action id="RakuPlugin.ExtractRoutine" class="edument.rakuidea.actions.ExtractRoutineAction" text="Subroutine..."
             description="Turn this selected code fragment into a subroutine">
       <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt R" second-keystroke="O"/>
       <add-to-group group-id="IntroduceActionsGroup" anchor="before" relative-to-action="ExtractMethod"/>
     </action>
-    <action id="Perl6Plugin.ExtractRegex" class="edument.rakuidea.actions.ExtractRegexAction" text="Extract Rule..."
+    <action id="RakuPlugin.ExtractRegex" class="edument.rakuidea.actions.ExtractRegexAction" text="Extract Rule..."
             description="Turn this selected code fragment into a separate regex">
       <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt R" second-keystroke="E"/>
       <add-to-group group-id="IntroduceActionsGroup" anchor="before" relative-to-action="ExtractMethod"/>
     </action>
-    <group id="Perl6Plugin.CoverageMenu">
-      <action id="Perl6Plugin.HideCoverage" class="edument.rakuidea.coverage.RakuCoverageHideAction"
+    <group id="RakuPlugin.CoverageMenu">
+      <action id="RakuPlugin.HideCoverage" class="edument.rakuidea.coverage.RakuCoverageHideAction"
               text="Hide Raku Coverage Data"/>
       <add-to-group group-id="CoverageMenu"/>
       <separator/>
@@ -442,7 +442,7 @@
 
     <action id="edument.rakuidea.actions.ExtractParentClassAction" class="edument.rakuidea.actions.ExtractParentClassAction"
             text="Extract Parent Class..." description="Extract a parent class with selected attributes and methods">
-      <add-to-group group-id="IntroduceActionsGroup" anchor="after" relative-to-action="Perl6Plugin.ExtractRegex"/>
+      <add-to-group group-id="IntroduceActionsGroup" anchor="after" relative-to-action="RakuPlugin.ExtractRegex"/>
     </action>
     <action id="edument.rakuidea.actions.ExtractRoleClassAction" class="edument.rakuidea.actions.ExtractRoleClassAction"
             text="Extract Role..." description="Extract a role with selected attributes and methods">

@@ -348,7 +348,7 @@ public class RakuVariableDeclImpl extends RakuMemberStubBasedPsi<RakuVariableDec
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(Perl6:VARIABLE_DECLARATION)";
+        return getClass().getSimpleName() + "(Raku:VARIABLE_DECLARATION)";
     }
 
     @Override

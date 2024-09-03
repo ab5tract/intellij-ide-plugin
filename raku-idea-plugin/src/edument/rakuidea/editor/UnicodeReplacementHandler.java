@@ -24,7 +24,7 @@ import java.util.Map;
 
 @InternalIgnoreDependencyViolation
 public class UnicodeReplacementHandler extends TypedHandlerDelegate {
-    public static final Key<Pair<Pair<Integer, Integer>, String>> UNICODE_REPLACEMENT_POS = Key.create("perl6.unicodeReplacementPos");
+    public static final Key<Pair<Pair<Integer, Integer>, String>> UNICODE_REPLACEMENT_POS = Key.create("raku.unicodeReplacementPos");
 
     private static class Mapping {
         public String ascii;

@@ -34,7 +34,7 @@ public class RakuFileElementType extends IStubFileElementType<RakuFileStub> {
     @NotNull
     @Override
     public String getExternalId() {
-        return "perl6.stub.file";
+        return "raku.stub.file";
     }
 
     @Override

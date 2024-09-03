@@ -56,7 +56,7 @@ public class RakuSubsetImpl extends RakuTypeStubBasedPsi<RakuSubsetStub> impleme
     }
 
     public String toString() {
-        return getClass().getSimpleName() + "(Perl6:SUBSET)";
+        return getClass().getSimpleName() + "(Raku:SUBSET)";
     }
 
     @Override

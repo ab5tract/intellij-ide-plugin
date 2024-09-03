@@ -32,7 +32,7 @@ public class RakuContext extends TemplateContextType {
         if (!(element instanceof LeafElement))
             return false;
         element = element.getParent();
-        // Assume Perl6 elements providing Raku context
+        // Assume Raku elements providing Raku context
         return element instanceof RakuPsiElement;
     }
 }

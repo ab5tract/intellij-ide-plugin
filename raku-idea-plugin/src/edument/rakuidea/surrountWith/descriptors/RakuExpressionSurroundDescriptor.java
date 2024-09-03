@@ -12,7 +12,7 @@ import edument.rakuidea.surrountWith.descriptors.surrounder.*;
 import edument.rakuidea.utils.RakuPsiUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class Perl6ExpressionSurroundDescriptor implements SurroundDescriptor {
+public class RakuExpressionSurroundDescriptor implements SurroundDescriptor {
     private static final Surrounder[] SURROUNDERS = {
         new Perl6IfSurrounder(false),
         new Perl6WithSurrounder(false),

@@ -56,7 +56,7 @@ public class RakuConstantImpl extends RakuMemberStubBasedPsi<RakuConstantStub> i
     }
 
     public String toString() {
-        return getClass().getSimpleName() + "(Perl6:CONSTANT)";
+        return getClass().getSimpleName() + "(Raku:CONSTANT)";
     }
 
     @Override

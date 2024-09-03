@@ -8,9 +8,9 @@ import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.psi.PsiElement;
 import edument.rakuidea.CommaFixtureTestCase;
 import edument.rakuidea.RakuLanguage;
-import edument.rakuidea.surrountWith.descriptors.Perl6RegexGroupSurrounder;
-import edument.rakuidea.surrountWith.descriptors.Perl6RegexNamedSurrounder;
-import edument.rakuidea.surrountWith.descriptors.Perl6RegexPositionalSurrounder;
+import edument.rakuidea.surrountWith.descriptors.RakuRegexGroupSurrounder;
+import edument.rakuidea.surrountWith.descriptors.RakuRegexNamedSurrounder;
+import edument.rakuidea.surrountWith.descriptors.RakuRegexPositionalSurrounder;
 import edument.rakuidea.surrountWith.descriptors.surrounder.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -116,15 +116,15 @@ public class RakuSurroundWithTest extends CommaFixtureTestCase {
     }
 
     public void testRegexGroup() {
-        doTest(new Perl6RegexGroupSurrounder());
+        doTest(new RakuRegexGroupSurrounder());
     }
 
     public void testRegexPositional() {
-        doTest(new Perl6RegexPositionalSurrounder());
+        doTest(new RakuRegexPositionalSurrounder());
     }
 
     public void testRegexNamed() {
-        doTest(new Perl6RegexNamedSurrounder());
+        doTest(new RakuRegexNamedSurrounder());
     }
 
     private void doTest(Surrounder surrounder) {

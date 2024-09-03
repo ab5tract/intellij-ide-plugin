@@ -31,7 +31,7 @@ public class RakuTraitStubElementType extends IStubElementType<RakuTraitStub, Ra
     @NotNull
     @Override
     public String getExternalId() {
-        return "perl6.stub.trait";
+        return "raku.stub.trait";
     }
 
     @Override

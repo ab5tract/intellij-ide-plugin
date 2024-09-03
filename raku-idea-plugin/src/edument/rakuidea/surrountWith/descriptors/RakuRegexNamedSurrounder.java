@@ -8,7 +8,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import edument.rakuidea.psi.RakuElementFactory;
 import edument.rakuidea.psi.RakuVariable;
 
-public class Perl6RegexNamedSurrounder implements Perl6RegexSurrounder {
+public class RakuRegexNamedSurrounder implements RakuRegexSurrounder {
     @Override
     public String getTemplateDescription() {
         return "$<> = [] (Regex)";

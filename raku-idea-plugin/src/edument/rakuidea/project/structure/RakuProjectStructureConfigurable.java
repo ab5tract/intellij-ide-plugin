@@ -118,7 +118,7 @@ public class RakuProjectStructureConfigurable extends BaseConfigurable implement
     @NotNull
     @Override
     public String getId() {
-        return "perl6.project.structure";
+        return "raku.project.structure";
     }
 
     @Nls

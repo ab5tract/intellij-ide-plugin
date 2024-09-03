@@ -114,6 +114,6 @@ public class RakuSubCallImpl extends StubBasedPsiElementBase<RakuSubCallStub> im
     }
 
     public String toString() {
-        return getClass().getSimpleName() + "(Perl6:SUB_CALL)";
+        return getClass().getSimpleName() + "(Raku:SUB_CALL)";
     }
 }

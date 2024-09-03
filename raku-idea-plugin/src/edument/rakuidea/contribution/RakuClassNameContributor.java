@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @InternalIgnoreDependencyViolation
-public class Perl6ClassNameContributor implements ChooseByNameContributor {
+public class RakuClassNameContributor implements ChooseByNameContributor {
     @Override
     public String @NotNull [] getNames(Project project, boolean includeNonProjectItems) {
         List<String> result = new ArrayList<>();
