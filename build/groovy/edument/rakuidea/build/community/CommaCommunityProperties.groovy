@@ -41,7 +41,7 @@ class CommaCommunityProperties extends CommaPropertiesBase {
     productLayout.productImplementationModules = [
       "intellij.xml.dom.impl",
       "intellij.platform.main",
-      "edument.perl6.plugin"
+      "edument.raku.plugin"
     ]
     productLayout.bundledPluginModules.add("edument.raku.comma.community")
     productLayout.bundledPluginModules.addAll(Files.readAllLines(communityHome.communityRoot.resolve("comma-build/build/plugin-list.txt")))
@@ -50,7 +50,7 @@ class CommaCommunityProperties extends CommaPropertiesBase {
       plugin("edument.raku.comma.community") {
         directoryName = "comma"
         mainJarName = "comma.jar"
-        withModule("edument.perl6.plugin")
+        withModule("edument.raku.plugin")
       })
     productLayout.pluginModulesToPublish = List.of("edument.raku.comma.community")
   }

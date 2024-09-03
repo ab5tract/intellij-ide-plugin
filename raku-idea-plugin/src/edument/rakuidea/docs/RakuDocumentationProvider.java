@@ -72,9 +72,9 @@ public class RakuDocumentationProvider implements DocumentationProvider {
             if (parent instanceof ExternalRakuFile &&
                 Objects.equals(((ExternalRakuFile)parent).getName(), "SETTINGS.pm6")) {
                 if (element instanceof RakuPackageDecl)
-                    return Collections.singletonList("https://docs.perl6.org/type/" + name);
+                    return Collections.singletonList("https://docs.raku.org/type/" + name);
                 else if (element instanceof RakuRoutineDecl)
-                    return Collections.singletonList("https://docs.perl6.org/routine/" + name);
+                    return Collections.singletonList("https://docs.raku.org/routine/" + name);
             }
         }
         return null;

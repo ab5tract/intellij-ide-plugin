@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 @InternalIgnoreDependencyViolation
 public class RakuLineBreakpointType extends XLineBreakpointType<RakuLineBreakpointProperties> {
     public RakuLineBreakpointType() {
-        super("perl6LineBreakpoint", "Perl6 Line Breakpoint");
+        super("rakuLineBreakpoint", "Raku Line Breakpoint");
     }
 
     @Nullable

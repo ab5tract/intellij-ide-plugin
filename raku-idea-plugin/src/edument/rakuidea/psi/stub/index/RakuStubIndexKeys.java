@@ -5,19 +5,19 @@ import edument.rakuidea.psi.*;
 
 public class RakuStubIndexKeys {
     public static final StubIndexKey<String, RakuFile> PROJECT_MODULES
-        = StubIndexKey.createIndexKey("perl6.projectModules");
+        = StubIndexKey.createIndexKey("raku.projectModules");
     public static final StubIndexKey<String, RakuIndexableType> GLOBAL_TYPES
-        = StubIndexKey.createIndexKey("perl6.globalTypes");
+        = StubIndexKey.createIndexKey("raku.globalTypes");
     public static final StubIndexKey<String, RakuIndexableType> LEXICAL_TYPES
-        = StubIndexKey.createIndexKey("perl6.lexicalTypes");
+        = StubIndexKey.createIndexKey("raku.lexicalTypes");
     public static final StubIndexKey<String, RakuConstant> ALL_CONSTANTS
-        = StubIndexKey.createIndexKey("perl6.allConstants");
+        = StubIndexKey.createIndexKey("raku.allConstants");
     public static final StubIndexKey<String, RakuVariableDecl> ALL_ATTRIBUTES
-        = StubIndexKey.createIndexKey("perl6.allAttributes");
+        = StubIndexKey.createIndexKey("raku.allAttributes");
     public static final StubIndexKey<String, RakuRoutineDecl> ALL_ROUTINES
-        = StubIndexKey.createIndexKey("perl6.allRoutines");
+        = StubIndexKey.createIndexKey("raku.allRoutines");
     public static final StubIndexKey<String, RakuRegexDecl> ALL_REGEXES
-        = StubIndexKey.createIndexKey("perl6.allRegexes");
+        = StubIndexKey.createIndexKey("raku.allRegexes");
     public static final StubIndexKey<String, RakuVariableDecl> DYNAMIC_VARIABLES
-        = StubIndexKey.createIndexKey("perl6.dynamivVariables");
+        = StubIndexKey.createIndexKey("raku.dynamivVariables");
 }

@@ -20,7 +20,7 @@ import java.util.List;
 public class ExtractCodeBlockTest extends CommaFixtureTestCase {
     @Override
     protected String getTestDataPath() {
-        return "perl6-idea-plugin/testData/block-extract";
+        return "raku-idea-plugin/testData/block-extract";
     }
 
     public void testMethodSingleScopePresence() {

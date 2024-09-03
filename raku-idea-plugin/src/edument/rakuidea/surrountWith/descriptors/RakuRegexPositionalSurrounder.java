@@ -4,7 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import edument.rakuidea.psi.RakuElementFactory;
 
-public class Perl6RegexPositionalSurrounder implements Perl6RegexSurrounder {
+public class RakuRegexPositionalSurrounder implements RakuRegexSurrounder {
     @Override
     public String getTemplateDescription() {
         return "( ) (Regex)";

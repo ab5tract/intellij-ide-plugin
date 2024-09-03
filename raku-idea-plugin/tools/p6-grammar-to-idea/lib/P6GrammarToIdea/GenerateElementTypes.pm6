@@ -4,7 +4,7 @@ use Java::Generate::Interface;
 use Java::Generate::Literal;
 use Java::Generate::Variable;
 
-sub generate-perl6-element-types(@element-names, $prefix, $package) is export {
+sub generate-raku-element-types(@element-names, $prefix, $package) is export {
     my @fields;
     my %custom;
 

@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static edument.rakuidea.parsing.RakuTokenTypes.STATEMENT_TERMINATOR;
 
-public class Perl6StatementSurroundDescriptor implements SurroundDescriptor {
+public class RakuStatementSurroundDescriptor implements SurroundDescriptor {
     private static final Surrounder[] SURROUNDERS = {
         new Perl6IfSurrounder(true),
         new Perl6WithSurrounder(true),

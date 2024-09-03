@@ -25,7 +25,7 @@ import javax.swing.*;
 
 @InternalIgnoreDependencyViolation
 public class RakuActionProvider implements InspectionWidgetActionProvider {
-    public static final Key<RakuReaderModeState> RAKU_EDITOR_MODE_STATE = new Key<>("perl6.module.view.state.key");
+    public static final Key<RakuReaderModeState> RAKU_EDITOR_MODE_STATE = new Key<>("raku.module.view.state.key");
 
     @Nullable
     @Override

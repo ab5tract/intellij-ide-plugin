@@ -64,6 +64,6 @@ public class RakuTraitImpl extends StubBasedPsiElementBase<RakuTraitStub> implem
     }
 
     public String toString() {
-        return getClass().getSimpleName() + "(Perl6:TRAIT)";
+        return getClass().getSimpleName() + "(Raku:TRAIT)";
     }
 }

@@ -14,7 +14,7 @@ import edument.rakuidea.psi.RakuRegexGroup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface Perl6RegexSurrounder extends Surrounder {
+public interface RakuRegexSurrounder extends Surrounder {
     PsiElement createAtom(Project project);
 
     @Override

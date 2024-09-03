@@ -102,7 +102,7 @@ public class RakuPackageDeclImpl extends RakuTypeStubBasedPsi<RakuPackageDeclStu
     }
 
     public String toString() {
-        return getClass().getSimpleName() + "(Perl6:PACKAGE_DECLARATION)";
+        return getClass().getSimpleName() + "(Raku:PACKAGE_DECLARATION)";
     }
 
     @Override

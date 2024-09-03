@@ -3,7 +3,7 @@ use Test;
 
 plan *;
 
-constant $MODULE-SCRIPT = '../../resources/symbols/perl6-module-symbols.p6';
+constant $MODULE-SCRIPT = '../../resources/symbols/raku-module-symbols.p6';
 
 subtest {
     my $proc = run $*EXECUTABLE, $MODULE-SCRIPT, 'use NativeCall', :out;

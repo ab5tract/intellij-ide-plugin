@@ -9,11 +9,11 @@ To develop Comma, version of IDEA you use **must** correspond to version
 of the platform used (see above for the current version).
 
 Do the following steps inside a work-related directory, for example, `comma`.
-* `git clone https://github.com/edumentab/intellij-community.git`
-* `cd intellij-community`
+* `git clone https://github.com/Raku/intellij-ide-fork.git`
+* `cd intellij-ide-fork`
 * `git checkout comma-223.4884`
 * Run the `getPlugins.sh` script
-* `git clone https://github.com/edumentab/perl6-idea-plugin.git comma-build` (so the structure is `intellij-community/comma-build`)
+* `git clone https://github.com/edumentab/intellij-ide-plugin.git comma-build` (so the structure is `intellij-community/comma-build`)
 * Make sure revisions of android-related repos are fresh enough for the IDEA checkout:
   * `cd android; git checkout 223.4884`
   * `cd ..`
@@ -28,7 +28,7 @@ SDK for the project is `jbr-17`, you can download it from https://github.com/Jet
 #### How to build a plugin
 
 While in the `intellij-community` directory.
-* `./comma-build/complete-plugin.cmd -Dintellij.build.use.compiled.classes=false -Dintellij.build.target.os=linux`
+* `./comma-build/complete-plugin.cmd -Dintellij.build.use.compiled.classes=false -Dintellij.build.target.os=current`
 * The plugin will be placed in `../out/commaCT/artifacts/CT-plugins/` and `out/commaCP/artifacts/CP-plugins/` directory depending on the version built (CT or CP).
 
 #### How to build a standalone Comma

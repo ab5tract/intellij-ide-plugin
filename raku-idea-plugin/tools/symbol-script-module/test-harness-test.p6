@@ -2,7 +2,7 @@ use Test;
 
 plan *;
 
-constant $HARNESS-SCRIPT = '../../resources/testing/perl6-test-harness.p6';
+constant $HARNESS-SCRIPT = '../../resources/testing/raku-test-harness.p6';
 
 # duplicated args here is a horrible workaround,
 # as older rakudo doesn't understand a single argument being matched as Positional

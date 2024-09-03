@@ -12,7 +12,7 @@ public class RakuCoverageRunner extends RakuDefaultRunner {
     @NotNull
     @Override
     public String getRunnerId() {
-        return "Perl6 Coverage";
+        return "Raku Coverage";
     }
 
     @Override

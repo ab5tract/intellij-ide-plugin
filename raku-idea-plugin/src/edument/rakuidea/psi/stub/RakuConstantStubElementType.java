@@ -31,7 +31,7 @@ public class RakuConstantStubElementType extends IStubElementType<RakuConstantSt
     @NotNull
     @Override
     public String getExternalId() {
-        return "perl6.stub.constant";
+        return "raku.stub.constant";
     }
 
     @Override

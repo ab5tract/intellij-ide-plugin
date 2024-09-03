@@ -4,7 +4,7 @@ use Java::Generate::Interface;
 use Java::Generate::Literal;
 use Java::Generate::Variable;
 
-sub generate-perl6-token-types(@token-names, $prefix, $package) is export {
+sub generate-raku-token-types(@token-names, $prefix, $package) is export {
     my @fields;
     for @token-names.sort -> $name {
         my $default = $name eq 'WHITE_SPACE' | 'BAD_CHARACTER'

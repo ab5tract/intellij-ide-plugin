@@ -124,7 +124,7 @@ public class RakuCommandLine extends GeneralCommandLine {
             if (moarBuildConfiguration == null) {
                 return null;
             }
-            String prefix = moarBuildConfiguration.getOrDefault("perl6::prefix", null);
+            String prefix = moarBuildConfiguration.getOrDefault("raku::prefix", null);
             if (prefix == null)
                 prefix = moarBuildConfiguration.getOrDefault("Raku::prefix", "");
             command.add(Paths.get(prefix, "bin", "moar").toString());
@@ -133,9 +133,9 @@ public class RakuCommandLine extends GeneralCommandLine {
             command.add("--debug-port=" + debugPort);
             command.add("--debug-suspend");
             command.add("--libpath=" + Paths.get(prefix, "share", "nqp", "lib"));
-            command.add("--libpath=" + Paths.get(prefix, "share", "perl6", "lib"));
-            command.add("--libpath=" + Paths.get(prefix, "share", "perl6", "runtime"));
-            command.add(Paths.get(prefix, "share", "perl6", "runtime", "perl6.moarvm").toString());
+            command.add("--libpath=" + Paths.get(prefix, "share", "raku", "lib"));
+            command.add("--libpath=" + Paths.get(prefix, "share", "raku", "runtime"));
+            command.add(Paths.get(prefix, "share", "raku", "runtime", "raku.moarvm").toString());
         }
         return command;
     }

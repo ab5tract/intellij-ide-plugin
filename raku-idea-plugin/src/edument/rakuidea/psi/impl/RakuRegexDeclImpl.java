@@ -103,7 +103,7 @@ public class RakuRegexDeclImpl extends RakuMemberStubBasedPsi<RakuRegexDeclStub>
     }
 
     public String toString() {
-        return getClass().getSimpleName() + "(Perl6:REGEX_DECLARATION)";
+        return getClass().getSimpleName() + "(Raku:REGEX_DECLARATION)";
     }
 
     @Override

@@ -28,6 +28,6 @@ public class RakuScopedDeclImpl extends StubBasedPsiElementBase<RakuScopedDeclSt
     }
 
     public String toString() {
-        return getClass().getSimpleName() + "(Perl6:SCOPED_DECLARATION)";
+        return getClass().getSimpleName() + "(Raku:SCOPED_DECLARATION)";
     }
 }

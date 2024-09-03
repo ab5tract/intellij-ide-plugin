@@ -80,7 +80,7 @@ public class RakuEnumImpl extends RakuTypeStubBasedPsi<RakuEnumStub> implements 
     }
 
     public String toString() {
-        return getClass().getSimpleName() + "(Perl6:ENUM)";
+        return getClass().getSimpleName() + "(Raku:ENUM)";
     }
 
     @Override

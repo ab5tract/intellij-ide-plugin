@@ -29,7 +29,7 @@ public class RakuUseStatementStubElementType extends IStubElementType<RakuUseSta
     @NotNull
     @Override
     public String getExternalId() {
-        return "perl6.stub.useStatement";
+        return "raku.stub.useStatement";
     }
 
     @Override

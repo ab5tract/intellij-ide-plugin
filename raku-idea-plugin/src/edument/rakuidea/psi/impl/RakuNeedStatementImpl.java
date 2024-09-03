@@ -62,6 +62,6 @@ public class RakuNeedStatementImpl extends StubBasedPsiElementBase<RakuNeedState
     }
 
     public String toString() {
-        return getClass().getSimpleName() + "(Perl6:NEED_STATEMENT)";
+        return getClass().getSimpleName() + "(Raku:NEED_STATEMENT)";
     }
 }

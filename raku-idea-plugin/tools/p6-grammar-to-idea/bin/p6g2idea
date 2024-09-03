@@ -34,7 +34,7 @@ multi sub MAIN('generate', IO() $input-file where .f, IO() $output-dir where .d,
 
     say "Generating {$prefix}TokenTypes.java";
     spurt $output-dir.add($prefix ~ 'TokenTypes.java'),
-        generate-perl6-token-types(@token-names, $prefix, $package);
+        generate-raku-token-types(@token-names, $prefix, $package);
 
     say "Generating {$prefix}ElementTypes.java";
     spurt $output-dir.add($prefix ~ 'ElementTypes.java'), generate-perl6-element-types

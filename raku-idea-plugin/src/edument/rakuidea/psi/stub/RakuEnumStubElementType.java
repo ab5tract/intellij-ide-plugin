@@ -36,7 +36,7 @@ public class RakuEnumStubElementType extends IStubElementType<RakuEnumStub, Raku
     @NotNull
     @Override
     public String getExternalId() {
-        return "perl6.stub.enum";
+        return "raku.stub.enum";
     }
 
     @Override

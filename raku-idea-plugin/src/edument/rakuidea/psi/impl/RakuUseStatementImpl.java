@@ -83,6 +83,6 @@ public class RakuUseStatementImpl extends StubBasedPsiElementBase<RakuUseStateme
     }
 
     public String toString() {
-        return getClass().getSimpleName() + "(Perl6:USE_STATEMENT)";
+        return getClass().getSimpleName() + "(Raku:USE_STATEMENT)";
     }
 }
