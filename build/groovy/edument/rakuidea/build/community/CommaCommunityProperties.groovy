@@ -17,8 +17,7 @@ package edument.rakuidea.build.community
 
 import org.jetbrains.intellij.build.*
 import edument.rakuidea.build.CommaPropertiesBase
-import edument.rakuidea.build.CommaMacDistributionCustomizer
-import edument.rakuidea.build.CommaWindowsDistributionCustomizer
+
 import org.jetbrains.intellij.build.dependencies.BuildDependenciesCommunityRoot
 
 import java.nio.file.Files

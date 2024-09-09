@@ -31,8 +31,8 @@ public class RakuAttributeSelectionTable extends AbstractMemberSelectionTable<Ra
         return EMPTY_OVERRIDE_ICON;
     }
 
-    public static class Perl6AttributeInfoModel extends MyTableModel<RakuPsiDeclaration, RakuAttributeInfo> implements MemberInfoModel<RakuPsiDeclaration, RakuAttributeInfo> {
-        public Perl6AttributeInfoModel(RakuAttributeSelectionTable table) {
+    public static class RakuAttributeInfoModel extends MyTableModel<RakuPsiDeclaration, RakuAttributeInfo> implements MemberInfoModel<RakuPsiDeclaration, RakuAttributeInfo> {
+        public RakuAttributeInfoModel(RakuAttributeSelectionTable table) {
             super(table);
         }
 

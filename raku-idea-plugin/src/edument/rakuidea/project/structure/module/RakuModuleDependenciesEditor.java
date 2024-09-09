@@ -7,8 +7,8 @@ import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
 import com.intellij.openapi.roots.ui.configuration.ModuleElementsEditor;
 import com.intellij.openapi.util.text.StringUtil;
 import edument.rakuidea.metadata.RakuMetaDataComponent;
-import edument.rakuidea.project.structure.module.dependency.panel.Perl6DependenciesPanelImpl;
-import edument.rakuidea.project.structure.module.dependency.panel.Perl6DependencyTableItem;
+import edument.rakuidea.project.structure.module.dependency.panel.RakuDependenciesPanelImpl;
+import edument.rakuidea.project.structure.module.dependency.panel.RakuDependencyTableItem;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RakuModuleDependenciesEditor extends ModuleElementsEditor implements ModuleRootListener {
-    private Perl6DependenciesPanelImpl myPanel;
+    private RakuDependenciesPanelImpl myPanel;
 
     protected RakuModuleDependenciesEditor(@NotNull ModuleConfigurationState state) {
         super(state);
@@ -32,7 +32,7 @@ public class RakuModuleDependenciesEditor extends ModuleElementsEditor implement
     @Override
     protected JComponent createComponentImpl() {
         if (myPanel == null)
-            myPanel = new Perl6DependenciesPanelImpl(getState(), getModel().getProject());
+            myPanel = new RakuDependenciesPanelImpl(getState(), getModel().getProject());
         return myPanel;
     }
 
@@ -52,7 +52,7 @@ public class RakuModuleDependenciesEditor extends ModuleElementsEditor implement
         List<String> depends      = new ArrayList<>();
         List<String> testDepends  = new ArrayList<>();
         List<String> buildDepends = new ArrayList<>();
-        for (Perl6DependencyTableItem item : myPanel.getModel().getItems()) {
+        for (RakuDependencyTableItem item : myPanel.getModel().getItems()) {
             switch (item.getScope()) {
                 case DEPENDS:
                     depends.add(item.getEntry()); break;

@@ -17,8 +17,8 @@ public class RakuAttributeSelectionPanel extends AbstractMemberSelectionPanel<Ra
         super();
         setLayout(new BorderLayout());
         myTable = new RakuAttributeSelectionTable(attributeInfoList);
-        RakuAttributeSelectionTable.Perl6AttributeInfoModel model = new
-            RakuAttributeSelectionTable.Perl6AttributeInfoModel(myTable);
+        RakuAttributeSelectionTable.RakuAttributeInfoModel model = new
+          RakuAttributeSelectionTable.RakuAttributeInfoModel(myTable);
         myTable.setMemberInfoModel(model);
         myTable.setModel(model);
         // Make checkbox column small, instead of it taking 50% of the width

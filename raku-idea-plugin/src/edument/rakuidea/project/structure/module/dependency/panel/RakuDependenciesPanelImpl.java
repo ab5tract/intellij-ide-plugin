@@ -34,18 +34,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Perl6DependenciesPanelImpl extends JPanel {
+public class RakuDependenciesPanelImpl extends JPanel {
     private final DependenciesTableModel myModel;
     private final JBTable myEntryTable;
     private final Project myProject;
 
-    public Perl6DependenciesPanelImpl(ModuleConfigurationState state, Project project) {
+    public RakuDependenciesPanelImpl(ModuleConfigurationState state, Project project) {
         super(new BorderLayout());
         myProject = project;
         myModel = new DependenciesTableModel(state);
         myEntryTable = new JBTable(myModel);
         TableRowSorter<DependenciesTableModel> sorter = new TableRowSorter<>(myModel);
-        sorter.setComparator(0, Comparator.comparing(o -> ((Perl6DependencyTableItem)o).getEntry()));
+        sorter.setComparator(0, Comparator.comparing(o -> ((RakuDependencyTableItem)o).getEntry()));
         myEntryTable.setRowSorter(sorter);
         sorter.setSortKeys(Arrays.asList(
           new RowSorter.SortKey(1, SortOrder.ASCENDING),
@@ -53,13 +53,13 @@ public class Perl6DependenciesPanelImpl extends JPanel {
         myEntryTable.setShowGrid(false);
         myEntryTable.setDragEnabled(false);
         myEntryTable.setIntercellSpacing(new Dimension(0, 0));
-        myEntryTable.setDefaultRenderer(Perl6DependencyTableItem.class, new TableItemRenderer());
+        myEntryTable.setDefaultRenderer(RakuDependencyTableItem.class, new TableItemRenderer());
 
-        JComboBox<Perl6DependencyScope> scopeEditor = new ComboBox<>(new EnumComboBoxModel<>(Perl6DependencyScope.class));
-        myEntryTable.setDefaultEditor(Perl6DependencyScope.class, new DefaultCellEditor(scopeEditor));
+        JComboBox<RakuDependencyScope> scopeEditor = new ComboBox<>(new EnumComboBoxModel<>(RakuDependencyScope.class));
+        myEntryTable.setDefaultEditor(RakuDependencyScope.class, new DefaultCellEditor(scopeEditor));
         myEntryTable.setDefaultRenderer(
-          Perl6DependencyScope.class,
-          new ComboBoxTableRenderer<>(Perl6DependencyScope.values()));
+          RakuDependencyScope.class,
+          new ComboBoxTableRenderer<>(RakuDependencyScope.values()));
 
         myEntryTable.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setFixedScopeColumnWidth();
@@ -77,9 +77,9 @@ public class Perl6DependenciesPanelImpl extends JPanel {
                   myProject, myModel);
                 boolean isOk = action.showAndGet();
                 if (isOk)
-                    myModel.addRow(new Perl6DependencyTableItem(
+                    myModel.addRow(new RakuDependencyTableItem(
                       action.myNameField.getText(),
-                      (Perl6DependencyScope)action.myScopeCombo.getSelectedItem()
+                      (RakuDependencyScope)action.myScopeCombo.getSelectedItem()
                     ));
             }
         }).addExtraAction(new AnActionButton("Edit", null, IconUtil.getEditIcon()) {
@@ -93,9 +93,9 @@ public class Perl6DependenciesPanelImpl extends JPanel {
                 if (isOk) {
                     int rowIndex = myEntryTable.getSelectedRow();
                     myModel.removeRow(rowIndex);
-                    myModel.insertRow(rowIndex, new Perl6DependencyTableItem(
+                    myModel.insertRow(rowIndex, new RakuDependencyTableItem(
                       action.myNameField.getText(),
-                      (Perl6DependencyScope)action.myScopeCombo.getSelectedItem()
+                      (RakuDependencyScope)action.myScopeCombo.getSelectedItem()
                     ));
                 }
             }
@@ -112,7 +112,7 @@ public class Perl6DependenciesPanelImpl extends JPanel {
         final TableColumn column = myEntryTable.getTableHeader().getColumnModel().getColumn(1);
         final FontMetrics fontMetrics = myEntryTable.getFontMetrics(myEntryTable.getFont());
         final int width = fontMetrics.stringWidth(
-          String.format(" %s      ", Perl6DependencyScope.BUILD_DEPENDS)) + JBUI.scale(4);
+          String.format(" %s      ", RakuDependencyScope.BUILD_DEPENDS)) + JBUI.scale(4);
         column.setPreferredWidth(width);
         column.setMinWidth(width);
         column.setResizable(false);
@@ -123,7 +123,7 @@ public class Perl6DependenciesPanelImpl extends JPanel {
     }
 
     private void forceInitFromModel() {
-        Set<Perl6DependencyTableItem> oldSelection = new HashSet<>();
+        Set<RakuDependencyTableItem> oldSelection = new HashSet<>();
         for (int i : myEntryTable.getSelectedRows())
             ContainerUtil.addIfNotNull(oldSelection, getItemAt(i));
 
@@ -150,11 +150,11 @@ public class Perl6DependenciesPanelImpl extends JPanel {
         return myModel;
     }
 
-    private Perl6DependencyTableItem getItemAt(int selectedRow) {
+    private RakuDependencyTableItem getItemAt(int selectedRow) {
         return myModel.getItem(myEntryTable.convertRowIndexToModel(selectedRow));
     }
 
-    private Perl6DependencyTableItem getSelectedItem() {
+    private RakuDependencyTableItem getSelectedItem() {
         if (myEntryTable.getSelectedRowCount() != 1) return null;
         return getItemAt(myEntryTable.getSelectedRow());
     }
@@ -179,17 +179,17 @@ public class Perl6DependenciesPanelImpl extends JPanel {
     private static class Perl6DependencyAddAction extends DialogWrapper {
         private final DependenciesTableModel myModel;
         private final Project myProject;
-        private final Set<Perl6DependencyTableItem> alreadyAdded;
-        private final ComboBox<Perl6DependencyScope> myScopeCombo = new ComboBox<>(Perl6DependencyScope.values());
+        private final Set<RakuDependencyTableItem> alreadyAdded;
+        private final ComboBox<RakuDependencyScope> myScopeCombo = new ComboBox<>(RakuDependencyScope.values());
         private TextFieldWithAutoCompletion<String> myNameField;
 
         @Nullable
         @Override
         protected ValidationInfo doValidate() {
             if (alreadyAdded.contains(
-              new Perl6DependencyTableItem(
+              new RakuDependencyTableItem(
                 myNameField.getText(),
-                (Perl6DependencyScope)myScopeCombo.getSelectedItem())
+                (RakuDependencyScope)myScopeCombo.getSelectedItem())
             )) {
                 return new ValidationInfo("This dependency already exists");
             }
@@ -206,7 +206,7 @@ public class Perl6DependenciesPanelImpl extends JPanel {
             setTitle("Add Dependency");
         }
 
-        Perl6DependencyAddAction(Project project, DependenciesTableModel model, Perl6DependencyTableItem item) {
+        Perl6DependencyAddAction(Project project, DependenciesTableModel model, RakuDependencyTableItem item) {
             super(project, false);
             myModel = model;
             myProject = project;

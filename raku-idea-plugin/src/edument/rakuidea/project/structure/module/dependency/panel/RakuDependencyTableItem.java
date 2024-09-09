@@ -4,11 +4,11 @@ import com.intellij.openapi.util.Comparing;
 
 import java.util.Objects;
 
-public class Perl6DependencyTableItem {
+public class RakuDependencyTableItem {
     protected String myEntry;
-    protected Perl6DependencyScope myScope;
+    protected RakuDependencyScope myScope;
 
-    protected Perl6DependencyTableItem(String dep, Perl6DependencyScope scope) {
+    protected RakuDependencyTableItem(String dep, RakuDependencyScope scope) {
         myEntry = dep;
         myScope = scope;
     }
@@ -17,11 +17,11 @@ public class Perl6DependencyTableItem {
         return myEntry;
     }
 
-    public Perl6DependencyScope getScope() {
+    public RakuDependencyScope getScope() {
         return myScope;
     }
 
-    public void setScope(Perl6DependencyScope scope) {
+    public void setScope(RakuDependencyScope scope) {
         myScope = scope;
     }
 
@@ -29,7 +29,7 @@ public class Perl6DependencyTableItem {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Perl6DependencyTableItem item = (Perl6DependencyTableItem)obj;
+        RakuDependencyTableItem item = (RakuDependencyTableItem)obj;
         return Objects.equals(myEntry, item.myEntry) && Comparing.equal(myScope, item.getScope());
     }
 

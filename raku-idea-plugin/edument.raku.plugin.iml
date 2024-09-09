@@ -26,6 +26,7 @@
     <orderEntry type="module" module-name="intellij.platform.main" />
     <orderEntry type="module" module-name="intellij.platform.smRunner" />
     <orderEntry type="module" module-name="intellij.platform.testRunner" />
+    <orderEntry type="module" module-name="intellij.platform.ui.jcef" />
     <orderEntry type="module" module-name="intellij.spellchecker" />
     <orderEntry type="module" module-name="intellij.xml.dom.impl" />
     <orderEntry type="module" module-name="intellij.platform.testFramework" scope="TEST" />
@@ -33,7 +34,14 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../raku-idea-plugin/libs/moarvmremote.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/moarvmremote.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/xchart-3.8.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -41,7 +49,13 @@
     </orderEntry>
     <orderEntry type="module-library">
       <library name="tap4j" type="repository">
-        <properties maven-id="org.tap4j:tap4j:4.3" />
+        <properties maven-id="org.tap4j:tap4j:4.3">
+          <verification>
+            <artifact url="file://$MAVEN_REPOSITORY$/org/tap4j/tap4j/4.3/tap4j-4.3.jar">
+              <sha256sum>20009cc99a119e07830b7e2e534663e9ef2d4e26a3cb5db58022600c2802d082</sha256sum>
+            </artifact>
+          </verification>
+        </properties>
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY$/org/tap4j/tap4j/4.3/tap4j-4.3.jar!/" />
         </CLASSES>
@@ -51,7 +65,13 @@
     </orderEntry>
     <orderEntry type="module-library" scope="PROVIDED">
       <library name="json" type="repository">
-        <properties maven-id="org.json:json:20171018" />
+        <properties maven-id="org.json:json:20171018">
+          <verification>
+            <artifact url="file://$MAVEN_REPOSITORY$/org/json/json/20171018/json-20171018.jar">
+              <sha256sum>01a9dc4b153cded6cc295ce7ed75d74d03bf3670fee1565ad2d83b2eba79dc1e</sha256sum>
+            </artifact>
+          </verification>
+        </properties>
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY$/org/json/json/20171018/json-20171018.jar!/" />
         </CLASSES>
