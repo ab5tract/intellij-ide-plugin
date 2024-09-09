@@ -3,7 +3,7 @@ import org.jetbrains.intellij.build.IdeaProjectLoaderUtil
 
 object CommaCompletePluginBuildTarget {
   @JvmStatic
-  fun main(args: Array<String>) {
+  suspend fun main(args: Array<String>) {
     val communityHome = IdeaProjectLoaderUtil.guessCommunityHome(javaClass).communityRoot.toString()
     RakuCompletePluginBuilder(communityHome).build()
   }

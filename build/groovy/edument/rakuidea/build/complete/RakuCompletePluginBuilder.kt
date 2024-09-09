@@ -19,16 +19,34 @@ class RakuCompletePluginBuilder(
     var pluginsForIdeaCommunity : List<String> = listOf("edument.raku.comma.complete")
     var options : BuildOptions = BuildOptions(isInDevelopmentMode = true,
                                               //targetOs = listOf(OsFamily.currentOs),
-                                              outRootDir = homePath.resolve("out/commaCP"),
+                                              outRootDir = homePath.resolve("out/comma"),
                                               //buildNumber = pluginBuildNumber,
                                               incrementalCompilation = true)
     var communityRoot = BuildDependenciesCommunityRoot(homePath)
     var buildContext : BuildContext = BuildContextImpl.createContext(
                                         projectHome = homePath,
-                                        productProperties = CommaCompleteProperties(communityRoot, home),
+                                        productProperties = CommaCompleteProperties(communityRoot),
                                         options = options)
 
     var buildTasks : BuildTasks = createBuildTasks(buildContext)
     buildTasks.buildNonBundledPlugins(pluginsForIdeaCommunity)
+  }
+
+  suspend fun buildDistributions() {
+    //var pluginBuildNumber : String = System.getProperty("build.number", "232.10335.12")
+    //var pluginsForIdeaCommunity : List<String> = listOf("edument.raku.comma.complete")
+    var options : BuildOptions = BuildOptions(isInDevelopmentMode = true,
+      //targetOs = listOf(OsFamily.currentOs),
+                                              outRootDir = homePath.resolve("out/comma"),
+      //buildNumber = pluginBuildNumber,
+                                              incrementalCompilation = true)
+    var communityRoot = BuildDependenciesCommunityRoot(homePath)
+    var buildContext : BuildContext = BuildContextImpl.createContext(
+      projectHome = homePath,
+      productProperties = CommaCompleteProperties(communityRoot),
+      options = options)
+
+    var buildTasks : BuildTasks = createBuildTasks(buildContext)
+    buildTasks.buildDistributions()
   }
 }
