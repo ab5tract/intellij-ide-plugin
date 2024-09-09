@@ -1,13 +1,13 @@
 package edument.rakuidea.project.structure.module.dependency.panel;
 
-public enum Perl6DependencyScope {
+public enum RakuDependencyScope {
     DEPENDS("depends"),
     BUILD_DEPENDS("build-depends"),
     TEST_DEPENDS("test-depends");
 
     private final String myDisplayName;
 
-    Perl6DependencyScope(String displayName) {
+    RakuDependencyScope(String displayName) {
         myDisplayName = displayName;
     }
 

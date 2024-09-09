@@ -65,9 +65,9 @@ public class RakuErrorReportSubmitter extends ErrorReportSubmitter {
     private static Map<String, String> createErrorBean(IdeaLoggingEvent event, String info) {
         Map<String, String> errorBean = new HashMap<>();
         errorBean.put("pluginName", "Raku Language Support");
-        IdeaPluginDescriptor perl6plugin = PluginManagerCore.getPlugin(PluginId.getId("edument.raku-idea-plugin"));
-        if (perl6plugin != null)
-            errorBean.put("pluginVersion", perl6plugin.getVersion());
+        IdeaPluginDescriptor rakuPlugin = PluginManagerCore.getPlugin(PluginId.getId("edument.raku-idea-plugin"));
+        if (rakuPlugin != null)
+            errorBean.put("pluginVersion", rakuPlugin.getVersion());
         errorBean.put("message", event.getMessage());
         errorBean.put("stackTrace", ExceptionUtil.getThrowableText(event.getThrowable()));
         errorBean.put("lastAction", info);

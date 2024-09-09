@@ -424,7 +424,7 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
             if (url == null) {
                 LOG.error(
                     new PluginException("Can't find resource for project template: " + ep.templatePath, pluginDescriptor.getPluginId()));
-                return;
+                return null;
             }
 
             try {
@@ -440,6 +440,8 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
             catch (Exception e) {
                 LOG.error(new PluginException("Error loading template from URL: " + ep.templatePath, e, pluginDescriptor.getPluginId()));
             }
+
+            return null;
         });
         //ProjectTemplateEP[] extensions = ProjectTemplateEP.EP_NAME.getExtensions();
         //for (ProjectTemplateEP ep : extensions) {

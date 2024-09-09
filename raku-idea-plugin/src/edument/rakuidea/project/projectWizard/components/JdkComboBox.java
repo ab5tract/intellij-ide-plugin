@@ -85,7 +85,7 @@ public class JdkComboBox extends SdkComboBoxBase<JdkComboBox.JdkComboBoxItem> {
                      @Nullable Condition<? super Sdk> sdkFilter,
                      @Nullable Condition<? super SdkTypeId> creationFilter,
                      @Nullable Consumer<? super Sdk> onNewSdkAdded) {
-    super(new SdkListModelBuilder(project, sdkModel, sdkTypeFilter, SimpleJavaSdkType.notSimpleJavaSdkType(creationFilter), sdkFilter));
+    super(new SdkListModelBuilder(project, sdkModel, sdkTypeFilter, creationFilter, sdkFilter));
     myOnNewSdkAdded = sdk -> {
       if (onNewSdkAdded != null) {
         onNewSdkAdded.consume(sdk);

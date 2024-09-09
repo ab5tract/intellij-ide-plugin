@@ -10,33 +10,33 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class DependenciesTableModel extends ListTableModel<Perl6DependencyTableItem> implements ItemRemovable {
+public class DependenciesTableModel extends ListTableModel<RakuDependencyTableItem> implements ItemRemovable {
     static final String SCOPE_COLUMN_NAME = "Scope";
-    private static final ColumnInfo<Perl6DependencyTableItem, Perl6DependencyScope> SCOPE_COLUMN_INFO =
+    private static final ColumnInfo<RakuDependencyTableItem, RakuDependencyScope> SCOPE_COLUMN_INFO =
         new ColumnInfo<>(SCOPE_COLUMN_NAME) {
             @Nullable
             @Override
-            public Perl6DependencyScope valueOf(Perl6DependencyTableItem item) {
+            public RakuDependencyScope valueOf(RakuDependencyTableItem item) {
                 return item.getScope();
             }
 
             @Override
-            public void setValue(Perl6DependencyTableItem item, Perl6DependencyScope value) {
+            public void setValue(RakuDependencyTableItem item, RakuDependencyScope value) {
                 item.setScope(value);
             }
 
             @Override
-            public boolean isCellEditable(Perl6DependencyTableItem item) {
+            public boolean isCellEditable(RakuDependencyTableItem item) {
                 return true;
             }
 
             @Override
             public Class<?> getColumnClass() {
-                return Perl6DependencyScope.class;
+                return RakuDependencyScope.class;
             }
         };
     private final ModuleConfigurationState myState;
-    private Set<Perl6DependencyTableItem> myInitialSet = new HashSet<>();
+    private Set<RakuDependencyTableItem> myInitialSet = new HashSet<>();
 
     public DependenciesTableModel(ModuleConfigurationState state) {
         super(new Perl6DependencyTableItemColumnInfo(), SCOPE_COLUMN_INFO);
@@ -55,19 +55,19 @@ public class DependenciesTableModel extends ListTableModel<Perl6DependencyTableI
         List<String> testDepends = metaData.getTestDepends(false);
         List<String> buildDepends = metaData.getBuildDepends(false);
 
-        List<Perl6DependencyTableItem> items = new ArrayList<>();
+        List<RakuDependencyTableItem> items = new ArrayList<>();
 
         for (String depend : depends) {
-            items.add(new Perl6DependencyTableItem(depend, Perl6DependencyScope.DEPENDS));
-            myInitialSet.add(new Perl6DependencyTableItem(depend, Perl6DependencyScope.DEPENDS));
+            items.add(new RakuDependencyTableItem(depend, RakuDependencyScope.DEPENDS));
+            myInitialSet.add(new RakuDependencyTableItem(depend, RakuDependencyScope.DEPENDS));
         }
         for (String testDepend : testDepends) {
-            items.add(new Perl6DependencyTableItem(testDepend, Perl6DependencyScope.TEST_DEPENDS));
-            myInitialSet.add(new Perl6DependencyTableItem(testDepend, Perl6DependencyScope.TEST_DEPENDS));
+            items.add(new RakuDependencyTableItem(testDepend, RakuDependencyScope.TEST_DEPENDS));
+            myInitialSet.add(new RakuDependencyTableItem(testDepend, RakuDependencyScope.TEST_DEPENDS));
         }
         for (String buildDepend : buildDepends) {
-            items.add(new Perl6DependencyTableItem(buildDepend, Perl6DependencyScope.BUILD_DEPENDS));
-            myInitialSet.add(new Perl6DependencyTableItem(buildDepend, Perl6DependencyScope.BUILD_DEPENDS));
+            items.add(new RakuDependencyTableItem(buildDepend, RakuDependencyScope.BUILD_DEPENDS));
+            myInitialSet.add(new RakuDependencyTableItem(buildDepend, RakuDependencyScope.BUILD_DEPENDS));
         }
 
         setItems(items);
@@ -86,14 +86,14 @@ public class DependenciesTableModel extends ListTableModel<Perl6DependencyTableI
         return !(myInitialSet.containsAll(getItems()) && new HashSet<>(getItems()).containsAll(myInitialSet));
     }
 
-    private static class Perl6DependencyTableItemColumnInfo extends ColumnInfo<Perl6DependencyTableItem, Perl6DependencyTableItem> {
+    private static class Perl6DependencyTableItemColumnInfo extends ColumnInfo<RakuDependencyTableItem, RakuDependencyTableItem> {
         Perl6DependencyTableItemColumnInfo() {
             super("");
         }
 
         @Nullable
         @Override
-        public Perl6DependencyTableItem valueOf(Perl6DependencyTableItem item) {
+        public RakuDependencyTableItem valueOf(RakuDependencyTableItem item) {
             return item;
         }
     }
