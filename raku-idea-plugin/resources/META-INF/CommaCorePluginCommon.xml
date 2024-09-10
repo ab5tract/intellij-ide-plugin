@@ -1,6 +1,6 @@
 <!-- Components of standalone Comma, commons -->
 <idea-plugin>
-  <vendor email="info@commaide.com" url="https://commaide.com/">Edument Central Europe sro.</vendor>
+  <vendor email="info@commaide.com" url="https://commaide.com/">Raku Community</vendor>
 
   <extensions defaultExtensionNs="com.intellij">
     <projectService serviceImplementation="edument.rakuidea.project.structure.RakuProjectStructureConfigurable"/>
@@ -10,7 +10,7 @@
   <!-- Actions for standalone Comma -->
   <actions>
     <!-- Actions for Welcome Screen -->
-    <action id="ShowProjectStructureSettings" class="edument.rakuidea.actions.ShowPerl6ProjectStructureAction"
+    <action id="ShowProjectStructureSettings" class="edument.rakuidea.actions.ShowRakuProjectStructureAction"
             icon="AllIcons.General.ProjectStructure">
       <add-to-group group-id="FileMainSettingsGroup" anchor="after" relative-to-action="ShowSettings"/>
       <add-to-group group-id="MainToolBarSettings" anchor="after" relative-to-action="ShowSettings"/>
@@ -38,7 +38,7 @@
     <action id="NewElement" class="com.intellij.ide.actions.NewElementAction"/>
     <group id="MoveModuleToGroup" class="com.intellij.ide.projectView.impl.MoveModuleToGroupTopLevel" popup="true"/>
 
-    <group>
+    <group id="MarkRakuSource">
       <action id="MarkRakuSourceRoot" class="edument.rakuidea.actions.moduleRoot.MarkRakuSourceRootAction"/>
       <action id="MarkRakuTestsSourceRoot" class="edument.rakuidea.actions.moduleRoot.MarkRakuTestsSourceRootAction"/>
       <action id="UnmarkRoot" class="edument.rakuidea.actions.moduleRoot.RakuUnmarkRootAction"/>

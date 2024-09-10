@@ -17,7 +17,7 @@ import java.util.Map;
  * (get, put, post, etc.) that declare routes. We'd like to index these.
  */
 public abstract class RakuFrameworkCall {
-    public static final ExtensionPointName<RakuFrameworkCall> EP_NAME = ExtensionPointName.create("edument.perl6idea.frameworkCall");
+    public static final ExtensionPointName<RakuFrameworkCall> EP_NAME = ExtensionPointName.create("edument.rakuidea.frameworkCall");
 
     /** A unique identifier for the framework in question. */
     public abstract String getFrameworkName();

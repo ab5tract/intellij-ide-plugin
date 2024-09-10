@@ -12,7 +12,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ProjectRootManager;
 import edument.rakuidea.RakuIcons;
-import edument.rakuidea.actions.ShowPerl6ProjectStructureAction;
+import edument.rakuidea.actions.ShowRakuProjectStructureAction;
 import edument.rakuidea.sdk.RakuSdkType;
 import edument.rakuidea.services.RakuBackupSDKService;
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +41,7 @@ public class RakuLaunchReplAction extends AnAction {
             notification = notification.addAction(new AnAction("Check SDK") {
                 @Override
                 public void actionPerformed(@NotNull AnActionEvent e) {
-                    new ShowPerl6ProjectStructureAction().actionPerformed(e);
+                    new ShowRakuProjectStructureAction().actionPerformed(e);
                 }
             });
             notification = notification.addAction(new AnAction("Show Exception Details to Report") {

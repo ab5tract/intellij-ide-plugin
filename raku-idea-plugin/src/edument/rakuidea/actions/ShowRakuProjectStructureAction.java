@@ -10,7 +10,7 @@ import com.intellij.openapi.project.ProjectManager;
 import edument.rakuidea.project.structure.RakuProjectStructureConfigurable;
 import org.jetbrains.annotations.NotNull;
 
-public class ShowPerl6ProjectStructureAction extends AnAction {
+public class ShowRakuProjectStructureAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getProject();
