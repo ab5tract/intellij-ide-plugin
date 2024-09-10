@@ -1,9 +1,10 @@
-import edument.rakuidea.build.complete.CommaCompleteProperties
+
+import edument.rakuidea.build.BuildScope
 import edument.rakuidea.build.complete.RakuCompletePluginBuilder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlinx.coroutines.future.future
 import org.jetbrains.intellij.build.*
-import org.jetbrains.intellij.build.impl.BuildContextImpl
+
 
 object CommaCompleteInstallersBuildTarget {
   //private fun getMacHost(): MacHostProperties? {
@@ -18,10 +19,17 @@ object CommaCompleteInstallersBuildTarget {
   //    return null
   //  }
   //}
+  //val customScope = CoroutineScope(Dispatchers.Default)
+  private val customScope = BuildScope()
 
+  @OptIn(DelicateCoroutinesApi::class)
   @JvmStatic
   fun main(args: Array<String>) {
-    val communityHome = IdeaProjectLoaderUtil.guessCommunityHome(javaClass).communityRoot.toString()
-    RakuCompletePluginBuilder(communityHome).buildDistributions()
+    val communityHome = IdeaProjectLoaderUtil.guessCommunityHome(CommaCompleteInstallersBuildTarget::class.java).communityRoot.toString()
+    val future = customScope.future {
+      RakuCompletePluginBuilder(communityHome).buildDistributions()
+    }
+    future.join()
+    customScope.clear()
   }
 }

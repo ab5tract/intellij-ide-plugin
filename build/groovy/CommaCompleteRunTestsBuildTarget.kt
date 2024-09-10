@@ -1,3 +1,7 @@
+import edument.rakuidea.build.BuildScope
+import edument.rakuidea.build.complete.RakuCompletePluginBuilder
+import kotlinx.coroutines.future.future
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.intellij.build.IdeaProjectLoaderUtil
 import org.jetbrains.intellij.build.TestingOptions
 import org.jetbrains.intellij.build.TestingTasks
@@ -15,19 +19,16 @@ import org.jetbrains.intellij.build.impl.createCompilationContextBlocking
  * to skip compilation and use the compiled classes from the project output.
  */
 object CommaCompleteRunTestsBuildTarget {
+
+  private val buildScope = BuildScope()
+
   @JvmStatic
   fun main(args: Array<String>) {
-    val communityHome = IdeaProjectLoaderUtil.guessCommunityHome(javaClass)
-    val outputDir = "$communityHome/out/tests"
-    val context = createCompilationContextBlocking(
-      communityHome = communityHome,
-      projectHome = communityHome.communityRoot,
-      defaultOutputRoot = communityHome.communityRoot.resolve("out/tests"))
-    val options = TestingOptions()
-    options.testGroups = "COMMA_COMPLETE_TESTS"
-    options.platformPrefix = "CommaCore"
-    options.mainModule = "edument.raku.comma.complete"
-    // options.preferAntRunner = true
-    TestingTasks.create(context, options).runTests(emptyList(), "edument.raku.comma.complete", null)
+    val communityHome = IdeaProjectLoaderUtil.guessCommunityHome(CommaCompleteRunTestsBuildTarget::class.java).communityRoot.toString()
+    val future = buildScope.future {
+      RakuCompletePluginBuilder(communityHome).test()
+    }
+    future.join()
+    buildScope.clear()
   }
 }

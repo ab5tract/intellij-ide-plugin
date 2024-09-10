@@ -31,29 +31,13 @@ public class RakuAttributeSelectionTable extends AbstractMemberSelectionTable<Ra
         return EMPTY_OVERRIDE_ICON;
     }
 
-    public static class RakuAttributeInfoModel extends MyTableModel<RakuPsiDeclaration, RakuAttributeInfo> implements MemberInfoModel<RakuPsiDeclaration, RakuAttributeInfo> {
-        public RakuAttributeInfoModel(RakuAttributeSelectionTable table) {
-            super(table);
-        }
-
+    public static class RakuAttributeInfoModel implements MemberInfoModel<RakuPsiDeclaration, RakuAttributeInfo> {
         @Override
         public void memberInfoChanged(@NotNull MemberInfoChange<RakuPsiDeclaration, RakuAttributeInfo> event) {}
 
         @Override
         public boolean isMemberEnabled(RakuAttributeInfo member) {
             return true;
-        }
-
-        @Override
-        public String getColumnName(int column) {
-            // There is a method getDisplayNameColumnHeader in the parent
-            // class used here. We could, in theory, override it to get the proper label,
-            // which looks like the original idea, but the method is marked as static
-            // and cannot be overridden so useless
-            if (column == DISPLAY_NAME_COLUMN) {
-                return "Declaration";
-            }
-            return super.getColumnName(column);
         }
 
         @Override

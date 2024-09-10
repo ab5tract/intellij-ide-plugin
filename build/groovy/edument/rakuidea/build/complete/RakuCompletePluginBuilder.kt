@@ -1,52 +1,49 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package edument.rakuidea.build.complete
 
-import org.jetbrains.intellij.build.BuildContext
-import org.jetbrains.intellij.build.BuildOptions
-import org.jetbrains.intellij.build.BuildTasks
-import org.jetbrains.intellij.build.createBuildTasks
+import kotlinx.coroutines.runBlocking
+import org.jetbrains.intellij.build.*
 import org.jetbrains.intellij.build.dependencies.BuildDependenciesCommunityRoot
 import org.jetbrains.intellij.build.impl.BuildContextImpl
 import java.nio.file.Path
 
-class RakuCompletePluginBuilder(
-  val home : String
-) {
-  var homePath : Path = Path.of(home)
+class RakuCompletePluginBuilder(home : String) {
+  private val homePath : Path = Path.of(home)
+  private val communityRoot = BuildDependenciesCommunityRoot(homePath)
+  private val pluginsForIdeaCommunity : List<String> = listOf("edument.raku.comma.complete")
+  private val productProperties : CommaCompleteProperties = CommaCompleteProperties(communityRoot)
+
+  private val options : BuildOptions = BuildOptions(isInDevelopmentMode = true,
+                                                    outRootDir = homePath.resolve("out/comma"))
 
   suspend fun build() {
-    var pluginBuildNumber : String = System.getProperty("build.number", "232.10335.12")
-    var pluginsForIdeaCommunity : List<String> = listOf("edument.raku.comma.complete")
-    var options : BuildOptions = BuildOptions(isInDevelopmentMode = true,
-                                              //targetOs = listOf(OsFamily.currentOs),
-                                              outRootDir = homePath.resolve("out/comma"),
-                                              //buildNumber = pluginBuildNumber,
-                                              incrementalCompilation = true)
-    var communityRoot = BuildDependenciesCommunityRoot(homePath)
-    var buildContext : BuildContext = BuildContextImpl.createContext(
+    val buildContext : BuildContext = BuildContextImpl.createContext(
                                         projectHome = homePath,
-                                        productProperties = CommaCompleteProperties(communityRoot),
+                                        productProperties = productProperties,
                                         options = options)
-
-    var buildTasks : BuildTasks = createBuildTasks(buildContext)
-    buildTasks.buildNonBundledPlugins(pluginsForIdeaCommunity)
+    createBuildTasks(buildContext).buildNonBundledPlugins(pluginsForIdeaCommunity)
   }
 
   suspend fun buildDistributions() {
-    //var pluginBuildNumber : String = System.getProperty("build.number", "232.10335.12")
-    //var pluginsForIdeaCommunity : List<String> = listOf("edument.raku.comma.complete")
-    var options : BuildOptions = BuildOptions(isInDevelopmentMode = true,
-      //targetOs = listOf(OsFamily.currentOs),
-                                              outRootDir = homePath.resolve("out/comma"),
-      //buildNumber = pluginBuildNumber,
-                                              incrementalCompilation = true)
-    var communityRoot = BuildDependenciesCommunityRoot(homePath)
-    var buildContext : BuildContext = BuildContextImpl.createContext(
-      projectHome = homePath,
-      productProperties = CommaCompleteProperties(communityRoot),
-      options = options)
+    val buildContext : BuildContext = BuildContextImpl.createContext(
+                                        projectHome = homePath,
+                                        productProperties = productProperties,
+                                        options = options, )
+    //createBuildTasks(buildContext).buildUnpackedDistribution(includeBinAndRuntime = true, targetDirectory = homePath.resolve("out/dist"))
+    createBuildTasks(buildContext).buildDistributions()
+  }
 
-    var buildTasks : BuildTasks = createBuildTasks(buildContext)
-    buildTasks.buildDistributions()
+  suspend fun test() {
+    val context = org.jetbrains.intellij.build.impl.createCompilationContext(
+      projectHome = homePath,
+      defaultOutputRoot = communityRoot.communityRoot.resolve("out/tests")
+    )
+
+    val options = TestingOptions()
+    options.testGroups = "COMMA_COMPLETE_TESTS"
+    options.platformPrefix = "CommaCore"
+    options.mainModule = "edument.raku.comma.complete"
+
+    TestingTasks.create(context, options).runTests()
   }
 }

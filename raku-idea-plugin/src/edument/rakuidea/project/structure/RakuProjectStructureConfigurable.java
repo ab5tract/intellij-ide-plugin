@@ -41,7 +41,7 @@ public class RakuProjectStructureConfigurable extends BaseConfigurable implement
                                                                                   Configurable.NoScroll {
     private static final Logger LOG = Logger.getInstance(RakuProjectStructureConfigurable.class);
     private static final String CATEGORY = "category";
-    public static final DataKey<RakuProjectStructureConfigurable> KEY = DataKey.create("Perl6ProjectStructureConfiguration");
+    public static final DataKey<RakuProjectStructureConfigurable> KEY = DataKey.create("RakuProjectStructureConfiguration");
     protected final RakuProjectStructureConfigurable.UIState myUiState = new RakuProjectStructureConfigurable.UIState();
     private final Project myProject;
     private final RakuStructureConfigurableContext myContext;

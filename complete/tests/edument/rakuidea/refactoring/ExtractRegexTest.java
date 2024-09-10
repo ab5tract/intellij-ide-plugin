@@ -42,7 +42,7 @@ public class ExtractRegexTest extends CommaFixtureTestCase {
         @Override
         protected NewRegexPartData getNewRegexPartData(Project project, RakuPsiScope parentToCreateAt,
                                                        PsiElement[] atoms, boolean isLexical, RakuRegexPartType parentType) {
-            Perl6VariableData[] params = getCapturedVariables(parentToCreateAt, atoms);
+            RakuVariableData[] params = getCapturedVariables(parentToCreateAt, atoms);
             String base = "";
             if (params.length != 0)
                 base += NewCodeBlockData.formSignature(params, false);

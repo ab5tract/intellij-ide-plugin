@@ -39,7 +39,7 @@
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="145.0"/>
+  <idea-version since-build="232.0"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
    on how to target different products -->
@@ -68,7 +68,7 @@
     <fileTypeDetector implementation="edument.rakuidea.filetypes.RakuFileShebangTypeDetector"/>
     <fileTypeDetector implementation="edument.rakuidea.filetypes.RakuFileShebangTypeDetector"/>
     <fileTypeDetector implementation="edument.rakuidea.filetypes.RakudoFileShebangTypeDetector"/>
-    <moduleType id="Raku_MODULE_TYPE" implementationClass="edument.rakuidea.module.RakuModuleType"/>
+    <moduleType id="Raku_MODULE_TYPE" />
     <sdkType implementation="edument.rakuidea.sdk.RakuSdkType"/>
     <programRunner implementation="edument.rakuidea.debugger.RakuDebugRunner"/>
     <xdebugger.breakpointType implementation="edument.rakuidea.debugger.RakuLineBreakpointType"/>
@@ -195,82 +195,102 @@
     <codeInsight.parameterInfo language="CroTemplate" implementationClass="edument.rakuidea.cro.template.CroTemplateParameterInfoHandler"/>
 
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.ChangePackageTypeIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.MakeMethodPublicIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.MakeAttributeRequiredIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.UnparenthesizeIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.UnwrapPromiseAllOfIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.SingleQuotesToDoubleIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.DoubleQuotesToSingleIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.ConvertToBlockFormIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.TernaryExpandingIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.ConvertNonCapturingGroupIntoPosIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.ConvertNonCapturingGroupIntoNamedIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.ConvertPositionalCaptureIntoNamedIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.SplitDeclarationIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.MakeMethodPrivateIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.UnicodeConvertIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.UnicodeUnconvertIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.ColonpairToFatarrowIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.annotation.fix.FatarrowSimplificationFix</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.TermUnicodeConversionIntention</className>
       <category>Raku intentions</category>
     </intentionAction>
     <intentionAction>
+      <language>Raku</language>
       <className>edument.rakuidea.intention.TermASCIIConversionIntention</className>
       <category>Raku intentions</category>
     </intentionAction>

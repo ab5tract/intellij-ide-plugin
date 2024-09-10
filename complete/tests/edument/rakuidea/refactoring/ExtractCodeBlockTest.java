@@ -24,7 +24,7 @@ public class ExtractCodeBlockTest extends CommaFixtureTestCase {
     }
 
     public void testMethodSingleScopePresence() {
-        doScopeTest("start", Perl6CodeBlockType.METHOD,
+        doScopeTest("start", RakuCodeBlockType.METHOD,
                 (scopes) -> {
                     TestCase.assertEquals(1, scopes.size());
                     checkPackage(scopes, 0, "A", "class");
@@ -32,7 +32,7 @@ public class ExtractCodeBlockTest extends CommaFixtureTestCase {
     }
 
     public void testMethodOuterClassScopePresence() {
-        doScopeTest("start", Perl6CodeBlockType.METHOD,
+        doScopeTest("start", RakuCodeBlockType.METHOD,
                 (scopes) -> {
                     TestCase.assertEquals(4, scopes.size());
                     checkPackage(scopes, 0, "M", "monitor");
@@ -43,7 +43,7 @@ public class ExtractCodeBlockTest extends CommaFixtureTestCase {
     }
 
     public void testSubFilePresence() {
-        doScopeTest("'start'", Perl6CodeBlockType.ROUTINE,
+        doScopeTest("'start'", RakuCodeBlockType.ROUTINE,
                 (scopes) -> {
                     TestCase.assertEquals(1, scopes.size());
                     PsiElement decl = PsiTreeUtil.getParentOfType(scopes.get(0), RakuPackageDecl.class, RakuRoutineDecl.class, RakuFile.class);
@@ -52,7 +52,7 @@ public class ExtractCodeBlockTest extends CommaFixtureTestCase {
     }
 
     public void testSubNestedScopePresence() {
-        doScopeTest("'start'", Perl6CodeBlockType.ROUTINE,
+        doScopeTest("'start'", RakuCodeBlockType.ROUTINE,
                 (scopes) -> {
                     TestCase.assertEquals(4, scopes.size());
                     checkPackage(scopes, 2, "ABC", "class");
@@ -69,109 +69,109 @@ public class ExtractCodeBlockTest extends CommaFixtureTestCase {
 
     public void testTopFileSubroutineExtraction() {
         doTest(() -> getClosestStatementListByText("say 1"),
-                "foo-bar", Perl6CodeBlockType.ROUTINE);
+                "foo-bar", RakuCodeBlockType.ROUTINE);
     }
 
     public void testTopFileMethodImpossible() {
         UsefulTestCase.assertThrows(CommonRefactoringUtil.RefactoringErrorHintException.class, () ->
                 doTest(() -> getClosestStatementListByText("say 1"),
-                        "foo-bar", Perl6CodeBlockType.METHOD));
+                        "foo-bar", RakuCodeBlockType.METHOD));
     }
 
     public void testInMethodMethodExtraction() {
         UsefulTestCase.assertThrows(CommonRefactoringUtil.RefactoringErrorHintException.class, () ->
                 doTest(() -> getClosestStatementListByText("foo"),
-                        "foo-bar", Perl6CodeBlockType.PRIVATEMETHOD));
+                        "foo-bar", RakuCodeBlockType.PRIVATEMETHOD));
     }
 
     public void testInClassMethodExtraction() {
         doTest(() -> getNextList(getClosestStatementListByText("say 'foo'")),
-                "foo-bar", Perl6CodeBlockType.METHOD);
+                "foo-bar", RakuCodeBlockType.METHOD);
     }
 
     public void testInClassPrivateMethodExtraction() {
         doTest(() -> getNextList(getClosestStatementListByText("say 'foo'")),
-                "foo-bar", Perl6CodeBlockType.PRIVATEMETHOD);
+                "foo-bar", RakuCodeBlockType.PRIVATEMETHOD);
     }
 
     public void testSubroutineExtractionTwoLevelsUp() {
         doTest(() -> getNextList(getNextList(getClosestStatementListByText("say 'foo'"))),
-                "outer-sub", Perl6CodeBlockType.ROUTINE);
+                "outer-sub", RakuCodeBlockType.ROUTINE);
     }
 
     public void testSubroutineWithLocalVariablesExtraction() {
         doTest(() -> getNextList(getClosestStatementListByText("Magic number")),
-                "do-magic", Perl6CodeBlockType.ROUTINE);
+                "do-magic", RakuCodeBlockType.ROUTINE);
     }
 
     public void testSubroutineWithTypedLocalVariablesExtraction() {
         doTest(() -> getNextList(getClosestStatementListByText("Magic number")),
-                "do-magic", Perl6CodeBlockType.ROUTINE);
+                "do-magic", RakuCodeBlockType.ROUTINE);
     }
 
     public void testLocalDeclarationsAreNotPassed() {
         doTest(() -> getNextList(getClosestStatementListByText("inner")),
-                "extracted", Perl6CodeBlockType.ROUTINE);
+                "extracted", RakuCodeBlockType.ROUTINE);
     }
 
     public void testSelfInSameClassMethodIsUntouched() {
         doTest(() -> getNextList(getNextList(getClosestStatementListByText("self"))),
-                "inner", Perl6CodeBlockType.METHOD);
+                "inner", RakuCodeBlockType.METHOD);
     }
 
     public void testSelfInSubroutineIsPassed() {
         doTest(() -> getNextList(getClosestStatementListByText("self")),
-                "foo", Perl6CodeBlockType.ROUTINE);
+                "foo", RakuCodeBlockType.ROUTINE);
     }
 
     public void testSelfInAnotherClassIsPassed() {
         doTest(() -> getNextList(getClosestStatementListByText("self")),
-                "foo", Perl6CodeBlockType.METHOD);
+                "foo", RakuCodeBlockType.METHOD);
     }
 
     public void testAttributesToSubArePassed() {
         doTest(() -> getNextList(getClosestStatementListByText("$!")),
-                "foo", Perl6CodeBlockType.ROUTINE);
+                "foo", RakuCodeBlockType.ROUTINE);
     }
 
     public void testAttributesToNewNearMethodAreNotPassed() {
         doTest(() -> getNextList(getClosestStatementListByText("say $!")),
-                "two", Perl6CodeBlockType.PRIVATEMETHOD);
+                "two", RakuCodeBlockType.PRIVATEMETHOD);
     }
 
     public void testAttributesToMethodLexicalSubAreNotPassed() {
         doTest(() -> getClosestStatementListByText("say $!"),
-                "inner-lexical", Perl6CodeBlockType.ROUTINE);
+                "inner-lexical", RakuCodeBlockType.ROUTINE);
     }
 
     public void testAttributesArePassedToOuterClass() {
         doTest(() -> getNextList(getNextList(getClosestStatementListByText("say $!"))),
-                "outer", Perl6CodeBlockType.METHOD);
+                "outer", RakuCodeBlockType.METHOD);
     }
 
     public void testLexicalSubBeingPassed() {
         doTest(() -> getNextList(getClosestStatementListByText("a(5)")),
-                "with-a-lexical", Perl6CodeBlockType.ROUTINE);
+                "with-a-lexical", RakuCodeBlockType.ROUTINE);
     }
 
     public void testLexicalSubsAreDifferentiated() {
         doTest(() -> getNextList(getClosestStatementListByText("will be")),
-                "extracted", Perl6CodeBlockType.ROUTINE);
+                "extracted", RakuCodeBlockType.ROUTINE);
     }
 
     public void testVarUsedInDeclarationIsPassed() {
         doTest(() -> getNextList(getClosestStatementListByText("$var.key")),
-                "foo", Perl6CodeBlockType.PRIVATEMETHOD);
+                "foo", RakuCodeBlockType.PRIVATEMETHOD);
     }
 
     public void testVarsUsedAreNotDuplicated() {
         doTest(() -> getNextList(getClosestStatementListByText("$foo")),
-                "foo", Perl6CodeBlockType.ROUTINE);
+                "foo", RakuCodeBlockType.ROUTINE);
     }
 
     public void testVarRenaming() {
         doTest(() -> getNextList(getClosestStatementListByText("say $aaa")),
-               "foo-bar", Perl6CodeBlockType.ROUTINE,
+               "foo-bar", RakuCodeBlockType.ROUTINE,
                (data) -> {
                    data.variables[0].parameterName = "$bbb";
                    return data;
@@ -180,9 +180,9 @@ public class ExtractCodeBlockTest extends CommaFixtureTestCase {
 
     public void testVarsSwapping() {
         doTest(() -> getNextList(getClosestStatementListByText("say $one")),
-               "sum", Perl6CodeBlockType.ROUTINE,
+               "sum", RakuCodeBlockType.ROUTINE,
                (data) -> {
-                   Perl6VariableData temp = data.variables[0];
+                   RakuVariableData temp = data.variables[0];
                    data.variables[0] = data.variables[1];
                    data.variables[1] = temp;
                    return data;
@@ -191,52 +191,52 @@ public class ExtractCodeBlockTest extends CommaFixtureTestCase {
 
     public void testHeredoc() {
         doTest(() -> getClosestStatementListByText("END"),
-               "heredoc", Perl6CodeBlockType.ROUTINE);
+               "heredoc", RakuCodeBlockType.ROUTINE);
     }
 
     public void testMathExpression() {
         doTest(() -> getClosestStatementListByText("say"),
-                "math", Perl6CodeBlockType.ROUTINE);
+                "math", RakuCodeBlockType.ROUTINE);
     }
 
     public void testFullMathExpression() {
         doTest(() -> getClosestStatementListByText("say"),
-                "math", Perl6CodeBlockType.ROUTINE, 1);
+                "math", RakuCodeBlockType.ROUTINE, 1);
     }
 
     public void testTopMathExpression() {
         doTest(() -> getClosestStatementListByText("say"),
-                "math", Perl6CodeBlockType.ROUTINE, 2);
+                "math", RakuCodeBlockType.ROUTINE, 2);
     }
 
     public void testMathExpressionFromSelection() {
         doTest(() -> getClosestStatementListByText("say"),
-                "math", Perl6CodeBlockType.ROUTINE);
+                "math", RakuCodeBlockType.ROUTINE);
     }
 
     public void testFullMathExpressionFromSelection() {
         doTest(() -> getClosestStatementListByText("say"),
-                "math", Perl6CodeBlockType.ROUTINE, 1);
+                "math", RakuCodeBlockType.ROUTINE, 1);
     }
 
     public void testCallchain() {
         doTest(() -> getClosestStatementListByText("foo"),
-                "cond", Perl6CodeBlockType.ROUTINE, 0);
+                "cond", RakuCodeBlockType.ROUTINE, 0);
     }
 
     public void testCallchainFromSelection1() {
         doTest(() -> getClosestStatementListByText("foo"),
-                "cond", Perl6CodeBlockType.ROUTINE, 1);
+                "cond", RakuCodeBlockType.ROUTINE, 1);
     }
 
     public void testCallchainFromSelection2() {
         doTest(() -> getClosestStatementListByText("foo"),
-                "cond", Perl6CodeBlockType.ROUTINE);
+                "cond", RakuCodeBlockType.ROUTINE);
     }
 
     public void testConstructWithBracesExtractionAsLastExpr() {
         doTest(() -> getClosestStatementListByText("method"),
-               "foo", Perl6CodeBlockType.METHOD, 0);
+               "foo", RakuCodeBlockType.METHOD, 0);
     }
 
     // Helper methods
@@ -251,18 +251,18 @@ public class ExtractCodeBlockTest extends CommaFixtureTestCase {
         return PsiTreeUtil.getParentOfType(list, RakuStatementList.class, true);
     }
 
-    private void doScopeTest(String text, Perl6CodeBlockType type, Consumer<List<RakuStatementList>> check) {
+    private void doScopeTest(String text, RakuCodeBlockType type, Consumer<List<RakuStatementList>> check) {
         myFixture.configureByFile(getTestName(true) + ".p6");
         PsiElement start = myFixture.findElementByText(text, PsiElement.class);
         List<RakuStatementList> scopes = (new RakuExtractCodeBlockHandlerMock(type)).getPossibleScopes(new PsiElement[]{start});
         check.consume(scopes);
     }
 
-    private void doTest(Producer<RakuStatementList> getScope, String name, Perl6CodeBlockType type) {
+    private void doTest(Producer<RakuStatementList> getScope, String name, RakuCodeBlockType type) {
         doTest(getScope, name, type, null);
     }
 
-    private void doTest(Producer<RakuStatementList> getScope, String name, Perl6CodeBlockType type, Function<NewCodeBlockData, NewCodeBlockData> userAction) {
+    private void doTest(Producer<RakuStatementList> getScope, String name, RakuCodeBlockType type, Function<NewCodeBlockData, NewCodeBlockData> userAction) {
         myFixture.configureByFile(getTestName(true) + "Before.p6");
         RakuStatementList scope = getScope.produce();
         RakuExtractCodeBlockHandlerMock handler = new RakuExtractCodeBlockHandlerMock(type, scope, name, userAction);
@@ -270,7 +270,7 @@ public class ExtractCodeBlockTest extends CommaFixtureTestCase {
         myFixture.checkResultByFile(getTestName(true) + ".p6", true);
     }
 
-    private void doTest(Producer<RakuStatementList> getScope, String name, Perl6CodeBlockType type, int exprLevel) {
+    private void doTest(Producer<RakuStatementList> getScope, String name, RakuCodeBlockType type, int exprLevel) {
         myFixture.configureByFile(getTestName(true) + "Before.p6");
         RakuStatementList scope = getScope.produce();
         RakuExtractCodeBlockHandlerMock handler = new RakuExtractCodeBlockHandlerMock(type, scope, name, exprLevel);
@@ -284,7 +284,7 @@ public class ExtractCodeBlockTest extends CommaFixtureTestCase {
         private final String name;
         private int myExpressionTargetIndex;
 
-        RakuExtractCodeBlockHandlerMock(Perl6CodeBlockType type,
+        RakuExtractCodeBlockHandlerMock(RakuCodeBlockType type,
                                         RakuStatementList parent,
                                         String name,
                                         int expressionTargetIndex) {
@@ -295,7 +295,7 @@ public class ExtractCodeBlockTest extends CommaFixtureTestCase {
             this.myExpressionTargetIndex = expressionTargetIndex;
         }
 
-        RakuExtractCodeBlockHandlerMock(Perl6CodeBlockType type,
+        RakuExtractCodeBlockHandlerMock(RakuCodeBlockType type,
                                         RakuStatementList parent,
                                         String name,
                                         Function<NewCodeBlockData, NewCodeBlockData> userAction) {
@@ -305,7 +305,7 @@ public class ExtractCodeBlockTest extends CommaFixtureTestCase {
             this.userAction = userAction;
         }
 
-        public RakuExtractCodeBlockHandlerMock(Perl6CodeBlockType type) {
+        public RakuExtractCodeBlockHandlerMock(RakuCodeBlockType type) {
             super(type);
             userAction = null;
             name = "";

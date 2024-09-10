@@ -20,7 +20,7 @@ import com.intellij.serviceContainer.AlreadyDisposedException;
 import com.intellij.testFramework.LightVirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import edument.rakuidea.RakuIcons;
-import edument.rakuidea.actions.ShowPerl6ProjectStructureAction;
+import edument.rakuidea.actions.ShowRakuProjectStructureAction;
 import edument.rakuidea.psi.RakuFile;
 import edument.rakuidea.psi.RakuPackageDecl;
 import edument.rakuidea.psi.RakuPsiElement;
@@ -364,7 +364,7 @@ public class RakuSdkType extends SdkType {
                 @Override
                 public void actionPerformed(@NotNull AnActionEvent e) {
                     notification.expire();
-                    new ShowPerl6ProjectStructureAction().actionPerformed(e);
+                    new ShowRakuProjectStructureAction().actionPerformed(e);
                 }
             });
             Notifications.Bus.notify(notification, project);

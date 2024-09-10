@@ -28,11 +28,14 @@ class CommaCompleteProperties(
       "intellij.platform.main",
       "edument.raku.plugin"
     )
-    productLayout.bundledPluginModules.add("edument.raku.comma.complete")
+    productLayout.bundledPluginModules = mutableListOf("edument.raku.comma.complete")
     productLayout.bundledPluginModules.addAll(Files.readAllLines(communityHome.communityRoot.resolve("comma-build/build/plugin-list.txt")))
     productLayout.pluginModulesToPublish = persistentSetOf("edument.raku.comma.complete")
 
-    productLayout.pluginLayouts = CommunityRepositoryModules.COMMUNITY_REPOSITORY_PLUGINS + listOf(PluginLayout.Companion.plugin("edument.raku.comma.complete"))
+    productLayout.pluginLayouts = persistentListOf(PluginLayout.plugin("edument.raku.comma.complete"))
+
+    platformPrefix = "CommaCore"
+    applicationInfoModule = "edument.raku.comma.complete"
   }
 
   // General setup
