@@ -1,0 +1,15 @@
+<ivy-module version="2.0">
+  <info organisation="bundledPlugin" module="com.intellij.java" revision="2024.1+741"/>
+  <configurations>
+    <conf name="default" visibility="public"/>
+  </configurations>
+  <publications>
+    <artifact name="/Users/longwalker/.gradle/caches/8.8/transforms/ce996419ebbaacd7feb3d4872ccc3412/transformed/ideaIC-2024.1-aarch64/plugins/java" type="directory" conf="default"/>
+  </publications>
+  <dependencies>
+    <dependency org="bundledPlugin" name="com.intellij.copyright" rev="241.14494.240+706"/>
+    <dependency org="bundledPlugin" name="com.intellij.platform.images" rev="241.14494.240+303"/>
+    <dependency org="bundledPlugin" name="training" rev="241.14494.240+241"/>
+    <dependency org="bundledPlugin" name="com.jetbrains.performancePlugin" rev="241.14494.240+119"/>
+  </dependencies>
+</ivy-module>

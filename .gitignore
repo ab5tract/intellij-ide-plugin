@@ -10,3 +10,5 @@ out/
 raku-idea-plugin/build/
 raku-idea-plugin/.idea/
 raku-idea-plugin/raku-idea-plugin.iml
+
+build/

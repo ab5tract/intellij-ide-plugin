@@ -1,0 +1,10 @@
+<ivy-module version="2.0">
+  <info organisation="bundledPlugin" module="com.jetbrains.performancePlugin" revision="241.14494.240+119"/>
+  <configurations>
+    <conf name="default" visibility="public"/>
+  </configurations>
+  <publications>
+    <artifact name="/Users/longwalker/.gradle/caches/8.8/transforms/ce996419ebbaacd7feb3d4872ccc3412/transformed/ideaIC-2024.1-aarch64/plugins/performanceTesting" type="directory" conf="default"/>
+  </publications>
+  <dependencies/>
+</ivy-module>
