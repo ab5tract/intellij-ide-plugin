@@ -26,7 +26,7 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
-import org.raku.actions.comma.ImportModuleAction;
+import org.raku.actions.ImportModuleAction;
 import org.raku.project.projectWizard.CommaAbstractProjectWizard;
 import org.raku.project.projectWizard.CommaNewProjectWizard;
 import org.raku.project.structure.ui.HeaderHidingTabbedModuleEditor;

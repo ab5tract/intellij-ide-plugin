@@ -442,12 +442,12 @@
       <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt R" second-keystroke="E"/>
       <add-to-group group-id="IntroduceActionsGroup" anchor="before" relative-to-action="ExtractMethod"/>
     </action>
-    <group id="RakuPlugin.CoverageMenu">
-      <action id="RakuPlugin.HideCoverage" class="org.raku.coverage.RakuCoverageHideAction"
-              text="Hide Raku Coverage Data"/>
-      <add-to-group group-id="CoveragePlatformMenu"/>
-      <separator/>
-    </group>
+<!--    <group id="RakuPlugin.CoverageMenu">-->
+<!--      <action id="RakuPlugin.HideCoverage" class="org.raku.coverage.RakuCoverageHideAction"-->
+<!--              text="Hide Raku Coverage Data"/>-->
+<!--      <add-to-group group-id="CoveragePlatformMenu"/>-->
+<!--      <separator/>-->
+<!--    </group>-->
     <action id="org.raku.actions.LoadProfileResultsAction" class="org.raku.actions.LoadProfileResultsAction"
             text="Show And Compare Recent Raku Profiles..." description="Select and load one of the recent Raku profiling results snapshot from this project or select two and compare">
       <add-to-group group-id="RunMenu"/>
@@ -482,14 +482,10 @@
             text="New Project..." description="Create a project">
       <add-to-group group-id="NewProjectOrModuleGroup" />
     </action>
-<!--    <action id="org.raku.actions.NewActionGroup" class="org.raku.actions.NewActionGroup"-->
-<!--            text="New Action..." description="Create an action">-->
-<!--      <add-to-group group-id="NewToolbarActions" />-->
-<!--    </action>-->
+
   </actions>
 
-<!--  <applicationListeners>-->
-<!--    <listener class="org.raku.sdk.RakuSdkCacheManager" topic="com.intellij.openapi.project.ProjectManagerListener"/>-->
-<!--  </applicationListeners>-->
-
+  <applicationListeners>
+    <listener class="org.raku.sdk.RakuSdkCacheManager" topic="com.intellij.openapi.project.ProjectManagerListener" />
+  </applicationListeners>
 </idea-plugin>

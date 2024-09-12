@@ -1,10 +1,10 @@
-### Perl6MetaDataComponent
+### RakuMetaDataComponent
 
 #### Description
 
 This document describes a way to unify access to Raku module meta information.
 
-A module component `Perl6MetaDataComponent` is created and registered as IDEA module component.
+A module component `RakuMetaDataComponent` is created and registered as IDEA module component.
 
 During this module component initialization, it tries to find either `META6.json` and `META.info`
 files using relative module source directories.
@@ -21,7 +21,7 @@ by IDEA means and its methods are used.
 
 #### API
 
-`Perl6MetaDataComponent` has such methods:
+`RakuMetaDataComponent` has such methods:
 
 * `void triggerMetaBuild(VirtualFile)` - asks component to populate its data with JSON content of VirtualFile passed.
 * `boolean isMetaDataExist()` - indicates if metadata file exists or was created on start.
