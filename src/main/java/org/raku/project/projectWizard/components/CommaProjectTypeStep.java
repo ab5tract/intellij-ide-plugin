@@ -4,7 +4,6 @@ package org.raku.project.projectWizard.components;
 import com.intellij.diagnostic.PluginException;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.ide.util.projectWizard.*;
-import com.intellij.internal.statistic.eventLog.FeatureUsageData;
 import com.intellij.internal.statistic.utils.PluginInfoDetectorKt;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.diagnostic.Logger;
@@ -27,6 +26,7 @@ import com.intellij.psi.impl.DebugUtil;
 import com.intellij.ui.CollectionListModel;
 import com.intellij.ui.ListSpeedSearch;
 import com.intellij.ui.SingleSelectionModel;
+import com.intellij.ui.TreeUIHelper;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.popup.list.GroupedItemsListRenderer;
 import com.intellij.util.PlatformUtils;
@@ -53,7 +53,7 @@ import java.util.*;
 public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsStep, Disposable {
     private static final Logger LOG = Logger.getInstance(CommaProjectTypeStep.class);
 
-    private static final ExtensionPointName<ProjectTemplateEP> TEMPLATE_EP = new ExtensionPointName<>("com.intellij.projectTemplate");
+    private static final ExtensionPointName<ProjectTemplateEP> TEMPLATE_EP = ExtensionPointName.create("com.intellij.projectTemplate");
     private static final String TEMPLATES_CARD = "templates card";
     private static final String FRAMEWORKS_CARD = "frameworks card";
     private static final String PROJECT_WIZARD_GROUP = "project.wizard.group";
@@ -61,7 +61,7 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
     private final CommaNewProjectWizard myWizard;
     private final ModulesProvider myModulesProvider;
     private final ModuleBuilder.ModuleConfigurationUpdater myConfigurationUpdater;
-    private final Map<ProjectTemplate, ModuleBuilder> myBuilders = FactoryMap.create(key -> (ModuleBuilder)key.createModuleBuilder());
+    private final Map<ProjectTemplate, ModuleBuilder> myBuilders = FactoryMap.create(key -> (ModuleBuilder) key.createModuleBuilder());
     private final Map<String, ModuleWizardStep> myCustomSteps = new HashMap<>();
     private final MultiMap<TemplatesGroup, ProjectTemplate> myTemplatesMap;
     private JPanel myPanel;
@@ -87,12 +87,7 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
         myProjectTypeList.addListSelectionListener(__ -> updateSelection());
         myProjectTypeList.setCellRenderer(new TemplatesGroupGroupedItemsListRenderer(groups));
 
-        new ListSpeedSearch<>(myProjectTypeList) {
-            @Override
-            protected String getElementText(Object element) {
-                return ((TemplatesGroup)element).getName();
-            }
-        };
+        TreeUIHelper.getInstance().installListSpeedSearch(myProjectTypeList);
 
         myModulesProvider = modulesProvider;
         myConfigurationUpdater = new ModuleBuilder.ModuleConfigurationUpdater() {
@@ -146,7 +141,7 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
                     Icon icon = factory.getGroupIcon(group);
                     String parentGroup = factory.getParentGroup(group);
                     TemplatesGroup templatesGroup =
-                        new TemplatesGroup(group, null, icon, factory.getGroupWeight(group), parentGroup, group, null);
+                            new TemplatesGroup(group, null, icon, factory.getGroupWeight(group), parentGroup, group, null);
                     templatesGroup.setPluginInfo(PluginInfoDetectorKt.getPluginInfo(factory.getClass()));
                     groups.putValues(templatesGroup, values);
                 }
@@ -173,8 +168,7 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
                     group = new TemplatesGroup(builder);
                 }
                 myTemplatesMap.putValue(group, template);
-            }
-            else {
+            } else {
                 TemplatesGroup group = new TemplatesGroup(builder);
                 groupMap.put(group.getName(), group);
                 myTemplatesMap.put(group, new ArrayList<>());
@@ -215,9 +209,9 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
             TemplatesGroup group = iterator.next();
             String parentGroup = group.getParentGroup();
             if (parentGroup != null &&
-                groupNames.contains(parentGroup) &&
-                !group.getName().equals(parentGroup) &&
-                groupMap.containsKey(parentGroup)) {
+                    groupNames.contains(parentGroup) &&
+                    !group.getName().equals(parentGroup) &&
+                    groupMap.containsKey(parentGroup)) {
                 subGroups.putValue(parentGroup, group);
                 iterator.remove();
             }
@@ -268,8 +262,7 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
 
         if (groupModuleBuilder == null || groupModuleBuilder.isTemplateBased()) {
             showTemplates(group);
-        }
-        else if (!showCustomOptions(groupModuleBuilder)) {
+        } else if (!showCustomOptions(groupModuleBuilder)) {
             getSelectedBuilder().addModuleConfigurationUpdater(myConfigurationUpdater);
             showCard(FRAMEWORKS_CARD);
         }
@@ -292,7 +285,7 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
     }
 
     private void showCard(String card) {
-        ((CardLayout)myOptionsPanel.getLayout()).show(myOptionsPanel, card);
+        ((CardLayout) myOptionsPanel.getLayout()).show(myOptionsPanel, card);
         myCurrentCard = card;
     }
 
@@ -354,15 +347,9 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
     public Collection<ProjectTemplate> getAvailableTemplates() {
         if (!Objects.equals(myCurrentCard, FRAMEWORKS_CARD)) {
             return Collections.emptyList();
-        }
-        else {
+        } else {
             return myTemplatesMap.get(getSelectedGroup());
         }
-    }
-
-    @Override
-    public void onWizardFinished() {
-        reportStatistics("finish");
     }
 
     @Override
@@ -423,7 +410,7 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
             URL url = classLoader.getResource(StringUtil.trimStart(ep.templatePath, "/"));
             if (url == null) {
                 LOG.error(
-                    new PluginException("Can't find resource for project template: " + ep.templatePath, pluginDescriptor.getPluginId()));
+                        new PluginException("Can't find resource for project template: " + ep.templatePath, pluginDescriptor.getPluginId()));
                 return null;
             }
 
@@ -432,40 +419,15 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
                 if (ep.category) {
                     TemplateBasedCategory category = new TemplateBasedCategory(template, ep.projectType);
                     myTemplatesMap.putValue(new TemplatesGroup(category), template);
-                }
-                else {
+                } else {
                     map.putValue(ep.projectType, template);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 LOG.error(new PluginException("Error loading template from URL: " + ep.templatePath, e, pluginDescriptor.getPluginId()));
             }
 
             return null;
         });
-        //ProjectTemplateEP[] extensions = ProjectTemplateEP.EP_NAME.getExtensions();
-        //for (ProjectTemplateEP ep : extensions) {
-        //    ClassLoader classLoader = ep.getLoaderForClass();
-        //    URL url = classLoader.getResource(ep.templatePath);
-        //    if (url != null) {
-        //        try {
-        //            LocalArchivedTemplate template = new LocalArchivedTemplate(url, classLoader);
-        //            if (ep.category) {
-        //                TemplateBasedCategory category = new TemplateBasedCategory(template, ep.projectType);
-        //                myTemplatesMap.putValue(new TemplatesGroup(category), template);
-        //            }
-        //            else {
-        //                map.putValue(ep.projectType, template);
-        //            }
-        //        }
-        //        catch (Exception e) {
-        //            LOG.error("Error loading template from URL '" + ep.templatePath + "' [Plugin: " + ep.getPluginId() + "]", e);
-        //        }
-        //    }
-        //    else {
-        //        LOG.error("Can't find resource for project template '" + ep.templatePath + "' [Plugin: " + ep.getPluginId() + "]");
-        //    }
-        //}
         return map;
     }
 
@@ -477,7 +439,7 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
 
         ModuleBuilder builder = getSelectedBuilder();
         LOG.debug(String.format("builder=%s; template=%s; group=%s; groupIndex=%d", builder, template, getSelectedGroup(),
-                                myProjectTypeList.getMinSelectionIndex()));
+                myProjectTypeList.getMinSelectionIndex()));
 
         myContext.setProjectBuilder(builder);
         if (builder != null) {
@@ -493,7 +455,7 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
         ListModel<TemplatesGroup> model = myProjectTypeList.getModel();
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < model.getSize(); i++) {
-            if (builder.length() > 0) {
+            if (! builder.isEmpty()) {
                 builder.append(", ");
             }
             builder.append(model.getElementAt(i).getName());
@@ -510,18 +472,13 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
                 myProjectTypeList.setSelectedIndex(i);
                 if (name == null) {
                     return getSelectedGroup().getName().equals(group);
-                }
-                else {
+                } else {
                     setTemplatesList(templatesGroup, myTemplatesMap.get(templatesGroup), false);
                     return myTemplatesList.setSelectedTemplate(name);
                 }
             }
         }
         return false;
-    }
-
-    public static void resetGroupForTests() {
-        PropertiesComponent.getInstance().setValue(PROJECT_WIZARD_GROUP, null);
     }
 
     @Override
@@ -549,32 +506,11 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
     }
 
     @Override
-    public JTextField getModuleNameField() {
-        return null;
-    }
-
-    @Override
     public String getHelpId() {
         if (getCustomStep() != null && getCustomStep().getHelpId() != null) {
             return getCustomStep().getHelpId();
         }
         return myContext.isCreatingNewProject() ? "Project_Category_and_Options" : "Module_Category_and_Options";
-    }
-
-    @Override
-    public void onStepLeaving() {
-        reportStatistics("attempt");
-    }
-
-    private void reportStatistics(String eventId) {
-        TemplatesGroup group = myProjectTypeList.getSelectedValue();
-        FeatureUsageData data = new FeatureUsageData();
-        data.addData("projectType", group.getId());
-        data.addPluginInfo(group.getPluginInfo());
-        ModuleWizardStep step = getCustomStep();
-        if (step instanceof StatisticsAwareModuleWizardStep) {
-            ((StatisticsAwareModuleWizardStep)step).addCustomFeatureUsageData(eventId, data);
-        }
     }
 
   private static class TemplatesGroupGroupedItemsListRenderer extends GroupedItemsListRenderer<TemplatesGroup> {

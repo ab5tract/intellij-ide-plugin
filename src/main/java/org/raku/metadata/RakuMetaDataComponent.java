@@ -31,8 +31,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-@Service
-public class RakuMetaDataComponent {
+
+public final class RakuMetaDataComponent {
     public static final String META6_JSON_NAME = "META6.json";
     public static final String META_OBSOLETE_NAME = "META.info";
     @Nullable
@@ -120,7 +120,7 @@ public class RakuMetaDataComponent {
                                 catch (IOException ex) {
                                     Notifications.Bus.notify(
                                         new Notification(
-                                            "rakuidea.meta.errors", "Raku META error",
+                                            "raku.meta.errors", "Raku META error",
                                             "Could not rename META file: " + ex.getMessage(),
                                             NotificationType.ERROR));
                                 }
@@ -534,7 +534,7 @@ public class RakuMetaDataComponent {
         if (myModule == null)
             return;
         Notification notification = new Notification(
-            "rakuidea.meta.errors", "Raku meta error", message, type);
+            "raku.meta.errors", "Raku meta error", message, type);
         notification.setIcon(RakuIcons.CAMELIA);
         if (myMetaFile != null) {
             notification.addAction(new AnAction(String.format("Open %s", META6_JSON_NAME)) {
@@ -561,7 +561,7 @@ public class RakuMetaDataComponent {
 
     private void notifyMissingMETA() {
         Notification notification = new Notification(
-            "rakuidea.meta.errors", "Raku meta file is missing",
+            "raku.meta.errors", "Raku meta file is missing",
             String.format("'%s' nor '%s' files seem to be present in this module.", META_OBSOLETE_NAME, META6_JSON_NAME),
             NotificationType.WARNING);
         notification.setIcon(RakuIcons.CAMELIA);
@@ -575,7 +575,7 @@ public class RakuMetaDataComponent {
                 }
                 catch (IOException e1) {
                     Notification notification1 = new Notification(
-                        "rakuidea.meta.errors", String.format("%s error", META6_JSON_NAME),
+                        "raku.meta.errors", String.format("%s error", META6_JSON_NAME),
                         e1.getMessage(), NotificationType.ERROR);
                     notification1.setIcon(RakuIcons.CAMELIA);
                     notification1.setSubtitle(String.format("Error has occurred during %s file creation", META6_JSON_NAME));

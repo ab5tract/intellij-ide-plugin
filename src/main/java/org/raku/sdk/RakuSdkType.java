@@ -56,8 +56,6 @@ public class RakuSdkType extends SdkType {
     private static final String NAME = "Raku SDK";
     public static final String SETTING_FILE_NAME = "SETTINGS.pm6";
     private static final Set<String> BINARY_NAMES = new HashSet<>();
-    public static final NotificationGroup
-        RAKU_SDK_ERRORS_GROUP = NotificationGroupManager.getInstance().getNotificationGroup("rakuidea.sdk.errors.group");
     private boolean sdkIssueNotified = false;
     private static final Logger LOG = Logger.getInstance(RakuSdkType.class);
     private Map<String, String> moarBuildConfig;
@@ -358,7 +356,7 @@ public class RakuSdkType extends SdkType {
     public synchronized void reactToSDKIssue(@Nullable Project project, String message) {
         if (!sdkIssueNotified) {
             sdkIssueNotified = true;
-            Notification notification = RAKU_SDK_ERRORS_GROUP
+            Notification notification = NotificationGroupManager.getInstance().getNotificationGroup("raku.sdk.errors.group")
                 .createNotification(message, NotificationType.WARNING);
             notification.addAction(new AnAction("Configure Raku SDK") {
                 @Override

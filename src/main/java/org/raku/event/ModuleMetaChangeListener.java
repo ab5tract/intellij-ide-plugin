@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Objects;
 
-@Service
 public class ModuleMetaChangeListener implements BulkFileListener {
     private final Module myModule;
     private final RakuProjectFileChangeListener[] myListeners;

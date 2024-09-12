@@ -25,8 +25,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.*;
 
-@Service
-public class RakuModuleListFetcher {
+@Service(Service.Level.PROJECT)
+public final class RakuModuleListFetcher {
     public static final String GITHUB_MIRROR1 = "https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/p6c1.json";
     public static final String CPAN_MIRROR1 = "https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/cpan1.json";
     public static final String FEZ_MIRROR1 = "https://360.zef.pm/";

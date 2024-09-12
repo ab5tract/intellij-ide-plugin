@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Service
 @InternalIgnoreDependencyViolation
-public class RakuSdkCacheManager implements ProjectManagerListener {
+public final class RakuSdkCacheManager implements ProjectManagerListener {
     @Override
     public void projectClosed(@NotNull Project project) {
         RakuSdkType.getInstance().invalidateFileCaches(project);

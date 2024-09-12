@@ -50,7 +50,7 @@
   </extensionPoints>
 
 <!--  <extensions defaultExtensionNs="org.raku">-->
-<!--    <frameworkCall implementation="org.raku.cro.CroFrameworkCall"/>-->
+<!--    <framework.type implementation="org.raku.cro.CroFrameworkCall"/>-->
 <!--    <frameworkCall implementation="org.raku.cro.CroTemplateCall"/>-->
 <!--  </extensions>-->
 
@@ -143,7 +143,7 @@
     <annotator language="Raku" implementationClass="org.raku.annotation.RakudoImplementationDetailAnnotator"/>
     <annotator language="CroTemplate" implementationClass="org.raku.cro.template.annotation.DuplicateSeparatorAnnotator"/>
     <annotator language="CroTemplate" implementationClass="org.raku.cro.template.annotation.MisplacedSeparatorAnnotation"/>
-    <stubElementTypeHolder class="org.raku.parsing.RakuElementTypes"/>
+    <stubElementTypeHolder class="org.raku.parsing.RakuElementTypes" externalIdPrefix="raku.stub.file" />
     <stubIndex implementation="org.raku.psi.stub.index.ProjectModulesStubIndex"/>
     <stubIndex implementation="org.raku.psi.stub.index.RakuGlobalTypeStubIndex"/>
     <stubIndex implementation="org.raku.psi.stub.index.RakuLexicalTypeStubIndex"/>
@@ -176,7 +176,6 @@
     <stubIndex implementation="org.raku.cro.CroRouteIndex"/>
     <stubIndex implementation="org.raku.cro.CroTemplateIndex"/>
     <codeInsight.parameterInfo language="Raku" implementationClass="org.raku.RakuParameterInfoHandler"/>
-    <projectExtension implementation="org.raku.event.SdkChangeListener"/>
     <lang.inspectionSuppressor language="Raku" implementationClass="org.raku.inspection.RakuInspectionSuppressor"/>
     <moduleConfigurationEditorProvider implementation="org.raku.project.structure.module.RakuModuleConfigurationEditorProvider"
       order="FIRST"/>
@@ -320,16 +319,12 @@
     <usageTypeProvider implementation="org.raku.cro.template.findUsages.CroTemplateUsageTypeProvider"/>
     <toolWindow id="Raku Grammar Preview" anchor="right" factoryClass="org.raku.grammar.RakuGrammarPreviewFactory"
                 secondary="false" canCloseContents="false"/>
-<!--    <backgroundPostStartupActivity implementation="org.raku.utils.RakuModuleListStarter"/>-->
-<!--    <backgroundPostStartupActivity implementation="org.raku.utils.RakuLegacyExtensionsDetector"/>-->
-<!--    <backgroundPostStartupActivity implementation="org.raku.pm.RakuModuleInstallPromptStarter"/>-->
-    <projectService configurationSchemaKey="raku.backup.sdk" serviceImplementation="org.raku.services.RakuBackupSDKService"/>
-    <projectService serviceImplementation="org.raku.utils.RakuModuleListFetcher"/>
+    <backgroundPostStartupActivity implementation="org.raku.utils.RakuModuleListStarter"/>
+    <backgroundPostStartupActivity implementation="org.raku.utils.RakuLegacyExtensionsDetector"/>
+    <backgroundPostStartupActivity implementation="org.raku.pm.RakuModuleInstallPromptStarter"/>
     <moduleService serviceImplementation="org.raku.metadata.RakuMetaDataComponent"/>
     <moduleService serviceImplementation="org.raku.event.ModuleMetaChangeListener"/>
     <projectService serviceImplementation="org.raku.metadata.RakuProjectModelSync"/>
-<!--    <projectService serviceImplementation="org.raku.pm.RakuPackageManagerManager"/>-->
-<!--    <projectService serviceImplementation="org.raku.language.RakuLanguageVersionService"/>-->
     <fileEditorProvider implementation="org.raku.readerMode.RakuModuleEditorProvider"/>
     <defaultLiveTemplates file="/liveTemplates/Cro-HTTP-Client.xml"/>
     <defaultLiveTemplates file="/liveTemplates/Cro-WebApp.xml"/>
@@ -444,12 +439,12 @@
       <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt R" second-keystroke="E"/>
       <add-to-group group-id="IntroduceActionsGroup" anchor="before" relative-to-action="ExtractMethod"/>
     </action>
-    <group id="RakuPlugin.CoverageMenu">
-      <action id="RakuPlugin.HideCoverage" class="org.raku.coverage.RakuCoverageHideAction"
-              text="Hide Raku Coverage Data"/>
-      <add-to-group group-id="CoverageMenu"/>
-      <separator/>
-    </group>
+<!--    <group id="RakuPlugin.CoverageMenu">-->
+<!--      <action id="RakuPlugin.HideCoverage" class="org.raku.coverage.RakuCoverageHideAction"-->
+<!--              text="Hide Raku Coverage Data"/>-->
+<!--      <add-to-group group-id="CoverageMenu"/>-->
+<!--      <separator/>-->
+<!--    </group>-->
     <action id="org.raku.actions.LoadProfileResultsAction" class="org.raku.actions.LoadProfileResultsAction"
             text="Show And Compare Recent Raku Profiles..." description="Select and load one of the recent Raku profiling results snapshot from this project or select two and compare">
       <add-to-group group-id="RunMenu"/>
@@ -470,14 +465,8 @@
     </action>
   </actions>
 
-  <module-components>
-  </module-components>
-
-  <project-components>
-  </project-components>
-
-  <applicationListeners>
-    <listener class="org.raku.sdk.RakuSdkCacheManager" topic="com.intellij.openapi.project.ProjectManagerListener"/>
-  </applicationListeners>
+<!--  <applicationListeners>-->
+<!--    <listener class="org.raku.sdk.RakuSdkCacheManager" topic="com.intellij.openapi.project.ProjectManagerListener"/>-->
+<!--  </applicationListeners>-->
 
 </idea-plugin>

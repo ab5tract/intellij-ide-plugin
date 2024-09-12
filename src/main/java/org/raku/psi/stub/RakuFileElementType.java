@@ -34,7 +34,7 @@ public class RakuFileElementType extends IStubFileElementType<RakuFileStub> {
     @NotNull
     @Override
     public String getExternalId() {
-        return "rakuidea.stub.file";
+        return "raku.stub.file";
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-@Service
+@Service(Service.Level.PROJECT)
 @State(name = "org.raku.pm.RakuPackageManagerManager", storages = @Storage(StoragePathMacros.WORKSPACE_FILE))
 public final class RakuPackageManagerManager implements PersistentStateComponent<Element> {
     private RakuPackageManager currentPM;
@@ -99,17 +99,11 @@ public final class RakuPackageManagerManager implements PersistentStateComponent
     }
 
     public static RakuPackageManager parsePM(@NotNull String kind, @NotNull String location) {
-        RakuPackageManager pm;
-        switch (RakuPackageManagerKind.valueOf(kind.toUpperCase(Locale.ENGLISH))) {
-            case ZEF:
-                pm = new RakuZefPM(location);
-                break;
-            case PAKKU:
-                pm = new RakuPakkuPM(location);
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown kind of Package Manager");
-        }
+        RakuPackageManager pm = switch (RakuPackageManagerKind.valueOf(kind.toUpperCase(Locale.ENGLISH))) {
+            case ZEF    -> new RakuZefPM(location);
+            case PAKKU  -> new RakuPakkuPM(location);
+            default     -> throw new IllegalArgumentException("Unknown kind of Package Manager");
+        };
         return pm;
     }
 

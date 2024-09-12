@@ -1,7 +1,6 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package org.raku.project.projectWizard.components;
 
-import com.intellij.ide.IdeBundle;
 import com.intellij.ide.highlighter.ModuleFileType;
 import com.intellij.ide.util.BrowseFilesListener;
 import com.intellij.ide.util.projectWizard.AbstractModuleBuilder;
@@ -26,6 +25,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import java.io.File;
+
+import static com.intellij.openapi.project.ProjectUtil.guessProjectDir;
 
 public class ModuleNameLocationComponent implements ModuleNameLocationSettings {
     private final WizardContext myWizardContext;
@@ -118,7 +119,7 @@ public class ModuleNameLocationComponent implements ModuleNameLocationSettings {
                 }
                 String path = getDefaultBaseDir(myWizardContext, namePathComponent);
                 final String moduleName = getModuleName();
-                if (path.length() > 0 && !Comparing.strEqual(moduleName, namePathComponent.getNameValue())) {
+                if (!path.isEmpty() && !Comparing.strEqual(moduleName, namePathComponent.getNameValue())) {
                     path += "/" + moduleName;
                 }
                 if (!myContentRootChangedByUser) {
@@ -178,7 +179,7 @@ public class ModuleNameLocationComponent implements ModuleNameLocationSettings {
         else {
             final Project project = myWizardContext.getProject();
             assert project != null;
-            VirtualFile baseDir = project.getBaseDir();
+            VirtualFile baseDir = guessProjectDir(project);
             if (baseDir != null) { //e.g. was deleted
                 final String baseDirPath = baseDir.getPath();
                 String moduleName = CommaProjectWizardUtil.findNonExistingFileName(baseDirPath, myWizardContext.getDefaultModuleName(), "");
@@ -241,12 +242,9 @@ public class ModuleNameLocationComponent implements ModuleNameLocationSettings {
 
         File moduleFile = new File(moduleFileDirectory, moduleName + ModuleFileType.DOT_DEFAULT_EXTENSION);
         if (moduleFile.exists()) {
-            int answer = Messages.showYesNoDialog(String.format("The %s file \n%s\nalready exists.\nWould you like to overwrite it?",
-                                                                IdeBundle.message("project.new.wizard.module.identification"), moduleFile.getAbsolutePath()),
-                                                  IdeBundle.message("title.file.already.exists"), Messages.getQuestionIcon());
-            if (answer != Messages.YES) {
-                return false;
-            }
+            String message = String.format("The file \n\t%s\nalready exists.\nWould you like to overwrite it?", moduleFile.getAbsolutePath());
+            int answer = Messages.showYesNoDialog(message, "Overwrite File?", Messages.getQuestionIcon());
+            return answer == Messages.YES;
         }
         return true;
     }
@@ -264,7 +262,7 @@ public class ModuleNameLocationComponent implements ModuleNameLocationSettings {
         else {
             final Project project = wizardContext.getProject();
             assert project != null;
-            final VirtualFile baseDir = project.getBaseDir();
+            final VirtualFile baseDir = guessProjectDir(project);
             if (baseDir != null) {
                 return baseDir.getPath();
             }

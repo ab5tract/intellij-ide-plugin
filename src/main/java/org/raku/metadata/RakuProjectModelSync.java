@@ -26,7 +26,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-public class RakuProjectModelSync {
+public final class RakuProjectModelSync {
     public static void syncExternalLibraries(Module module, Set<String> firstLevelDeps) {
         if (ApplicationManager.getApplication().isUnitTestMode())
             return;
