@@ -53,7 +53,7 @@ import java.util.*;
 public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsStep, Disposable {
     private static final Logger LOG = Logger.getInstance(CommaProjectTypeStep.class);
 
-    private static final ExtensionPointName<ProjectTemplateEP> TEMPLATE_EP = ExtensionPointName.create("com.intellij.projectTemplate");
+//    private static final ExtensionPointName<ProjectTemplateEP> TEMPLATE_EP = ExtensionPointName.create("com.intellij.projectTemplate");
     private static final String TEMPLATES_CARD = "templates card";
     private static final String FRAMEWORKS_CARD = "frameworks card";
     private static final String PROJECT_WIZARD_GROUP = "project.wizard.group";
@@ -142,7 +142,6 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
                     String parentGroup = factory.getParentGroup(group);
                     TemplatesGroup templatesGroup =
                             new TemplatesGroup(group, null, icon, factory.getGroupWeight(group), parentGroup, group, null);
-                    templatesGroup.setPluginInfo(PluginInfoDetectorKt.getPluginInfo(factory.getClass()));
                     groups.putValues(templatesGroup, values);
                 }
             }
@@ -405,29 +404,29 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
 
     private MultiMap<String, ProjectTemplate> loadLocalTemplates() {
         MultiMap<String, ProjectTemplate> map = MultiMap.createConcurrent();
-        TEMPLATE_EP.processWithPluginDescriptor((ep, pluginDescriptor) -> {
-            ClassLoader classLoader = pluginDescriptor.getClassLoader();
-            URL url = classLoader.getResource(StringUtil.trimStart(ep.templatePath, "/"));
-            if (url == null) {
-                LOG.error(
-                        new PluginException("Can't find resource for project template: " + ep.templatePath, pluginDescriptor.getPluginId()));
-                return null;
-            }
-
-            try {
-                LocalArchivedTemplate template = new LocalArchivedTemplate(url, classLoader);
-                if (ep.category) {
-                    TemplateBasedCategory category = new TemplateBasedCategory(template, ep.projectType);
-                    myTemplatesMap.putValue(new TemplatesGroup(category), template);
-                } else {
-                    map.putValue(ep.projectType, template);
-                }
-            } catch (Exception e) {
-                LOG.error(new PluginException("Error loading template from URL: " + ep.templatePath, e, pluginDescriptor.getPluginId()));
-            }
-
-            return null;
-        });
+//        TEMPLATE_EP.processWithPluginDescriptor((ep, pluginDescriptor) -> {
+//            ClassLoader classLoader = pluginDescriptor.getClassLoader();
+//            URL url = classLoader.getResource(StringUtil.trimStart(ep.templatePath, "/"));
+//            if (url == null) {
+//                LOG.error(
+//                        new PluginException("Can't find resource for project template: " + ep.templatePath, pluginDescriptor.getPluginId()));
+//                return null;
+//            }
+//
+//            try {
+//                LocalArchivedTemplate template = new LocalArchivedTemplate(url, classLoader);
+//                if (ep.category) {
+//                    TemplateBasedCategory category = new TemplateBasedCategory(template, ep.projectType);
+//                    myTemplatesMap.putValue(new TemplatesGroup(category), template);
+//                } else {
+//                    map.putValue(ep.projectType, template);
+//                }
+//            } catch (Exception e) {
+//                LOG.error(new PluginException("Error loading template from URL: " + ep.templatePath, e, pluginDescriptor.getPluginId()));
+//            }
+//
+//            return null;
+//        });
         return map;
     }
 

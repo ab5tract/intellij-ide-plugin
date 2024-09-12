@@ -19,7 +19,7 @@ public class RakuInlineViewDescriptor implements UsageViewDescriptor {
 
   @NotNull
   @Override
-  public PsiElement[] getElements() {
+  public PsiElement @NotNull [] getElements() {
     return new PsiElement[]{myElement};
   }
 
@@ -36,7 +36,7 @@ public class RakuInlineViewDescriptor implements UsageViewDescriptor {
   @NotNull
   @Override
   public String getCodeReferencesText(int usagesCount, int filesCount) {
-    return RefactoringBundle.message("invocations.to.be.inlined", UsageViewBundle.getReferencesString(usagesCount, filesCount));
+    return RefactoringBundle.message(UsageViewBundle.getReferencesString(usagesCount, filesCount));
   }
 
   @Nullable

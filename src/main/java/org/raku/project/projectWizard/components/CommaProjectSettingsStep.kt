@@ -18,16 +18,16 @@ import javax.swing.*
  * @author Dmitry Avdeev
  */
 class CommaProjectSettingsStep(private val myWizardContext: WizardContext) : ModuleWizardStep(), SettingsStep {
-    private val mySettingsPanel: JPanel? = null
+    private var mySettingsPanel: JPanel? = null
 
-    private val myExpertPanel: JPanel? = null
+    private var myExpertPanel: JPanel? = null
 
-    private val myNamePathComponent: NamePathComponent = NamePathComponent.initNamePathComponent(
+    private var myNamePathComponent: NamePathComponent = NamePathComponent.initNamePathComponent(
         myWizardContext
     )
-    private val myFormatPanel = ProjectFormatPanel()
+    private var myFormatPanel = ProjectFormatPanel()
 
-    private val myPanel: JPanel? = null
+    private var myPanel: JPanel? = null
     private var myModuleNameLocationComponent: ModuleNameLocationComponent? = null
 
     @get:TestOnly
@@ -79,7 +79,7 @@ class CommaProjectSettingsStep(private val myWizardContext: WizardContext) : Mod
         }
 
         mySettingsPanel!!.revalidate()
-        mySettingsPanel.repaint()
+        mySettingsPanel!!.repaint()
     }
 
     override fun updateStep() {

@@ -16,8 +16,6 @@
 package org.raku.project.projectWizard;
 
 import com.intellij.ide.util.projectWizard.ModuleBuilder;
-import com.intellij.internal.statistic.utils.PluginInfo;
-import com.intellij.internal.statistic.utils.PluginInfoDetectorKt;
 import com.intellij.openapi.util.Comparing;
 import org.raku.project.projectWizard.categories.ProjectCategory;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +38,6 @@ public class TemplatesGroup implements Comparable<TemplatesGroup> {
     private final String myId;
     private final ModuleBuilder myModuleBuilder;
     private ProjectCategory myProjectCategory;
-    private PluginInfo myPluginInfo = null;
 
     public TemplatesGroup(String name,
                           String description,
@@ -58,11 +55,6 @@ public class TemplatesGroup implements Comparable<TemplatesGroup> {
         myModuleBuilder = moduleBuilder;
     }
 
-    /**
-     * Category-based group
-     *
-     * @param category
-     */
     public TemplatesGroup(ProjectCategory category) {
         this(category.getDisplayName(), category.getDescription(), category.getIcon(), category.getWeight(), category.getGroupName(),
              category.getId(), category.createModuleBuilder());
@@ -134,16 +126,5 @@ public class TemplatesGroup implements Comparable<TemplatesGroup> {
 
     public String getId() {
         return myId;
-    }
-
-    public PluginInfo getPluginInfo() {
-        if (myModuleBuilder != null) {
-            return PluginInfoDetectorKt.getPluginInfo(myModuleBuilder.getClass());
-        }
-        return myPluginInfo;
-    }
-
-    public void setPluginInfo(PluginInfo pluginInfo) {
-        myPluginInfo = pluginInfo;
     }
 }
