@@ -4,6 +4,7 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationManager;
@@ -35,7 +36,7 @@ public class RakuLaunchReplAction extends AnAction {
                 ApplicationManager.getApplication().invokeAndWait(() -> console.executeStatement("use " + useModule + ";"));
         }
         catch (ExecutionException ex) {
-            Notification notification = new Notification("rakuidea.repl.errors", "Cannot run REPL",
+            Notification notification = new Notification("raku.repl.errors", "Cannot run REPL",
                                                          "Could not start Raku REPL", NotificationType.ERROR);
             notification.setIcon(RakuIcons.CAMELIA);
             notification = notification.addAction(new AnAction("Check SDK") {
@@ -58,6 +59,11 @@ public class RakuLaunchReplAction extends AnAction {
     public void update(@NotNull AnActionEvent e) {
         boolean available = getSdkHome(e) != null;
         e.getPresentation().setEnabled(available);
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 
     protected static String getSdkHome(@NotNull AnActionEvent e) {

@@ -1,5 +1,6 @@
 package org.raku.actions;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -28,5 +29,10 @@ public class NewTestAction extends NewRakuFileAction<NewTestDialog> {
     @Override
     protected @NotNull NewTestDialog getDialog(Project project, String filePath) {
         return new NewTestDialog(project, filePath);
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 }

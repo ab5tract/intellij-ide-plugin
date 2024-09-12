@@ -47,7 +47,7 @@ public class RakuLoadHeapSnapshotFileTask extends Task.Backgroundable {
             });
         }
         catch (Exception e) {
-            Notifications.Bus.notify(new Notification("Raku Heap Snapshot Recorder",
+            Notifications.Bus.notify(new Notification("raku.heap.snapshot.recorder",
                  "Error parsing heap snapshot results",
                  e.getMessage() != null ? e.getMessage() : "Unknown error", NotificationType.ERROR));
             heapSnapshotView.setView(new JLabel("Could not parse heap snapshot results"));

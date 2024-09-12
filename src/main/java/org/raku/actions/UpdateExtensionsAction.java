@@ -3,6 +3,7 @@ package org.raku.actions;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.command.WriteCommandAction;
@@ -57,7 +58,7 @@ public class UpdateExtensionsAction extends AnAction {
 
         Map<String, List<File>> filesToUpdate = collectFilesWithLegacyNames(modules);
         if (filesToUpdate.isEmpty()) {
-            Notifications.Bus.notify(new Notification("Raku Messages", "No legacy extensions detected", NotificationType.INFORMATION));
+            Notifications.Bus.notify(new Notification("raku.messages", "No legacy extensions detected", NotificationType.INFORMATION));
             return;
         }
 
@@ -210,5 +211,10 @@ public class UpdateExtensionsAction extends AnAction {
             this.ext = ext;
             isSelected = !ext.equals("pod") && !ext.equals("pm");
         }
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 }

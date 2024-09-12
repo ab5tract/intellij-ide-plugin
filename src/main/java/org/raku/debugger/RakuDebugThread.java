@@ -73,7 +73,7 @@ public class RakuDebugThread extends Thread {
             if (mySession.isStopped()) {
                 return;
             }
-            Notification notification = new Notification("rakuidea.debug.errors", "Connection error", "Could not connect to debug server",
+            Notification notification = new Notification("raku.debug.errors", "Connection error", "Could not connect to debug server",
                                                          NotificationType.ERROR);
             Notifications.Bus.notify(notification,  mySession.getProject());
         }

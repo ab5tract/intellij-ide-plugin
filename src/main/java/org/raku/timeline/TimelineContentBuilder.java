@@ -52,7 +52,7 @@ public class TimelineContentBuilder extends CustomConsoleRunTab {
                 String message = e.getMessage();
                 if (message == null)
                     message = "unknown problem";
-                Notifications.Bus.notify(new Notification("rakuidea.timeline.errors",
+                Notifications.Bus.notify(new Notification("raku.timeline.errors",
                                                           "Timeline connection error",
                                                           "Could not get timeline data: " + message,
                                                           NotificationType.ERROR));

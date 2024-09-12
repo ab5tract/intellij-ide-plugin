@@ -1,6 +1,6 @@
 <idea-plugin xmlns:xi="http://www.w3.org/2001/XInclude">
   <id>edument.raku-idea-plugin</id>
-  <version>2023.08.0</version>
+  <version>2024.2</version>
   <name>Comma Complete Edition (Raku Language Support)</name>
   <vendor email="info@commaide.com" url="https://commaide.com/">Edument Central Europe sro.</vendor>
 
@@ -342,6 +342,9 @@
     <notificationGroup displayType="BALLOON" id="raku.meta.errors"/>
     <notificationGroup displayType="BALLOON" id="raku.timeline.errors"/>
     <notificationGroup displayType="BALLOON" id="raku.misc"/>
+    <notificationGroup displayType="BALLOON" id="raku.messages"/>
+    <notificationGroup displayType="BALLOON" id="raku.heap.snapshot.recorder"/>
+    <notificationGroup displayType="BALLOON" id="raku.coverage.error"/>
     <appStarter implementation="org.raku.application.RakuDocStarter"/>
     <projectOpenProcessor implementation="org.raku.project.RakuProjectOpenProcessor"/>
     <completion.contributor language="Raku" implementationClass="org.raku.pod.PodCompletionContributor"/>
@@ -439,12 +442,12 @@
       <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt R" second-keystroke="E"/>
       <add-to-group group-id="IntroduceActionsGroup" anchor="before" relative-to-action="ExtractMethod"/>
     </action>
-<!--    <group id="RakuPlugin.CoverageMenu">-->
-<!--      <action id="RakuPlugin.HideCoverage" class="org.raku.coverage.RakuCoverageHideAction"-->
-<!--              text="Hide Raku Coverage Data"/>-->
-<!--      <add-to-group group-id="CoverageMenu"/>-->
-<!--      <separator/>-->
-<!--    </group>-->
+    <group id="RakuPlugin.CoverageMenu">
+      <action id="RakuPlugin.HideCoverage" class="org.raku.coverage.RakuCoverageHideAction"
+              text="Hide Raku Coverage Data"/>
+      <add-to-group group-id="CoveragePlatformMenu"/>
+      <separator/>
+    </group>
     <action id="org.raku.actions.LoadProfileResultsAction" class="org.raku.actions.LoadProfileResultsAction"
             text="Show And Compare Recent Raku Profiles..." description="Select and load one of the recent Raku profiling results snapshot from this project or select two and compare">
       <add-to-group group-id="RunMenu"/>
@@ -463,6 +466,26 @@
             text="Extract Role..." description="Extract a role with selected attributes and methods">
       <add-to-group group-id="IntroduceActionsGroup" anchor="after" relative-to-action="org.raku.actions.ExtractParentClassAction"/>
     </action>
+    <action id="org.raku.actions.ImportModuleAction" class="org.raku.actions.ImportModuleAction"
+            text="Import Module..." description="Import a module">
+      <add-to-group group-id="ExportImportGroup" />
+    </action>
+    <action id="org.raku.actions.ImportProjectAction" class="org.raku.actions.ImportProjectAction"
+            text="Import Project..." description="Import a project">
+      <add-to-group group-id="ExportImportGroup" />
+    </action>
+    <action id="org.raku.actions.NewModuleAction" class="org.raku.actions.NewModuleAction"
+            text="New Module..." description="Create a module">
+      <add-to-group group-id="NewProjectOrModuleGroup" />
+    </action>
+    <action id="org.raku.actions.NewProjectAction" class="org.raku.actions.NewProjectAction"
+            text="New Project..." description="Create a project">
+      <add-to-group group-id="NewProjectOrModuleGroup" />
+    </action>
+<!--    <action id="org.raku.actions.NewActionGroup" class="org.raku.actions.NewActionGroup"-->
+<!--            text="New Action..." description="Create an action">-->
+<!--      <add-to-group group-id="NewToolbarActions" />-->
+<!--    </action>-->
   </actions>
 
 <!--  <applicationListeners>-->

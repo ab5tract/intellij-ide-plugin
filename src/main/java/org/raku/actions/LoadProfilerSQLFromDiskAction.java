@@ -3,6 +3,7 @@ package org.raku.actions;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
 import com.intellij.execution.runners.ExecutionEnvironmentBuilder;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.extensions.InternalIgnoreDependencyViolation;
@@ -16,7 +17,6 @@ import org.raku.profiler.run.RakuImportRunner;
 import org.raku.run.RakuProfileExecutor;
 import org.jetbrains.annotations.NotNull;
 
-@InternalIgnoreDependencyViolation
 public class LoadProfilerSQLFromDiskAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -42,6 +42,11 @@ public class LoadProfilerSQLFromDiskAction extends AnAction {
         catch (ExecutionException e1) {
             Messages.showErrorDialog(project, e1.getMessage(), "Import Failed");
         }
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 
     @Override

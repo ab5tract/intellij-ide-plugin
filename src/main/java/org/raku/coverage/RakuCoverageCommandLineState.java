@@ -74,7 +74,7 @@ public class RakuCoverageCommandLineState extends RakuRunCommandLineState {
                         .addSuiteFromSingleCoverageFile(maybeBest.get(0), state);
                 }
                 else {
-                    Notifications.Bus.notify(new Notification("Coverage Error", "Coverage Error",
+                    Notifications.Bus.notify(new Notification("raku.coverage.error", "Coverage Error",
                                                               "No coverage data collected.", NotificationType.ERROR));
                 }
                 try {

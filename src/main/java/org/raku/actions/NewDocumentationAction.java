@@ -1,5 +1,6 @@
 package org.raku.actions;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -7,6 +8,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.raku.utils.RakuUtils;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -40,5 +42,10 @@ public class NewDocumentationAction extends NewRakuFileAction<NewDocumentationDi
     @Override
     protected NewDocumentationDialog getDialog(Project project, String filePath) {
         return new NewDocumentationDialog(project, filePath);
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 }

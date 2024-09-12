@@ -53,7 +53,7 @@ public class RakuCoverageTestRunningState extends RakuTestRunningState {
                             .addSuiteFromIndexFile(index, state);
                 }
                 else {
-                    Notifications.Bus.notify(new Notification("Coverage Error", "Coverage Error",
+                    Notifications.Bus.notify(new Notification("raku.coverage.error", "Coverage error",
                             "No coverage data collected.", NotificationType.ERROR));
                 }
                 try {

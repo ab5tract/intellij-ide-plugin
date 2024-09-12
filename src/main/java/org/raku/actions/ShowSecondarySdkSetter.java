@@ -1,5 +1,6 @@
 package org.raku.actions;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationInfo;
@@ -84,5 +85,10 @@ public class ShowSecondarySdkSetter extends AnAction {
                 service.setProjectSdkPath(myProject.getProjectFilePath(), sdk.getHomePath());
             super.doOKAction();
         }
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 }
