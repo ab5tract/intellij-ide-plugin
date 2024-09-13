@@ -12,6 +12,7 @@ import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.roots.*;
 import com.intellij.openapi.vfs.*;
 import com.intellij.openapi.vfs.newvfs.BulkFileListener;
@@ -43,10 +44,11 @@ public final class RakuMetaDataComponent {
     private JSONObject myMeta = null;
 
     public RakuMetaDataComponent(Module module) {
-        String name = module.getModuleTypeName();
+        var name = ModuleType.get(module);
 
-        if (name == null || !name.equals(RakuModuleType.getInstance().getId()))
+        if (! name.equals(RakuModuleType.getInstance())) {
             return;
+        }
 
         this.myModule = module;
 
@@ -74,11 +76,11 @@ public final class RakuMetaDataComponent {
         });
 
         VirtualFile metaParent = calculateMetaParent();
-        if (metaParent == null) return;
+        if (Objects.isNull(metaParent)) return;
 
         VirtualFile metaFile = metaParent.findChild(META6_JSON_NAME);
         // Try to search by obsolete 'META.info' name and warn about it if present
-        if (metaFile == null) {
+        if (Objects.isNull(metaFile)) {
             metaFile = checkOldMetaFile(metaParent);
 
             // If everything fails, notify about META absence
@@ -92,7 +94,7 @@ public final class RakuMetaDataComponent {
         myMeta = checkMetaSanity();
 
         // Load dependencies
-        if (myMeta != null) {
+        if (Objects.nonNull(myMeta)) {
             RakuProjectModelSync.syncExternalLibraries(this.myModule, getAllDependencies());
         }
     }
@@ -105,7 +107,7 @@ public final class RakuMetaDataComponent {
     private VirtualFile checkOldMetaFile(VirtualFile metaParent) {
         VirtualFile metaFile;
         metaFile = metaParent.findChild(META_OBSOLETE_NAME);
-        if (metaFile != null) {
+        if (Objects.nonNull(metaFile)) {
             notifyMetaIssue(
                 String.format("Obsolete '%s' file name is used instead of '%s'", META_OBSOLETE_NAME, META6_JSON_NAME),
                 NotificationType.ERROR,

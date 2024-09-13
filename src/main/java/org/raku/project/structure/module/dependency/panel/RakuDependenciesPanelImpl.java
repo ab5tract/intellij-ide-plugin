@@ -1,5 +1,6 @@
 package org.raku.project.structure.module.dependency.panel;
 
+import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -70,24 +71,19 @@ public class RakuDependenciesPanelImpl extends JPanel {
 
     private Component createTableWithButtons() {
         ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myEntryTable);
-        decorator.setAddAction(new AnActionButtonRunnable() {
-            @Override
-            public void run(AnActionButton button) {
-                Perl6DependencyAddAction action = new Perl6DependencyAddAction(
-                  myProject, myModel);
-                boolean isOk = action.showAndGet();
-                if (isOk)
-                    myModel.addRow(new RakuDependencyTableItem(
-                      action.myNameField.getText(),
-                      (RakuDependencyScope)action.myScopeCombo.getSelectedItem()
-                    ));
+        decorator.setAddAction(button -> {
+            RakuDependencyAddAction action = new RakuDependencyAddAction(myProject, myModel);
+            boolean isOk = action.showAndGet();
+            if (isOk) {
+                myModel.addRow(new RakuDependencyTableItem(action.myNameField.getText(),
+                                                           (RakuDependencyScope) action.myScopeCombo.getSelectedItem()));
             }
-        }).addExtraAction(new AnActionButton("Edit", null, IconUtil.getEditIcon()) {
+        }).addExtraAction(new AnAction(() -> "Edit", IconUtil.getEditIcon()) {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 // Should not happen
                 if (getSelectedItem() == null) return;
-                Perl6DependencyAddAction action = new Perl6DependencyAddAction(
+                RakuDependencyAddAction action = new RakuDependencyAddAction(
                   myProject, myModel, getSelectedItem());
                 boolean isOk = action.showAndGet();
                 if (isOk) {
@@ -98,11 +94,6 @@ public class RakuDependenciesPanelImpl extends JPanel {
                       (RakuDependencyScope)action.myScopeCombo.getSelectedItem()
                     ));
                 }
-            }
-
-            @Override
-            public boolean isEnabled() {
-                return getSelectedItem() != null;
             }
         });
         return decorator.createPanel();
@@ -176,7 +167,7 @@ public class RakuDependenciesPanelImpl extends JPanel {
         }
     }
 
-    private static class Perl6DependencyAddAction extends DialogWrapper {
+    private static class RakuDependencyAddAction extends DialogWrapper {
         private final DependenciesTableModel myModel;
         private final Project myProject;
         private final Set<RakuDependencyTableItem> alreadyAdded;
@@ -196,8 +187,8 @@ public class RakuDependenciesPanelImpl extends JPanel {
             return null;
         }
 
-        protected Perl6DependencyAddAction(Project project,
-                                           DependenciesTableModel model) {
+        protected RakuDependencyAddAction(Project project,
+                                          DependenciesTableModel model) {
             super(project, false);
             myModel = model;
             myProject = project;
@@ -206,7 +197,7 @@ public class RakuDependenciesPanelImpl extends JPanel {
             setTitle("Add Dependency");
         }
 
-        Perl6DependencyAddAction(Project project, DependenciesTableModel model, RakuDependencyTableItem item) {
+        RakuDependencyAddAction(Project project, DependenciesTableModel model, RakuDependencyTableItem item) {
             super(project, false);
             myModel = model;
             myProject = project;

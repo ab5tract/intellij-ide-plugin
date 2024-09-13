@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
+import static kotlinx.collections.immutable.ExtensionsKt.persistentListOf;
+
 public class ProfileCompareCalls extends ProfileCompareDataProvider {
     private final static String sql;
 
@@ -28,19 +30,19 @@ public class ProfileCompareCalls extends ProfileCompareDataProvider {
         results.addTab(new ProfileCompareTab("Deopt", TAB_DEOPT, this, ByNameCompareFormatter.BOTH_NAMES));
     }
 
-    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_ENTRIES = ContainerUtil.immutableList(
+    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_ENTRIES = persistentListOf(
         new ProfileCompareProcessor.ProfileCompareColumn("JIT entries", "jit_entries"),
         new ProfileCompareProcessor.ProfileCompareColumn("Inlined entries", "inlined_entries"),
         new ProfileCompareProcessor.ProfileCompareColumn("Spesh entries", "spesh_entries")
     );
 
-    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_TIME = ContainerUtil.immutableList(
+    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_TIME = persistentListOf(
         new ProfileCompareProcessor.ProfileCompareColumn("Total calls", "entries"),
         new ProfileCompareProcessor.ProfileCompareColumn("Inclusive time", "inclusive_time"),
         new ProfileCompareProcessor.ProfileCompareColumn("Exclusive time", "exclusive_time")
     );
 
-    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_DEOPT = ContainerUtil.immutableList(
+    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_DEOPT = persistentListOf(
         new ProfileCompareProcessor.ProfileCompareColumn("Deopt: One", "deopt_one"),
         new ProfileCompareProcessor.ProfileCompareColumn("Deopt: All", "deopt_all")
     );

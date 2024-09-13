@@ -16,9 +16,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class DuplicateConditionAnnotator implements Annotator {
-    private static final Set<String> COMMUTERS = ContainerUtil.set(
-            "==", "!=", "eq", "ne", "===", "cmp", "eqv", "=~=", "=:=", "(==)",
-            "+", "*", "&", "|");
+    private static final Set<String> COMMUTERS = ContainerUtil.newHashSet(
+            "==",
+                      "!=",
+                      "eq",
+                      "ne",
+                      "===",
+                      "cmp",
+                      "eqv",
+                      "=~=",
+                      "=:=",
+                      "(==)",
+                      "+",
+                      "*",
+                      "&",
+                      "|");
     private static final Map<String, String> UNINORM = new HashMap<>() {{
         for (Pair<Character, String> op : ContainerUtil.zip(RakuOperatorUtils.unicodeOperators, RakuOperatorUtils.asciiOperators))
             put(op.first.toString(), op.second);

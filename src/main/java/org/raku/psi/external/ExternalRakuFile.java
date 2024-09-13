@@ -375,9 +375,7 @@ public class ExternalRakuFile implements RakuFile {
     }
 
     @Override
-    public PsiFile @NotNull [] getPsiRoots() {
-        return PsiFile.EMPTY_ARRAY;
-    }
+    public PsiFile @NotNull [] getPsiRoots() { return PsiFile.EMPTY_ARRAY; }
 
     @NotNull
     @Override

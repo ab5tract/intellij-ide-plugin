@@ -117,16 +117,16 @@ public abstract class ModuleEditor implements Place.Navigator, Disposable {
     }
 
     public OrderEntry @NotNull [] getOrderEntries() {
-        if (myModifiableRootModel == null) { // do not clone all model if not necessary
-            return ModuleRootManager.getInstance(getModule()).getOrderEntries();
+        if (Objects.isNull(myModifiableRootModel)) { // do not clone all model if not necessary
+            return ModuleRootManager.getInstance(Objects.requireNonNull(getModule())).getOrderEntries();
         }
         return myModifiableRootModel.getOrderEntries();
     }
 
     public ModifiableRootModel getModifiableRootModelProxy() {
-        if (myModifiableRootModelProxy == null) {
+        if (Objects.isNull(myModifiableRootModelProxy)) {
             final ModifiableRootModel rootModel = getModifiableRootModel();
-            if (rootModel != null) {
+            if (Objects.nonNull(rootModel)) {
                 myModifiableRootModelProxy = (ModifiableRootModel)Proxy.newProxyInstance(
                     getClass().getClassLoader(), new Class[]{ModifiableRootModel.class}, new ModifiableRootModelInvocationHandler(rootModel)
                 );
@@ -136,7 +136,7 @@ public abstract class ModuleEditor implements Place.Navigator, Disposable {
     }
 
     public ModuleRootModel getRootModel() {
-        if (myModifiableRootModel != null) {
+        if (Objects.nonNull(myModifiableRootModel)) {
             return getModifiableRootModelProxy();
         }
         return ModuleRootManager.getInstance(myModule);
@@ -152,7 +152,7 @@ public abstract class ModuleEditor implements Place.Navigator, Disposable {
     }
 
     private void createEditors(@Nullable Module module) {
-        if (module == null) return;
+        if (Objects.isNull(module)) return;
 
         ModuleConfigurationState state = createModuleConfigurationState();
         for (ModuleConfigurationEditorProvider provider : ModuleConfigurationEditorProvider.EP_NAME.getExtensionList(module)) {
@@ -331,9 +331,18 @@ public abstract class ModuleEditor implements Place.Navigator, Disposable {
     private class ModifiableRootModelInvocationHandler implements InvocationHandler, ProxyDelegateAccessor {
         private final ModifiableRootModel myDelegateModel;
         @NonNls private final Set<String> myCheckedNames = ContainerUtil
-            .set("addOrderEntry", "addLibraryEntry", "addInvalidLibrary", "addModuleOrderEntry", "addInvalidModuleEntry",
-                 "removeOrderEntry",
-                 "setSdk", "inheritSdk", "inheritCompilerOutputPath", "setExcludeOutput", "replaceEntryOfType", "rearrangeOrderEntries");
+            .newHashSet("addOrderEntry",
+                                  "addLibraryEntry",
+                                  "addInvalidLibrary",
+                                  "addModuleOrderEntry",
+                                  "addInvalidModuleEntry",
+                                  "removeOrderEntry",
+                                  "setSdk",
+                                  "inheritSdk",
+                                  "inheritCompilerOutputPath",
+                                  "setExcludeOutput",
+                                  "replaceEntryOfType",
+                                  "rearrangeOrderEntries");
 
         ModifiableRootModelInvocationHandler(@NotNull ModifiableRootModel model) {
             myDelegateModel = model;

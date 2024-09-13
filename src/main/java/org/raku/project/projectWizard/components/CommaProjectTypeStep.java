@@ -163,7 +163,7 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
             BuilderBasedTemplate template = new BuilderBasedTemplate(builder);
             if (builder.isTemplate()) {
                 TemplatesGroup group = groupMap.get(builder.getGroupName());
-                if (group == null) {
+                if (Objects.isNull(group)) {
                     group = new TemplatesGroup(builder);
                 }
                 myTemplatesMap.putValue(group, template);
@@ -219,17 +219,6 @@ public class CommaProjectTypeStep extends ModuleWizardStep implements SettingsSt
             TemplatesGroup group = iterator.next();
             for (TemplatesGroup subGroup : subGroups.get(group.getName())) {
                 iterator.add(subGroup);
-            }
-        }
-
-        // remove Static Web group in IDEA Community if no specific templates found (IDEA-120593)
-        if (PlatformUtils.isIdeaCommunity()) {
-            for (ListIterator<TemplatesGroup> iterator = groups.listIterator(); iterator.hasNext(); ) {
-                TemplatesGroup group = iterator.next();
-                if (WebModuleTypeBase.WEB_MODULE.equals(group.getId()) && myTemplatesMap.get(group).isEmpty()) {
-                    iterator.remove();
-                    break;
-                }
             }
         }
 

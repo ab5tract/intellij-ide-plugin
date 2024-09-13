@@ -1,10 +1,10 @@
 package org.raku.psi.symbols;
 
-import com.intellij.util.containers.ContainerUtil;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.intellij.util.containers.ContainerUtil.newHashSet;
 
 public class RakuVariantsSymbolCollector implements RakuSymbolCollector {
     private final String wantedName;
@@ -16,12 +16,12 @@ public class RakuVariantsSymbolCollector implements RakuSymbolCollector {
 
     public RakuVariantsSymbolCollector(String wantedName, RakuSymbolKind... wantedKinds) {
         this.wantedName = wantedName;
-        this.wantedKinds = ContainerUtil.set(wantedKinds);
+        this.wantedKinds = newHashSet(wantedKinds);
     }
 
     public RakuVariantsSymbolCollector(RakuSymbolKind... wantedKinds) {
         this.wantedName = null;
-        this.wantedKinds = ContainerUtil.set(wantedKinds);
+        this.wantedKinds = newHashSet(wantedKinds);
     }
 
     @Override

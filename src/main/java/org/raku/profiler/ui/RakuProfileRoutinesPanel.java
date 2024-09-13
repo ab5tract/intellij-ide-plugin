@@ -7,6 +7,7 @@ import com.intellij.openapi.editor.ScrollType;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
+import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.roots.ModuleRootManager;
@@ -38,9 +39,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -90,15 +89,13 @@ public class RakuProfileRoutinesPanel extends JPanel {
         for (Module module : modules) {
             ContentEntry[] entries = ModuleRootManager.getInstance(module).getContentEntries();
             myModuleBasePaths.addAll(Arrays.stream(entries).map(
-                e -> e.getFile() != null ? e.getFile().getPath() : null
-            ).filter(s -> s != null).toList());
+                e -> Objects.nonNull(e.getFile()) ? e.getFile().getPath() : null
+            ).filter(Objects::nonNull).toList());
 
-            String name = module.getModuleTypeName();
-            if (name == null || !name.equals(RakuModuleType.getInstance().getId()))
-                continue;
+            var moduleType = ModuleType.get(module);
+            if (! moduleType.equals(RakuModuleType.getInstance())) continue;
             RakuMetaDataComponent metaDataComponent = module.getService(RakuMetaDataComponent.class);
-            if (metaDataComponent == null)
-                continue;
+            if (Objects.isNull(metaDataComponent)) continue;
             myModuleNames.addAll(metaDataComponent.getProvidedNames());
         }
     }

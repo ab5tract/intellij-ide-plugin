@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static kotlinx.collections.immutable.ExtensionsKt.persistentListOf;
+
 public class ProfileCompareGCs extends ProfileCompareDataProvider {
     private final static String sql;
 
@@ -31,7 +33,7 @@ public class ProfileCompareGCs extends ProfileCompareDataProvider {
         results.addTab(new ProfileCompareTab("GC", TAB_GC, this, new SingleRowCompareFormatter(leftName, rightName)));
     }
 
-    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_GC = ContainerUtil.immutableList(
+    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_GC = persistentListOf(
         new ProfileCompareProcessor.ProfileCompareColumn("Total Time", "total_time"),
         new ProfileCompareProcessor.ProfileCompareColumn("Avg Time", "avg_time"),
         new ProfileCompareProcessor.ProfileCompareColumn("Avg Retained Bytes", "retained_bytes"),

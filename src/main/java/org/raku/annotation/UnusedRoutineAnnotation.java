@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class UnusedRoutineAnnotation implements Annotator {
-    private static final Set<String> AUTOCALLED = ContainerUtil.set("MAIN", "USAGE", "EXPORT");
+    private static final Set<String> AUTOCALLED = ContainerUtil.newHashSet("MAIN", "USAGE", "EXPORT");
 
     @Override
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {

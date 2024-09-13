@@ -25,6 +25,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.*;
 
+import static kotlinx.collections.immutable.ExtensionsKt.persistentListOf;
+
 @Service(Service.Level.PROJECT)
 public final class RakuModuleListFetcher {
     public static final String GITHUB_MIRROR1 = "https://raw.githubusercontent.com/ugexe/Perl6-ecosystems/master/p6c1.json";
@@ -32,7 +34,7 @@ public final class RakuModuleListFetcher {
     public static final String FEZ_MIRROR1 = "https://360.zef.pm/";
     public static final String REA_MIRROR1 = "https://raw.githubusercontent.com/Raku/REA/main/META.json";
     public static final List<String> PREINSTALLED_MODULES =
-        ContainerUtil.immutableList("CompUnit::Repository::Staging",
+        persistentListOf( "CompUnit::Repository::Staging",
                                     "CompUnit::Repository::FileSystem",
                                     "CompUnit::Repository::Installation",
                                     "CompUnit::Repository::AbsolutePath",
@@ -42,7 +44,7 @@ public final class RakuModuleListFetcher {
                                     "NativeCall", "NativeCall::Types", "NativeCall::Compiler::GNU",
                                     "NativeCall::Compiler::MSVC",
                                     "Test", "Pod::To::Text", "Telemetry");
-    public static final List<String> PRAGMAS = ContainerUtil.immutableList("v6.c", "v6.d", "MONKEY-GUTS", "MONKEY-SEE-NO-EVAL",
+    public static final List<String> PRAGMAS = persistentListOf( "v6.c", "v6.d", "MONKEY-GUTS", "MONKEY-SEE-NO-EVAL",
                                                                            "MONKEY-TYPING", "MONKEY", "experimental", "fatal",
                                                                            "internals", "invocant", "isms", "lib", "nqp", "newline",
                                                                            "parameters", "precompilation", "soft", "strict",
@@ -60,12 +62,10 @@ public final class RakuModuleListFetcher {
     @Nullable
     public static String getModuleByProvide(Project project, String text) {
         refreshModules(project);
-        for (Object module : modulesList.first.values()) {
-            JSONObject jsonModule = (JSONObject)module;
-            if (!jsonModule.has("provides")) continue;
-            JSONObject provide = (JSONObject)jsonModule.get("provides");
-            if (provide.keySet().contains(text))
-                return (String)jsonModule.get("name");
+        for (JSONObject module : modulesList.first.values()) {
+            if (! module.has("provides")) continue;
+            JSONObject provide = (JSONObject) module.get("provides");
+            if (provide.keySet().contains(text)) return (String) module.get("name");
         }
         return null;
     }

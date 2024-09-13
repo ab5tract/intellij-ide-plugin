@@ -48,7 +48,6 @@ public class RakuDocStarter implements ApplicationStarter {
         MessageOutput messageOutput = new MessageOutput(
             new PrintWriter(System.out, false, StandardCharsets.UTF_8),
             new PrintWriter(System.err, false, StandardCharsets.UTF_8));
-        messageOutput.info(getAppInfo() + "Documentation Generator\n");
 
         String outputPrefix = null;
 
@@ -170,11 +169,6 @@ public class RakuDocStarter implements ApplicationStarter {
                 }
             }
         }
-    }
-
-    private static String getAppInfo() {
-        ApplicationInfoImpl appInfo = (ApplicationInfoImpl)ApplicationInfoEx.getInstanceEx();
-        return String.format("%s, build %s", appInfo.getFullApplicationName(), appInfo.getBuild().asString());
     }
 
     private static void showUsageInfo(MessageOutput messageOutput) {

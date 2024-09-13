@@ -48,14 +48,14 @@ public class CommaProjectUtil {
 
     public static void createFromWizard(CommaAbstractProjectWizard wizard) {
         try {
-            doCreate(wizard, null);
+            doCreate(wizard);
         }
         catch (IOException e) {
             UIUtil.invokeLaterIfNeeded(() -> Messages.showErrorDialog(e.getMessage(), "Project Initialization Failed"));
         }
     }
 
-    private static void doCreate(CommaAbstractProjectWizard wizard, Project projectToClose) throws IOException {
+    private static void doCreate(CommaAbstractProjectWizard wizard) throws IOException {
         String projectFilePath = wizard.getNewProjectFilePath();
         Path file = Paths.get(projectFilePath);
         for (Project p : ProjectUtil.getOpenProjects()) {
@@ -93,7 +93,7 @@ public class CommaProjectUtil {
                 }
             }
             else {
-                newProject = projectToClose;
+                newProject = null;
             }
 
             if (newProject == null) {
@@ -112,14 +112,14 @@ public class CommaProjectUtil {
                     newProject.save();
                 }
 
-                if (!projectBuilder.validate(projectToClose, newProject)) {
+                if (!projectBuilder.validate(null, newProject)) {
                     return;
                 }
 
                 projectBuilder.commit(newProject, null, ModulesProvider.EMPTY_MODULES_PROVIDER);
             }
 
-            if (!ApplicationManager.getApplication().isUnitTestMode()) {
+            if (! ApplicationManager.getApplication().isUnitTestMode()) {
                 boolean needToOpenProjectStructure = projectBuilder == null || projectBuilder.isOpenProjectSettingsAfter();
                 StartupManager.getInstance(newProject).runAfterOpened(() -> {
                     // ensure the dialog is shown after all startup activities are done
@@ -138,7 +138,7 @@ public class CommaProjectUtil {
                 });
             }
 
-            if (newProject != projectToClose) {
+            if (newProject != null) {
                 ProjectUtil.updateLastProjectLocation(file);
               OpenProjectTask options =
                 OpenProjectTask.build().withProject(newProject).withProjectName(file.getFileName().toString());

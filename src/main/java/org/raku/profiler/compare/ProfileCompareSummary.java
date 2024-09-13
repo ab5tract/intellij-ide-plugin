@@ -1,6 +1,5 @@
 package org.raku.profiler.compare;
 
-import com.intellij.util.containers.ContainerUtil;
 import org.raku.utils.RakuUtils;
 
 import java.sql.ResultSet;
@@ -9,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static kotlinx.collections.immutable.ExtensionsKt.persistentListOf;
 
 public class ProfileCompareSummary extends ProfileCompareDataProvider {
     private final static String sql;
@@ -72,7 +73,7 @@ public class ProfileCompareSummary extends ProfileCompareDataProvider {
         "profile_run_time"
     };
 
-    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_SUMMARY = ContainerUtil.immutableList(
+    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_SUMMARY = persistentListOf(
         new ProfileCompareProcessor.ProfileCompareColumn("GC run", "gc_count"),
         new ProfileCompareProcessor.ProfileCompareColumn("GC major count", "gc_full_count"),
         new ProfileCompareProcessor.ProfileCompareColumn("GC total time", "gc_total_time", "ms"),

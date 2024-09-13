@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
+import static kotlinx.collections.immutable.ExtensionsKt.persistentListOf;
+
 public class ProfileCompareTypes extends ProfileCompareDataProvider {
     private final static String sql;
 
@@ -39,14 +41,14 @@ public class ProfileCompareTypes extends ProfileCompareDataProvider {
     };
 
     // ???
-    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_ALLOCS = ContainerUtil.immutableList(
+    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_ALLOCS = persistentListOf(
         //Pair.create("Optimized by Spesh", "spesh"),
         //Pair.create("JIT", "jit"),
         new ProfileCompareProcessor.ProfileCompareColumn("Count", "count"),
         new ProfileCompareProcessor.ProfileCompareColumn("Optimized Away", "replaced")
     );
 
-    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_DEALLOCS = ContainerUtil.immutableList(
+    public static final List<ProfileCompareProcessor.ProfileCompareColumn> TAB_DEALLOCS = persistentListOf(
         new ProfileCompareProcessor.ProfileCompareColumn("Nursery: Fresh", "nursery_fresh"),
         new ProfileCompareProcessor.ProfileCompareColumn("Nursery: Seen", "nursery_seen"),
         new ProfileCompareProcessor.ProfileCompareColumn("Reached old generation", "gen2"),

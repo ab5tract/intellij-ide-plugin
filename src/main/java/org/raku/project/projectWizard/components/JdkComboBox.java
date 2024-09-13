@@ -91,7 +91,7 @@ public class JdkComboBox extends SdkComboBoxBase<JdkComboBox.JdkComboBoxItem> {
         onNewSdkAdded.consume(sdk);
       }
     };
-    setRenderer(new SdkListPresenter(() -> ((JdkComboBoxModel)this.getModel()).myInnerModel).forType(JdkComboBox::unwrapItem));
+//    setRenderer(new SdkListPresenter(() -> ((JdkComboBoxModel)this.getModel()).myInnerModel).forType(JdkComboBox::unwrapItem));
     reloadModel();
   }
 
@@ -536,7 +536,7 @@ public class JdkComboBox extends SdkComboBoxBase<JdkComboBox.JdkComboBoxItem> {
   @Deprecated
   @SuppressWarnings("deprecation")
   public void insertItemAt(JdkComboBoxItem item, int index) {
-    super.insertItemAt(item, index);
+    super.addItem(item);
     processFirstItem(item);
   }
 }
