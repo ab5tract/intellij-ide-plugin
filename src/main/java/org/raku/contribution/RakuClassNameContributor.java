@@ -5,8 +5,10 @@ import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.extensions.InternalIgnoreDependencyViolation;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.util.ArrayUtil;
 import org.raku.psi.stub.index.RakuGlobalTypeStubIndex;
+import org.raku.psi.stub.index.RakuIndexableType;
 import org.raku.psi.stub.index.RakuLexicalTypeStubIndex;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,12 +30,22 @@ public class RakuClassNameContributor implements ChooseByNameContributor {
         List<NavigationItem> results = new ArrayList<>();
 
         RakuGlobalTypeStubIndex globalIndex = RakuGlobalTypeStubIndex.getInstance();
-        for (String globalType : Filtering.typeMatch(globalIndex.getAllKeys(project), pattern))
-            results.addAll(globalIndex.get(globalType, project, GlobalSearchScope.projectScope(project)));
+        Filtering.typeMatch(globalIndex.getAllKeys(project), pattern).forEach(globalType ->
+            results.addAll(StubIndex.getElements(globalIndex.getKey(),
+                                                 globalType,
+                                                 project,
+                                                 GlobalSearchScope.projectScope(project),
+                                                 RakuIndexableType.class))
+        );
 
         RakuLexicalTypeStubIndex lexicalIndex = RakuLexicalTypeStubIndex.getInstance();
-        for (String lexicalType : Filtering.typeMatch(lexicalIndex.getAllKeys(project), pattern))
-            results.addAll(lexicalIndex.get(lexicalType, project, GlobalSearchScope.projectScope(project)));
+        Filtering.typeMatch(lexicalIndex.getAllKeys(project), pattern).forEach(lexicalType ->
+            results.addAll(StubIndex.getElements(lexicalIndex.getKey(),
+                                                 lexicalType,
+                                                 project,
+                                                 GlobalSearchScope.projectScope(project),
+                                                 RakuIndexableType.class))
+        );
 
         return results.toArray(NavigationItem.EMPTY_NAVIGATION_ITEM_ARRAY);
     }

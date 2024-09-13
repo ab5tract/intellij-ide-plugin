@@ -7,6 +7,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.NlsSafe;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.IndexSink;
+import com.intellij.psi.stubs.StubIndex;
 import org.raku.RakuIcons;
 import org.raku.contribution.Filtering;
 import org.raku.extensions.RakuFrameworkCall;
@@ -57,8 +58,12 @@ public class CroTemplateCall extends RakuFrameworkCall {
     @Override
     public void contributeSymbolItems(Project project, String pattern, List<NavigationItem> results) {
         CroTemplateIndex routeIndex = CroTemplateIndex.getInstance();
-        for (String route : Filtering.simpleMatch(routeIndex.getAllKeys(project), pattern))
-            results.addAll(routeIndex.get(route, project, GlobalSearchScope.projectScope(project)));
+        Filtering.simpleMatch(routeIndex.getAllKeys(project), pattern).forEach(route ->
+            results.addAll(StubIndex.getElements(routeIndex.getKey(),
+                                                 route,
+                                                 project,
+                                                 GlobalSearchScope.projectScope(project),
+                                                 RakuSubCall.class)));
     }
 
     @Override
@@ -85,13 +90,8 @@ public class CroTemplateCall extends RakuFrameworkCall {
     public ItemPresentation getStructureViewPresentation(RakuPsiElement call, Map<String, String> frameworkData) {
         return new ItemPresentation() {
             @Override
-            public @NlsSafe @NotNull String getPresentableText() {
+            public @NotNull String getPresentableText() {
                 return frameworkData.get("name");
-            }
-
-            @Override
-            public @NlsSafe @Nullable String getLocationString() {
-                return null;
             }
 
             @Override

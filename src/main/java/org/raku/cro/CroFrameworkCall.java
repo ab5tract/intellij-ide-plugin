@@ -6,6 +6,7 @@ import com.intellij.openapi.extensions.InternalIgnoreDependencyViolation;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.IndexSink;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.raku.RakuIcons;
 import org.raku.contribution.Filtering;
@@ -110,8 +111,13 @@ public class CroFrameworkCall extends RakuFrameworkCall {
     @Override
     public void contributeSymbolItems(Project project, String pattern, List<NavigationItem> results) {
         CroRouteIndex routeIndex = CroRouteIndex.getInstance();
-        for (String route : Filtering.simpleMatch(routeIndex.getAllKeys(project), pattern))
-            results.addAll(routeIndex.get(route, project, GlobalSearchScope.projectScope(project)));
+        Filtering.simpleMatch(routeIndex.getAllKeys(project), pattern).forEach(route ->
+            results.addAll(StubIndex.getElements(routeIndex.getKey(),
+                                                 route,
+                                                 project,
+                                                 GlobalSearchScope.projectScope(project),
+                                                 RakuSubCall.class))
+        );
     }
 
     @Override

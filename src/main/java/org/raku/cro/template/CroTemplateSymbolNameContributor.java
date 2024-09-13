@@ -5,11 +5,16 @@ import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.extensions.InternalIgnoreDependencyViolation;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.util.ArrayUtil;
 import org.raku.contribution.Filtering;
+import org.raku.cro.CroTemplateIndex;
+import org.raku.cro.template.psi.CroTemplateMacro;
+import org.raku.cro.template.psi.CroTemplateSub;
 import org.raku.cro.template.psi.stub.index.CroTemplateMacroIndex;
 import org.raku.cro.template.psi.stub.index.CroTemplateSubIndex;
 import org.jetbrains.annotations.NotNull;
+import org.raku.psi.stub.index.RakuIndexableType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +34,24 @@ public class CroTemplateSymbolNameContributor implements ChooseByNameContributor
         List<NavigationItem> results = new ArrayList<>();
 
         CroTemplateMacroIndex macroIndex = CroTemplateMacroIndex.getInstance();
-        for (String macroName : Filtering.typeMatch(macroIndex.getAllKeys(project), pattern))
-            results.addAll(macroIndex.get(macroName, project, GlobalSearchScope.projectScope(project)));
+        Filtering.typeMatch(macroIndex.getAllKeys(project), pattern).forEach(
+            macroName -> results.addAll(
+                StubIndex.getElements(macroIndex.getKey(),
+                                      macroName,
+                                      project,
+                                      GlobalSearchScope.projectScope(project),
+                                      CroTemplateMacro.class)
+            ));
 
         CroTemplateSubIndex subIndex = CroTemplateSubIndex.getInstance();
-        for (String subName : Filtering.typeMatch(subIndex.getAllKeys(project), pattern))
-            results.addAll(subIndex.get(subName, project, GlobalSearchScope.projectScope(project)));
+        Filtering.typeMatch(subIndex.getAllKeys(project), pattern).forEach(
+            subName -> results.addAll(
+                StubIndex.getElements(subIndex.getKey(),
+                                      subName,
+                                      project,
+                                      GlobalSearchScope.projectScope(project),
+                                      CroTemplateSub.class)
+            ));
 
         return results.toArray(NavigationItem.EMPTY_NAVIGATION_ITEM_ARRAY);
     }

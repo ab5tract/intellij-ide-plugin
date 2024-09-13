@@ -5,19 +5,19 @@ import org.raku.psi.*;
 
 public class RakuStubIndexKeys {
     public static final StubIndexKey<String, RakuFile> PROJECT_MODULES
-        = StubIndexKey.createIndexKey("rakuidea.projectModules");
+        = StubIndexKey.createIndexKey("raku.projectModules");
     public static final StubIndexKey<String, RakuIndexableType> GLOBAL_TYPES
-        = StubIndexKey.createIndexKey("rakuidea.globalTypes");
+        = StubIndexKey.createIndexKey("raku.globalTypes");
     public static final StubIndexKey<String, RakuIndexableType> LEXICAL_TYPES
-        = StubIndexKey.createIndexKey("rakuidea.lexicalTypes");
+        = StubIndexKey.createIndexKey("raku.lexicalTypes");
     public static final StubIndexKey<String, RakuConstant> ALL_CONSTANTS
-        = StubIndexKey.createIndexKey("rakuidea.allConstants");
+        = StubIndexKey.createIndexKey("raku.allConstants");
     public static final StubIndexKey<String, RakuVariableDecl> ALL_ATTRIBUTES
-        = StubIndexKey.createIndexKey("rakuidea.allAttributes");
+        = StubIndexKey.createIndexKey("raku.allAttributes");
     public static final StubIndexKey<String, RakuRoutineDecl> ALL_ROUTINES
-        = StubIndexKey.createIndexKey("rakuidea.allRoutines");
+        = StubIndexKey.createIndexKey("raku.allRoutines");
     public static final StubIndexKey<String, RakuRegexDecl> ALL_REGEXES
-        = StubIndexKey.createIndexKey("rakuidea.allRegexes");
+        = StubIndexKey.createIndexKey("raku.allRegexes");
     public static final StubIndexKey<String, RakuVariableDecl> DYNAMIC_VARIABLES
-        = StubIndexKey.createIndexKey("rakuidea.dynamivVariables");
+        = StubIndexKey.createIndexKey("raku.dynamicVariables");
 }

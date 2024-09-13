@@ -35,12 +35,17 @@ public class RakuModuleReference extends PsiReferenceBase<RakuModuleName> {
         Project project = this.getElement().getProject();
         Collection<String> projectModules = ProjectModulesStubIndex.getInstance().getAllKeys(project);
         List<String> reallyInThisProject = new ArrayList<>();
-        for (String module : projectModules) {
-            Collection<RakuFile> matching = ProjectModulesStubIndex.getInstance()
-                .get(module, project, GlobalSearchScope.projectScope(project));
-            if (!matching.isEmpty())
+        projectModules.forEach(module -> {
+            var index = ProjectModulesStubIndex.getInstance();
+            Collection<RakuFile> matching = StubIndex.getElements(index.getKey(),
+                                                                  module,
+                                                                  project,
+                                                                  GlobalSearchScope.projectScope(project),
+                                                                  RakuFile.class);
+            if (! matching.isEmpty()) {
                 reallyInThisProject.add(module);
-        }
+            }
+        });
 
         if (RakuModuleListFetcher.isReady()) {
             reallyInThisProject.addAll(RakuModuleListFetcher.getProvides(myElement.getProject()));

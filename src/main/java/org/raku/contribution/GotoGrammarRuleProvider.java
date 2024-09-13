@@ -8,12 +8,14 @@ import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.raku.psi.RakuPackageDecl;
 import org.raku.psi.RakuRegexDecl;
 import org.raku.psi.RakuRoutineDecl;
 import org.raku.psi.stub.index.RakuAllRegexesStubIndex;
 import org.jetbrains.annotations.NotNull;
+import org.raku.psi.stub.index.RakuIndexableType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,8 +38,12 @@ public class GotoGrammarRuleProvider extends GotoRelatedProvider {
 
         // Look for regexes of the same name in the index.
         Project project = psiElement.getProject();
-        Collection<RakuRegexDecl> decls = RakuAllRegexesStubIndex.getInstance()
-                .get(method.getRoutineName(), project, GlobalSearchScope.allScope(project));
+        var regexIndex = RakuAllRegexesStubIndex.getInstance();
+        Collection<RakuRegexDecl> decls = StubIndex.getElements(regexIndex.getKey(),
+                                                                method.getRoutineName(),
+                                                                project,
+                                                                GlobalSearchScope.allScope(project),
+                                                                RakuRegexDecl.class);
 
         // Take those that are in the same module as us.
         List<GotoRelatedItem> result = new ArrayList<>();

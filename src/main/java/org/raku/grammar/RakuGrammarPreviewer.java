@@ -2,8 +2,10 @@ package org.raku.grammar;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.navigation.NavigationItem;
-import com.intellij.openapi.Disposable;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
+import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.ToggleAction;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
@@ -20,6 +22,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StringStubIndexExtension;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.ui.*;
 import com.intellij.ui.treeStructure.Tree;
@@ -35,8 +38,6 @@ import org.jdesktop.swingx.JXComboBox;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -46,6 +47,7 @@ import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("unchecked")
 public class RakuGrammarPreviewer extends JPanel {
     private static final TextAttributes SELECTION_TEXT_ATTRS;
     private static final TextAttributes HIGHWATER_TEXT_ATTRS;
@@ -83,7 +85,6 @@ public class RakuGrammarPreviewer extends JPanel {
     private Tree myParseTree;
     private JLabel myStatusLabel;
     private JLabel myCancelLink;
-    private JPanel myMainPanel;
     private JBSplitter mySplitter;
     private CurrentGrammar current;
     private boolean showFailedRules = true;
@@ -102,7 +103,7 @@ public class RakuGrammarPreviewer extends JPanel {
     private void initUI() {
         setLayout(new MigLayout("fill, insets 0"));
         createUIComponents();
-        myMainPanel = new JPanel();
+        JPanel myMainPanel = new JPanel();
         MigLayout migLayout = new MigLayout();
         myMainPanel.setLayout(migLayout);
         myMainPanel.add(myGrammarComboBox, "wrap, w 100%");
@@ -116,7 +117,7 @@ public class RakuGrammarPreviewer extends JPanel {
         myGrammarComboBox.setRenderer(new GrammarComboBoxRenderer());
         myGrammarComboBox.addItem("Awaiting indexes...");
 
-        DumbService.getInstance(myProject).smartInvokeLater(this::startWachingGrammars);
+        DumbService.getInstance(myProject).smartInvokeLater(this::startWatchingGrammars);
 
         myInputDataEditor = getInputDataEditor();
         myInputDataEditor.setBorder(BorderFactory.createLineBorder(JBColor.BLACK));
@@ -142,40 +143,51 @@ public class RakuGrammarPreviewer extends JPanel {
         myParseTree.setBorder(BorderFactory.createEmptyBorder());
 
         ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myParseTree);
-        decorator.addExtraAction(new AnActionButton("Go To Rule Source", AllIcons.General.Locate) {
-            @Override
-            public void actionPerformed(@NotNull AnActionEvent e) {
-                navigateToRuleSource();
-            }
+        decorator.addExtraAction(new AnAction(() -> "Go To Rule Source", AllIcons.General.Locate) {
+            @Override public void actionPerformed(@NotNull AnActionEvent e) { navigateToRuleSource(); }
 
             @Override
-            public void updateButton(@NotNull AnActionEvent e) {
+            public void update(@NotNull AnActionEvent e) {
                 DefaultMutableTreeNode[] selectedNodes = myParseTree.getSelectedNodes(DefaultMutableTreeNode.class, null);
                 e.getPresentation().setEnabled(selectedNodes.length == 1);
             }
+
+            @Override public @NotNull ActionUpdateThread getActionUpdateThread() { return ActionUpdateThread.EDT; }
         });
-        decorator.addExtraAction(new ToggleActionButton("Show Failed Rules", AllIcons.RunConfigurations.TestFailed) {
+
+        decorator.addExtraAction(new ToggleAction(() -> "Show Failed Rules", AllIcons.RunConfigurations.TestFailed) {
             @Override
-            public boolean isSelected(AnActionEvent e) {
+            public boolean isSelected(@NotNull AnActionEvent e) {
                 return showFailedRules;
             }
 
             @Override
-            public void setSelected(AnActionEvent e, boolean state) {
+            public void setSelected(@NotNull AnActionEvent e, boolean state) {
                 showFailedRules = state;
                 reloadTree();
             }
-        });
-        decorator.addExtraAction(new ToggleActionButton("Show Non-Captruing Rules", AllIcons.RunConfigurations.TestIgnored) {
+
             @Override
-            public boolean isSelected(AnActionEvent e) {
+            public @NotNull ActionUpdateThread getActionUpdateThread() {
+                return ActionUpdateThread.BGT;
+            }
+        });
+
+        decorator.addExtraAction(new ToggleAction(() ->"Show Non-Capturing Rules", AllIcons.RunConfigurations.TestIgnored) {
+            @Override
+            public boolean isSelected(@NotNull AnActionEvent e) {
                 return showNonCapturingRules;
             }
 
             @Override
-            public void setSelected(AnActionEvent e, boolean state) {
+            public void setSelected(@NotNull AnActionEvent e, boolean state) {
                 showNonCapturingRules = state;
                 reloadTree();
+            }
+
+            @Override
+            public @NotNull ActionUpdateThread getActionUpdateThread() {
+                return ActionUpdateThread.BGT;
             }
         });
 
@@ -213,7 +225,7 @@ public class RakuGrammarPreviewer extends JPanel {
         }
     }
 
-    private void startWachingGrammars() {
+    private void startWatchingGrammars() {
         myGrammarComboBox.removeAllItems();
         myGrammarComboBox.addItem(NO_GRAMMARS_FOUND_IN_PROJECT);
         myGrammarComboBox.addItemListener(i -> changeCurrentGrammar());
@@ -282,11 +294,17 @@ public class RakuGrammarPreviewer extends JPanel {
     }
 
     private void addGrammarsFrom(StringStubIndexExtension<RakuIndexableType> index, List<RakuIndexableType> packages) {
-        for (String globalType : index.getAllKeys(myProject))
-            packages.addAll(ContainerUtil.filter(index.get(globalType, myProject, GlobalSearchScope.projectScope(myProject)),
-                                                 maybeGrammar -> maybeGrammar instanceof RakuPackageDecl &&
-                                                                 Objects
-                                                                     .equals(((RakuPackageDecl)maybeGrammar).getPackageKind(), "grammar")));
+        for (String globalType : index.getAllKeys(myProject)) {
+            packages.addAll(
+                    ContainerUtil.filter(
+                        StubIndex.getElements(index.getKey(),
+                                              globalType, myProject,
+                                              GlobalSearchScope.projectScope(myProject),
+                                              RakuIndexableType.class),
+                            maybeGrammar -> maybeGrammar instanceof RakuPackageDecl &&
+                                Objects.equals(((RakuPackageDecl) maybeGrammar).getPackageKind(), "grammar"))
+            );
+        }
     }
 
     @NotNull
@@ -299,8 +317,9 @@ public class RakuGrammarPreviewer extends JPanel {
         editor.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void documentChanged(@NotNull DocumentEvent event) {
-                if (current != null)
+                if (current != null) {
                     performUpdate();
+                }
             }
         });
         editor.addEditorMouseListener(new EditorMouseListener() {
@@ -319,12 +338,13 @@ public class RakuGrammarPreviewer extends JPanel {
                 }
             }
         });
-        Disposer.register(myProject, new Disposable() {
-            @Override
-            public void dispose() {
+        var editorDisposer = Disposer.newDisposable("editorDisposer");
+        Disposer.register(editorDisposer,
+            () -> {
                 factory.releaseEditor(editor);
+                editorDisposer.dispose();
             }
-        });
+        );
         return editor;
     }
 
@@ -359,7 +379,7 @@ public class RakuGrammarPreviewer extends JPanel {
                     // Not captured
                     append(node.getName(), anonAttrs);
                 }
-                else if (captureNames.size() == 1 && captureNames.get(0).equals(node.getName())) {
+                else if (captureNames.size() == 1 && captureNames.getFirst().equals(node.getName())) {
                     // Common case of being captured under the node's own name
                     append(node.getName(), capturedAttrs);
                 }
@@ -379,14 +399,12 @@ public class RakuGrammarPreviewer extends JPanel {
                 }
             }
         });
-        tree.addTreeSelectionListener(new TreeSelectionListener() {
-            @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                DefaultMutableTreeNode[] selectedNodes = myParseTree.getSelectedNodes(DefaultMutableTreeNode.class, null);
-                if (selectedNodes.length == 1) {
-                    Object modelNode = selectedNodes[0].getUserObject();
-                    if (modelNode instanceof ParseResultsModel.Node)
-                        highlightCurrentSelection((ParseResultsModel.Node)modelNode);
+        tree.addTreeSelectionListener(treeSelectionEvent -> {
+            DefaultMutableTreeNode[] selectedNodes = myParseTree.getSelectedNodes(DefaultMutableTreeNode.class, null);
+            if (selectedNodes.length == 1) {
+                Object modelNode = selectedNodes[0].getUserObject();
+                if (modelNode instanceof ParseResultsModel.Node) {
+                    highlightCurrentSelection((ParseResultsModel.Node) modelNode);
                 }
             }
         });
@@ -544,11 +562,10 @@ public class RakuGrammarPreviewer extends JPanel {
 
         private boolean shouldDisplay(GrammarTreeNode treeNode) {
             ParseResultsModel.Node node = (ParseResultsModel.Node)treeNode.getUserObject();
-            if (!showFailedRules && !node.isSuccessful())
+            if (! (showFailedRules || node.isSuccessful())) {
                 return false;
-            if (!showNonCapturingRules && node.getCaptureNames() == null && !node.isProtoCandidate())
-                return false;
-            return true;
+            }
+            return showNonCapturingRules || node.getCaptureNames() != null || node.isProtoCandidate();
         }
     }
 
@@ -608,8 +625,9 @@ public class RakuGrammarPreviewer extends JPanel {
         if (root instanceof DefaultMutableTreeNode) {
             // First try with only successful nodes, and then retry with those
             // ultimately unsuccessful (e.g. in the highwater).
-            if (!selectNodeCoveringOffset((DefaultMutableTreeNode)root, offset, false))
-                selectNodeCoveringOffset((DefaultMutableTreeNode)root, offset, true);
+            if (!selectNodeCoveringOffset((DefaultMutableTreeNode)root, offset, false)) {
+                selectNodeCoveringOffset((DefaultMutableTreeNode) root, offset, true);
+            }
         }
     }
 

@@ -4,6 +4,7 @@ import com.intellij.navigation.GotoRelatedItem;
 import com.intellij.navigation.GotoRelatedProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.util.containers.ContainerUtil;
 import org.raku.cro.CroTemplateIndex;
 import org.raku.cro.template.psi.CroTemplatePart;
@@ -23,8 +24,13 @@ public class GotoTemplatePartCallProvider extends GotoRelatedProvider {
             return Collections.emptyList();
         String partName = psiElement.getText();
 
+        var croTemplateIndex = CroTemplateIndex.getInstance();
         Collection<RakuSubCall> collection =
-            CroTemplateIndex.getInstance().get(partName, psiElement.getProject(), GlobalSearchScope.projectScope(psiElement.getProject()));
-        return ContainerUtil.map(collection, s -> new GotoRelatedItem(s));
+           StubIndex.getElements(croTemplateIndex.getKey(),
+                                 partName,
+                                 psiElement.getProject(),
+                                 GlobalSearchScope.projectScope(psiElement.getProject()),
+                                 RakuSubCall.class);
+        return ContainerUtil.map(collection, GotoRelatedItem::new);
     }
 }

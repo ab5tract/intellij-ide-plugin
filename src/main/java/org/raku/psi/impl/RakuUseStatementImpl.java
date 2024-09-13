@@ -42,9 +42,10 @@ public class RakuUseStatementImpl extends StubBasedPsiElementBase<RakuUseStateme
             if (DumbService.isDumb(getProject())) return;
 
             SlowOperations.allowSlowOperations(() -> {
+                var index = ProjectModulesStubIndex.getInstance();
                 Collection<RakuFile> found =
-                    ProjectModulesStubIndex.getInstance().get(name, project, GlobalSearchScope.projectScope(project));
-                if (found.size() > 0) {
+                    StubIndex.getElements(index.getKey(), name, project, GlobalSearchScope.projectScope(project), RakuFile.class);
+                if (! found.isEmpty()) {
                     RakuFile file = found.iterator().next();
                     file.contributeGlobals(collector, new HashSet<>());
                     Set<String> seen = new HashSet<>();

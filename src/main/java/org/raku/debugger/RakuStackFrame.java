@@ -7,6 +7,7 @@ import com.intellij.openapi.util.NullableLazyValue;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.ui.ColoredTextContainer;
 import com.intellij.ui.SimpleTextAttributes;
 import com.intellij.xdebugger.XSourcePosition;
@@ -21,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Objects;
 
 public class RakuStackFrame extends XStackFrame {
     private final RakuStackFrameDescriptor myFrameDescriptor;
@@ -35,13 +37,19 @@ public class RakuStackFrame extends XStackFrame {
             final VirtualFile[] file = {null};
             if (localFilePath.startsWith("site#")) {
                 String moduleName = myFrameDescriptor.getFile().getModuleName();
-                if (moduleName != null)
+                if (Objects.nonNull(moduleName)) {
                     ApplicationManager.getApplication().runReadAction(() -> {
-                        Collection<RakuFile> indexedFile = ProjectModulesStubIndex
-                            .getInstance().get(moduleName, project, GlobalSearchScope.allScope(project));
-                        if (!indexedFile.isEmpty())
+                        var index = ProjectModulesStubIndex.getInstance();
+                        Collection<RakuFile> indexedFile = StubIndex.getElements(index.getKey(),
+                                                                                 moduleName,
+                                                                                 project,
+                                                                                 GlobalSearchScope.allScope(project),
+                                                                                 RakuFile.class);
+                        if (! indexedFile.isEmpty()) {
                             file[0] = indexedFile.iterator().next().getVirtualFile();
+                        }
                     });
+                }
             }
             if (file[0] != null)
                 return file[0];

@@ -12,6 +12,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.Stub;
 import com.intellij.psi.stubs.StubElement;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.IncorrectOperationException;
@@ -236,7 +237,7 @@ public class RakuPackageDeclImpl extends RakuTypeStubBasedPsi<RakuPackageDeclStu
 
     private void contributeFromElders(RakuSymbolCollector collector, MOPSymbolsAllowed symbolsAllowed) {
         RakuPackageDeclStub stub = getStub();
-        List<Pair<String, RakuPackageDecl>> perl6PackageDecls = new ArrayList<>();
+        List<Pair<String, RakuPackageDecl>> rakuPackageDecls = new ArrayList<>();
         List<Pair<String, String>> externals = new ArrayList<>();
         boolean isAny = true;
         boolean isMu = true;
@@ -250,13 +251,21 @@ public class RakuPackageDeclImpl extends RakuTypeStubBasedPsi<RakuPackageDeclStu
                 String name = traitStub.getTraitName();
                 Project project = getProject();
                 List<RakuIndexableType> indexables = new ArrayList<>();
-                indexables.addAll(RakuLexicalTypeStubIndex.getInstance().get(name, project,
-                                                                             GlobalSearchScope.projectScope(project)));
-                indexables.addAll(RakuGlobalTypeStubIndex.getInstance().get(name, project,
-                                                                            GlobalSearchScope.projectScope(project)));
+                var lexicalIndex = RakuLexicalTypeStubIndex.getInstance();
+                indexables.addAll(StubIndex.getElements(lexicalIndex.getKey(),
+                                                        name,
+                                                        project,
+                                                        GlobalSearchScope.projectScope(project),
+                                                        RakuIndexableType.class));
+                var globalIndex = RakuGlobalTypeStubIndex.getInstance();
+                indexables.addAll(StubIndex.getElements(globalIndex.getKey(),
+                                                        name,
+                                                        project,
+                                                        GlobalSearchScope.projectScope(project),
+                                                        RakuIndexableType.class));
                 if (indexables.size() == 1) {
-                    RakuPackageDecl decl = (RakuPackageDecl) indexables.get(0);
-                    perl6PackageDecls.add(Pair.create(traitStub.getTraitModifier(), decl));
+                    RakuPackageDecl decl = (RakuPackageDecl) indexables.getFirst();
+                    rakuPackageDecls.add(Pair.create(traitStub.getTraitModifier(), decl));
                 } else {
                     externals.add(Pair.create(traitStub.getTraitModifier(), name));
                 }
@@ -274,7 +283,7 @@ public class RakuPackageDeclImpl extends RakuTypeStubBasedPsi<RakuPackageDeclStu
                 if (ref == null) continue;
                 PsiElement decl = ref.resolve();
                 if (decl instanceof RakuPackageDecl)
-                    perl6PackageDecls.add(Pair.create(trait.getTraitModifier(), (RakuPackageDecl)decl));
+                    rakuPackageDecls.add(Pair.create(trait.getTraitModifier(), (RakuPackageDecl)decl));
                 else
                     externals.add(Pair.create(trait.getTraitModifier(), trait.getTraitName()));
                 if (trait.getTraitName().equals("Mu"))
@@ -283,7 +292,7 @@ public class RakuPackageDeclImpl extends RakuTypeStubBasedPsi<RakuPackageDeclStu
         }
 
         // Contribute from explicit parents, either local or external
-        for (Pair<String, RakuPackageDecl> pair : perl6PackageDecls) {
+        for (Pair<String, RakuPackageDecl> pair : rakuPackageDecls) {
             // Local perl6PackageDecl
             RakuPackageDecl typeRef = pair.second;
             String mod = pair.first;
@@ -309,7 +318,7 @@ public class RakuPackageDeclImpl extends RakuTypeStubBasedPsi<RakuPackageDeclStu
         RakuFile coreSetting = RakuSdkType.getInstance().getCoreSettingFile(getProject());
         MOPSymbolsAllowed allowed = new MOPSymbolsAllowed(false, false, false, getPackageKind().equals("role"));
 
-        if (perl6PackageDecls.size() != 0 || externals.size() != 0)
+        if (rakuPackageDecls.size() != 0 || externals.size() != 0)
             return;
 
         collector.decreasePriority();
@@ -439,25 +448,28 @@ public class RakuPackageDeclImpl extends RakuTypeStubBasedPsi<RakuPackageDeclStu
     @Override
     public List<RakuPackageDecl> collectChildren() {
         List<RakuPackageDecl> children = new ArrayList<>();
-        RakuGlobalTypeStubIndex instance = RakuGlobalTypeStubIndex.getInstance();
+        RakuGlobalTypeStubIndex index = RakuGlobalTypeStubIndex.getInstance();
         Project project = getProject();
         String name = getPackageName();
-        Collection<String> keys = instance.getAllKeys(project);
-        for (String key : keys) {
-            Collection<RakuIndexableType> psi = instance.get(key, project, GlobalSearchScope.allScope(project));
+        Collection<String> keys = index.getAllKeys(project);
+        keys.forEach(key -> {
+            Collection<RakuIndexableType> psi = StubIndex.getElements(index.getKey(), key, project, GlobalSearchScope.allScope(project), RakuIndexableType.class);
             if (psi.size() == 1) {
                 for (RakuIndexableType type : psi) {
-                    if (!(type instanceof RakuPackageDecl))
+                    if (!(type instanceof RakuPackageDecl)) {
                         continue;
+                    }
                     RakuTrait childTrait = ((RakuPackageDecl)type).findTrait("does", name);
-                    if (childTrait != null)
-                        children.add((RakuPackageDecl)type);
+                    if (Objects.nonNull(childTrait)) {
+                        children.add((RakuPackageDecl) type);
+                    }
                     childTrait = ((RakuPackageDecl)type).findTrait("is", name);
-                    if (childTrait != null)
-                        children.add((RakuPackageDecl)type);
+                    if (Objects.nonNull(childTrait)) {
+                        children.add((RakuPackageDecl) type);
+                    }
                 }
             }
-        }
+        });
         return children;
     }
 

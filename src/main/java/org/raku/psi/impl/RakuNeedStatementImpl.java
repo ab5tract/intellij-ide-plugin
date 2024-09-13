@@ -5,6 +5,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
 import org.raku.psi.RakuFile;
 import org.raku.psi.RakuModuleName;
 import org.raku.psi.RakuNeedStatement;
@@ -32,9 +33,10 @@ public class RakuNeedStatementImpl extends StubBasedPsiElementBase<RakuNeedState
         if (DumbService.isDumb(getProject())) return;
         for (String name : getModuleNames()) {
             Project project = getProject();
-            Collection<RakuFile> found = ProjectModulesStubIndex.getInstance()
-                    .get(name, project, GlobalSearchScope.projectScope(project));
-            if (found.size() > 0) {
+            var index = ProjectModulesStubIndex.getInstance();
+            Collection<RakuFile> found =
+                    StubIndex.getElements(index.getKey(), name, project, GlobalSearchScope.projectScope(project), RakuFile.class);
+            if (! found.isEmpty()) {
                 RakuFile file = found.iterator().next();
                 Set<String> seen = new HashSet<>();
                 seen.add(name);

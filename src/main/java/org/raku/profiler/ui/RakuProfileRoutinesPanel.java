@@ -17,6 +17,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.ui.DocumentAdapter;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.Function;
@@ -318,8 +319,13 @@ public class RakuProfileRoutinesPanel extends JPanel {
                 String[] pathAndModule = sourceFilePath.split(" ");
                 if (pathAndModule.length == 2) {
                     String moduleNameKey = pathAndModule[1].substring(1, pathAndModule[1].length() - 1);
+                    var index = ProjectModulesStubIndex.getInstance();
                     Collection<RakuFile> indexedFile =
-                        ProjectModulesStubIndex.getInstance().get(moduleNameKey, myProject, GlobalSearchScope.allScope(myProject));
+                            StubIndex.getElements(index.getKey(),
+                                                  moduleNameKey,
+                                                  myProject,
+                                                  GlobalSearchScope.allScope(myProject),
+                                                  RakuFile.class);
                     if (!indexedFile.isEmpty())
                         file = indexedFile.iterator().next().getVirtualFile();
                 }

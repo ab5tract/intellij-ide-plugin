@@ -11,6 +11,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.meta.PsiMetaData;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.Stub;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.testFramework.LightVirtualFile;
 import com.intellij.ui.Gray;
@@ -100,7 +101,7 @@ public class RakuFileImpl extends PsiFileBase implements RakuFile {
 
     // We may use CacheValue/CachedValueManager mechanism, but a field is easier to try
     private List<RakuSymbol> EXPORT_CACHE = null;
-    private AtomicBoolean is_calculating_export = new AtomicBoolean();
+    private AtomicBoolean isCalculatingExport = new AtomicBoolean();
 
     public void dropExportCache() {
         EXPORT_CACHE = null;
@@ -231,8 +232,9 @@ public class RakuFileImpl extends PsiFileBase implements RakuFile {
                         ((RakuVariableDeclStub)current).getPsi().contributeLexicalSymbols(collector);
                 }
                 else if (current instanceof RakuPackageDeclStub nested) {
-                    if (((RakuPackageDeclStub)current).getPackageKind().equals("module"))
+                    if (nested.getPackageKind().equals("module")) {
                         addChildren = true;
+                    }
                     String scope = nested.getScope();
                     if (scope.equals("our") || scope.equals("unit")) {
                         String topName = nested.getTypeName();
@@ -246,16 +248,19 @@ public class RakuFileImpl extends PsiFileBase implements RakuFile {
                     }
                 }
                 else if (current instanceof RakuRoutineDeclStub) {
-                    if (((RakuRoutineDeclStub)current).isExported() || ((RakuRoutineDeclStub)current).getScope().equals("our"))
-                        ((RakuRoutineDeclStub)current).getPsi().contributeLexicalSymbols(collector);
+                    if (((RakuRoutineDeclStub)current).isExported() || ((RakuRoutineDeclStub)current).getScope().equals("our")) {
+                        ((RakuRoutineDeclStub) current).getPsi().contributeLexicalSymbols(collector);
+                    }
                 }
                 else if (current instanceof RakuEnumStub) {
-                    if (((RakuEnumStub)current).isExported() || ((RakuEnumStub)current).getScope().equals("our"))
-                        ((RakuEnumStub)current).getPsi().contributeLexicalSymbols(collector);
+                    if (((RakuEnumStub)current).isExported() || ((RakuEnumStub)current).getScope().equals("our")) {
+                        ((RakuEnumStub) current).getPsi().contributeLexicalSymbols(collector);
+                    }
                 }
                 else if (current instanceof RakuSubsetStub) {
-                    if (((RakuSubsetStub)current).isExported() || ((RakuSubsetStub)current).getScope().equals("our"))
-                        collector.offerSymbol(new RakuExplicitSymbol(RakuSymbolKind.TypeOrConstant, ((RakuSubsetStub)current).getPsi()));
+                    if (((RakuSubsetStub)current).isExported() || ((RakuSubsetStub)current).getScope().equals("our")) {
+                        collector.offerSymbol(new RakuExplicitSymbol(RakuSymbolKind.TypeOrConstant, ((RakuSubsetStub) current).getPsi()));
+                    }
                 }
                 else if (current instanceof RakuUseStatementStub use) {
                     contributeTransitive(collector, seen, "use", use.getModuleName());
@@ -267,53 +272,60 @@ public class RakuFileImpl extends PsiFileBase implements RakuFile {
                 else {
                     addChildren = true;
                 }
-                if (addChildren)
+
+                if (addChildren) {
                     visit.addAll(current.getChildrenStubs());
+                }
             }
         }
         else {
             Queue<RakuPsiElement> visit = new LinkedList<>();
             visit.add(this);
-            while (!visit.isEmpty()) {
-                if (collector.isSatisfied())
+            while (! visit.isEmpty()) {
+                if (collector.isSatisfied()) {
                     return;
+                }
                 RakuPsiElement current = visit.remove();
                 boolean addChildren = false;
                 if (current == this) {
                     addChildren = true;
                 }
                 else if (current instanceof RakuVariableDecl) {
-                    if (((RakuVariableDecl)current).isExported() || ((RakuVariableDecl)current).getScope().equals("our"))
-                        ((RakuVariableDecl)current).contributeLexicalSymbols(collector);
+                    if (((RakuVariableDecl)current).isExported() || ((RakuVariableDecl)current).getScope().equals("our")) {
+                        ((RakuVariableDecl) current).contributeLexicalSymbols(collector);
+                    }
                 }
                 else if (current instanceof RakuPackageDecl nested) {
-                    if (((RakuPackageDecl)current).getPackageKind().equals("module"))
+                    if (nested.getPackageKind().equals("module")) {
                         addChildren = true;
+                    }
                     String scope = nested.getScope();
                     if (scope.equals("our") || scope.equals("unit")) {
                         String topName = nested.getName();
                         if (topName != null && !topName.isEmpty()) {
                             collector.offerSymbol(new RakuExplicitAliasedSymbol(RakuSymbolKind.TypeOrConstant,
                                                                                 nested, topName));
-                            if (!collector.isSatisfied())
+                            if (!collector.isSatisfied()) {
                                 nested.contributeNestedPackagesWithPrefix(collector, topName + "::");
+                            }
                         }
                     }
                 }
                 else if (current instanceof RakuRoutineDecl) {
                     // Maybe contribute sub EXPORT
-                    if (((RakuRoutineDecl)current).isExported() || ((RakuRoutineDecl)current).getScope().equals("our"))
-                        ((RakuRoutineDecl)current).contributeLexicalSymbols(collector);
+                    if (((RakuRoutineDecl) current).isExported() || ((RakuRoutineDecl) current).getScope().equals("our")) {
+                        ((RakuRoutineDecl) current).contributeLexicalSymbols(collector);
+                    }
                     if (Objects.equals(current.getName(), "EXPORT")) {
                         ApplicationManager.getApplication().executeOnPooledThread(() -> {
                             contributeSymbolsFromEXPORT(collector);
                         });
                     }
                 }
-                else if (current instanceof RakuEnum perl6Enum) {
-                    String scope = perl6Enum.getScope();
+                else if (current instanceof RakuEnum rakuEnum) {
+                    String scope = rakuEnum.getScope();
                     if (scope.equals("our")) {
-                        perl6Enum.contributeLexicalSymbols(collector);
+                        rakuEnum.contributeLexicalSymbols(collector);
                     }
                 }
                 else if (current instanceof RakuSubset) {
@@ -339,37 +351,41 @@ public class RakuFileImpl extends PsiFileBase implements RakuFile {
     }
 
     private void contributeSymbolsFromEXPORT(RakuSymbolCollector collector) {
-        if (is_calculating_export.compareAndSet(false, true)) {
-            if (EXPORT_CACHE != null) {
-                for (RakuSymbol symbol : EXPORT_CACHE) {
-                    collector.offerSymbol(symbol);
-                }
+        if (isCalculatingExport.compareAndSet(false, true)) {
+            if (Objects.nonNull(EXPORT_CACHE)) {
+                EXPORT_CACHE.forEach(collector::offerSymbol);
             }
             else {
                 LightVirtualFile dummy = new LightVirtualFile(getName());
-                ExternalRakuFile perl6File = new ExternalRakuFile(getProject(), dummy);
+                ExternalRakuFile rakuFile = new ExternalRakuFile(getProject(), dummy);
                 String invocation = "use " + getEnclosingPerl6ModuleName();
-                List<RakuSymbol> symbols = RakuSdkType.loadModuleSymbols(getProject(), perl6File, getName(),
+                List<RakuSymbol> symbols = RakuSdkType.loadModuleSymbols(getProject(),
+                                                                         rakuFile,
+                                                                         getName(),
                                                                          invocation,
-                                                                         new HashMap<>(), true);
+                                                                         new HashMap<>(),
+                                                                  true);
                 EXPORT_CACHE = symbols;
-                for (RakuSymbol rakuSymbol : symbols) {
-                    collector.offerSymbol(rakuSymbol);
-                }
+                symbols.forEach(collector::offerSymbol);
             }
-            is_calculating_export.set(false);
+            isCalculatingExport.set(false);
         }
     }
 
     private void contributeTransitive(RakuSymbolCollector collector, Set<String> seen, String directive, String name) {
-        if (name == null || seen.contains(name))
+        if (Objects.isNull(name) || seen.contains(name)) {
             return;
+        }
         seen.add(name);
 
         Project project = getProject();
-        Collection<RakuFile> found = ProjectModulesStubIndex.getInstance()
-                .get(name, project, GlobalSearchScope.projectScope(project));
-        if (found.size() > 0) {
+        var index = ProjectModulesStubIndex.getInstance();
+        Collection<RakuFile> found = StubIndex.getElements(index.getKey(),
+                                                           name,
+                                                           project,
+                                                           GlobalSearchScope.projectScope(project),
+                                                           RakuFile.class);
+        if (! found.isEmpty()) {
             RakuFile file = found.iterator().next();
             file.contributeGlobals(collector, seen);
         }
@@ -384,26 +400,29 @@ public class RakuFileImpl extends PsiFileBase implements RakuFile {
     public void contributeScopeSymbols(RakuSymbolCollector collector) {
         for (String symbol : VARIABLE_SYMBOLS.keySet()) {
             collector.offerSymbol(new RakuImplicitSymbol(RakuSymbolKind.Variable, symbol));
-            if (collector.isSatisfied())
+            if (collector.isSatisfied()) {
                 return;
+            }
         }
         RakuSdkType.getInstance().getCoreSettingFile(getProject()).contributeGlobals(collector, new HashSet<>());
-        if (collector.isSatisfied())
+        if (collector.isSatisfied()) {
             return;
+        }
         PsiElement list = PsiTreeUtil.getChildOfType(this, RakuStatementList.class);
-        if (list != null) {
+        if (Objects.nonNull(list)) {
             PsiElement finish = PsiTreeUtil.findChildOfType(list, PodBlockFinish.class);
-            if (finish != null) {
+            if (Objects.nonNull(finish)) {
                 RakuSymbol finishBlock = new RakuImplicitSymbol(RakuSymbolKind.Variable, "$=finish");
                 collector.offerSymbol(finishBlock);
             }
         }
 
         VirtualFile virtualFile = getOriginalFile().getVirtualFile();
-        if (virtualFile != null) {
+        if (Objects.nonNull(virtualFile)) {
             RakuReplState replState = virtualFile.getUserData(RakuReplState.PERL6_REPL_STATE);
-            if (replState != null)
+            if (Objects.nonNull(replState)) {
                 replState.contributeFromHistory(collector);
+            }
         }
     }
 
@@ -411,8 +430,9 @@ public class RakuFileImpl extends PsiFileBase implements RakuFile {
     @Override
     public PsiMetaData getMetaData() {
         String name = getEnclosingPerl6ModuleName();
-        if (name == null)
+        if (Objects.isNull(name)) {
             name = getName();
+        }
         String finalName = name;
         return new PsiMetaData() {
             @Override
