@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public class RakuSubCallStubElementType extends IStubElementType<RakuSubCallStub, RakuSubCall> {
     public RakuSubCallStubElementType() {
-        super("SUBCALL", RakuLanguage.INSTANCE);
+        super("SUBCALL", RakuLanguage.getInstance());
     }
 
     @Override

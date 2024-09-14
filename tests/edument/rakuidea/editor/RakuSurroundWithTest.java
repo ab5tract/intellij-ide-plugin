@@ -129,7 +129,7 @@ public class RakuSurroundWithTest extends CommaFixtureTestCase {
 
     private void doTest(Surrounder surrounder) {
         myFixture.configureByFile(getTestName(true) + "Before.p6");
-        List<SurroundDescriptor> descriptors = LanguageSurrounders.INSTANCE.allForLanguage(RakuLanguage.INSTANCE);
+        List<SurroundDescriptor> descriptors = LanguageSurrounders.INSTANCE.allForLanguage(RakuLanguage.getInstance());
         SelectionModel selectionModel = myFixture.getEditor().getSelectionModel();
         PsiElement[] elements = null;
         for (SurroundDescriptor descriptor : descriptors) {

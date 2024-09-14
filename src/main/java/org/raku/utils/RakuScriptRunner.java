@@ -2,23 +2,16 @@ package org.raku.utils;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.PtyCommandLine;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.util.text.VersionComparatorUtil;
 import org.raku.sdk.RakuSdkType;
 import org.raku.services.RakuBackupSDKService;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +19,6 @@ import java.util.Map;
  * FIXME
  */
 public class RakuScriptRunner extends PtyCommandLine {
-    private static final Logger LOG = Logger.getInstance(RakuScriptRunner.class);
 
     public RakuScriptRunner(Project project) throws ExecutionException {
         this(RakuSdkType.getSdkHomeByProject(project));
@@ -47,32 +39,11 @@ public class RakuScriptRunner extends PtyCommandLine {
 
     public RakuScriptRunner(Project project, int debugPort) throws ExecutionException {
         List<String> parameters = populateDebugCommandLine(project, debugPort);
-        if (parameters == null)
+        if (parameters == null) {
             throw new ExecutionException("SDK is not valid for debugging");
-        setExePath(parameters.get(0));
-        addParameters(parameters.subList(1, parameters.size()));
-    }
-
-    @NotNull
-    public List<String> executeAndRead() {
-        List<String> results = new LinkedList<>();
-        try {
-            Process p = createProcess();
-            try (
-                BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8))
-            ) {
-                String line;
-                while ((line = reader.readLine()) != null)
-                    results.add(line);
-                if (p.waitFor() != 0)
-                    return new ArrayList<>();
-            } catch (IOException e) {
-                LOG.warn(e);
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            LOG.warn(e);
         }
-        return results;
+        setExePath(parameters.getFirst());
+        addParameters(parameters.subList(1, parameters.size()));
     }
 
     @Nullable
@@ -105,12 +76,11 @@ public class RakuScriptRunner extends PtyCommandLine {
             command.add("--debug-suspend");
         } else {
             Map<String, String> moarBuildConfiguration = RakuSdkType.getInstance().getMoarBuildConfiguration(project);
-            if (moarBuildConfiguration == null) {
-                return null;
-            }
+            if (moarBuildConfiguration == null) return null;
             String prefix = moarBuildConfiguration.getOrDefault("perl6::prefix", null);
-            if (prefix == null)
+            if (prefix == null) {
                 prefix = moarBuildConfiguration.getOrDefault("Raku::prefix", "");
+            }
             command.add(Paths.get(prefix, "bin", "moar").toString());
             // Always start suspended so we have time to send breakpoints and event handlers.
             // If the option is disabled, we'll resume right after that.

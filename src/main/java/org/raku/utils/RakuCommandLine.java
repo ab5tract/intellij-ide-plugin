@@ -60,7 +60,7 @@ public class RakuCommandLine extends GeneralCommandLine {
         List<String> parameters = populateDebugCommandLine(project, debugPort);
         if (parameters == null)
             throw new ExecutionException("SDK is not valid for debugging");
-        setExePath(parameters.get(0));
+        setExePath(parameters.getFirst());
         addParameters(parameters.subList(1, parameters.size()));
     }
 
@@ -73,11 +73,11 @@ public class RakuCommandLine extends GeneralCommandLine {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8))
             ) {
                 String line;
-                while ((line = reader.readLine()) != null)
-                    results.add(line);
+                while ((line = reader.readLine()) != null) results.add(line);
                 if (p.waitFor() != 0) {
-                    if (scriptFile != null)
-                        scriptFile.delete();
+                    if (scriptFile != null) {
+                        if (! scriptFile.delete()) LOG.warn("Could not delete script file: " + scriptFile.getAbsolutePath());
+                    }
                     return new ArrayList<>();
                 }
             } catch (IOException e) {
@@ -86,8 +86,9 @@ public class RakuCommandLine extends GeneralCommandLine {
         } catch (InterruptedException | ExecutionException e) {
             LOG.warn(e);
         }
-        if (scriptFile != null)
-            scriptFile.delete();
+        if (scriptFile != null) {
+           if (! scriptFile.delete()) LOG.warn("Could not delete script file: " + scriptFile.getAbsolutePath());
+        }
         return results;
     }
 
@@ -124,9 +125,10 @@ public class RakuCommandLine extends GeneralCommandLine {
             if (moarBuildConfiguration == null) {
                 return null;
             }
-            String prefix = moarBuildConfiguration.getOrDefault("rakuidea::prefix", null);
-            if (prefix == null)
+            String prefix = moarBuildConfiguration.getOrDefault("raku::prefix", null);
+            if (prefix == null) {
                 prefix = moarBuildConfiguration.getOrDefault("Raku::prefix", "");
+            }
             command.add(Paths.get(prefix, "bin", "moar").toString());
             // Always start suspended so we have time to send breakpoints and event handlers.
             // If the option is disabled, we'll resume right after that.

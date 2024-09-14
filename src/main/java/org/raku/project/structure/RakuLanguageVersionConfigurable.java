@@ -18,7 +18,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RakuLanguageVersionConfigurable implements UnnamedConfigurable {
-    private final Project myProject;
     private final RakuLanguageVersionService myService;
     private ComboBox<RakuLanguageVersion> myLanguageVersionComboBox;
     private JComponent myPanel;
@@ -29,7 +28,6 @@ public class RakuLanguageVersionConfigurable implements UnnamedConfigurable {
     private JBCheckBox myExplicitCheckbox;
 
     public RakuLanguageVersionConfigurable(Project project) {
-        myProject = project;
         myService = project.getService(RakuLanguageVersionService.class);
         oldIsExplicit = newIsExplicit = myService.getIsExplicit();
         oldVersion = newVersion = myService.getVersion();
@@ -55,17 +53,20 @@ public class RakuLanguageVersionConfigurable implements UnnamedConfigurable {
                     return comp;
                 }
             });
-            for (RakuLanguageVersion value : RakuLanguageVersion.values())
+            for (RakuLanguageVersion value : RakuLanguageVersion.values()) {
                 myLanguageVersionComboBox.addItem(value);
-            if (oldVersion != null)
+            }
+            if (oldVersion != null) {
                 myLanguageVersionComboBox.setSelectedItem(oldVersion);
+            }
 
             myLanguageVersionComboBox.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Object item = myLanguageVersionComboBox.getSelectedItem();
-                    if (item instanceof RakuLanguageVersion)
-                        newVersion = (RakuLanguageVersion)item;
+                    if (item instanceof RakuLanguageVersion) {
+                        newVersion = (RakuLanguageVersion) item;
+                    }
                 }
             });
 

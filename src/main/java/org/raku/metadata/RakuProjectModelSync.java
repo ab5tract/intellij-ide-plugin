@@ -61,7 +61,7 @@ public final class RakuProjectModelSync {
                                 // otherwise create and mark
                                 LibraryEx library = (LibraryEx)model.getModuleLibraryTable().createLibrary(metaDep);
                                 LibraryEx.ModifiableModelEx libraryModel = library.getModifiableModel();
-                                String url = String.format("rakuidea://%d:%s!/", sdk.getName().hashCode(), metaDep);
+                                String url = String.format("raku://%d:%s!/", sdk.getName().hashCode(), metaDep);
                                 libraryModel.setKind(RakuLibraryType.LIBRARY_KIND);
                                 libraryModel.addRoot(url, OrderRootType.SOURCES);
                                 LibraryOrderEntry entry = model.findLibraryOrderEntry(library);

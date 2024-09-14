@@ -1,6 +1,7 @@
 package org.raku.actions;
 
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -16,8 +17,7 @@ public class NewTestAction extends NewRakuFileAction<NewTestDialog> {
     @Override
     protected void processDialogResult(Project project, String testPath, NewTestDialog dialog) {
         String fileName = dialog.getTestName();
-        if (fileName == null)
-            return;
+        if (fileName == null) return;
 
         RakuLanguageVersionService service = project.getService(RakuLanguageVersionService.class);
         testPath = RakuModuleBuilderModule.stubTest(Paths.get(testPath), fileName, Collections.emptyList(), service.getVersion());

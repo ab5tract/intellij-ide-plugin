@@ -325,7 +325,7 @@ public class FormatterTest extends CommaFixtureTestCase {
         }
 
         public void updateTempSettings(BiConsumer<CommonCodeStyleSettings, RakuCodeStyleSettings> config) {
-            CommonCodeStyleSettings commons = myTemp.getCommonSettings(RakuLanguage.INSTANCE);
+            CommonCodeStyleSettings commons = myTemp.getCommonSettings(RakuLanguage.getInstance());
             RakuCodeStyleSettings customs = myTemp.getCustomSettings(RakuCodeStyleSettings.class);
             config.accept(commons, customs);
         }

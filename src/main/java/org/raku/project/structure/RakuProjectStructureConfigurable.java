@@ -3,7 +3,6 @@ package org.raku.project.structure;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.options.BaseConfigurable;
@@ -39,7 +38,6 @@ public class RakuProjectStructureConfigurable extends BaseConfigurable implement
                                                                                   SearchableConfigurable,
                                                                                   Place.Navigator, Configurable.NoMargin,
                                                                                   Configurable.NoScroll {
-    private static final Logger LOG = Logger.getInstance(RakuProjectStructureConfigurable.class);
     private static final String CATEGORY = "category";
     public static final DataKey<RakuProjectStructureConfigurable> KEY = DataKey.create("RakuProjectStructureConfiguration");
     protected final RakuProjectStructureConfigurable.UIState myUiState = new RakuProjectStructureConfigurable.UIState();
@@ -76,8 +74,7 @@ public class RakuProjectStructureConfigurable extends BaseConfigurable implement
         if (moduleToSelect != null) {
             final Module module = ModuleManager.getInstance(myProject).findModuleByName(moduleToSelect);
             assert module != null;
-            place =
-                place.putPath(MasterDetailsComponent.TREE_OBJECT, module).putPath(ModuleEditor.SELECTED_EDITOR_NAME, editorNameToSelect);
+            place.putPath(MasterDetailsComponent.TREE_OBJECT, module).putPath(ModuleEditor.SELECTED_EDITOR_NAME, editorNameToSelect);
         }
         return navigateTo(place, requestFocus);
     }
@@ -118,7 +115,7 @@ public class RakuProjectStructureConfigurable extends BaseConfigurable implement
     @NotNull
     @Override
     public String getId() {
-        return "rakuidea.project.structure";
+        return "raku.project.structure";
     }
 
     @Nls
@@ -187,7 +184,7 @@ public class RakuProjectStructureConfigurable extends BaseConfigurable implement
     }
 
     private void addProjectConfigurable() {
-        myProjectConfigurable = new RakuProjectConfigurable(myProject, myContext, myProjectSdkModel);
+        myProjectConfigurable = new RakuProjectConfigurable(myProject, myProjectSdkModel);
         addConfigurable(myProjectConfigurable);
     }
 
@@ -232,8 +229,8 @@ public class RakuProjectStructureConfigurable extends BaseConfigurable implement
 
                 myHistory.clear();
 
-                if (toSelect == null && myName2Config.size() > 0) {
-                    toSelect = myName2Config.iterator().next();
+                if (toSelect == null && ! myName2Config.isEmpty()) {
+                    toSelect = myName2Config.getFirst();
                 }
 
                 removeSelected();
@@ -265,7 +262,8 @@ public class RakuProjectStructureConfigurable extends BaseConfigurable implement
 
     @Override
     public ActionCallback navigateTo(@Nullable Place place, boolean requestFocus) {
-        final Configurable toSelect = (Configurable)place.getPath(CATEGORY);
+        assert place != null;
+        final Configurable toSelect = (Configurable) place.getPath(CATEGORY);
         JComponent detailsContent = myDetails.getTargetComponent();
 
         if (mySelectedConfigurable != toSelect) {
@@ -290,7 +288,9 @@ public class RakuProjectStructureConfigurable extends BaseConfigurable implement
 
         if (detailsContent != null) {
             JComponent toFocus = IdeFocusTraversalPolicy.getPreferredFocusedComponent(detailsContent);
-            if (toFocus == null) toFocus = detailsContent;
+            if (toFocus == null) {
+                toFocus = detailsContent;
+            }
             if (requestFocus) {
                 myToFocus = toFocus;
                 IdeFocusManager.findInstance().requestFocus(toFocus, true);
@@ -330,9 +330,7 @@ public class RakuProjectStructureConfigurable extends BaseConfigurable implement
 
         myUiState.proportion = mySplitter.getProportion();
         saveSideProportion();
-        for (Configurable each : myName2Config) {
-            each.disposeUIResources();
-        }
+        myName2Config.forEach(Configurable::disposeUIResources);
         myContext.clear();
         myName2Config.clear();
         myUiInitialized = false;

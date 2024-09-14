@@ -1,8 +1,10 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package org.raku.project.structure;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.components.Service;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
@@ -23,7 +25,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.tree.TreePath;
 import java.util.*;
 
-public class RakuSdkListConfigurable extends RakuStructureConfigurable {
+@Service(Service.Level.PROJECT)
+public final class RakuSdkListConfigurable extends RakuStructureConfigurable {
     private final SdkModel.Listener myListener = new SdkModel.Listener() {
         @Override
         public void sdkAdded(@NotNull Sdk sdk) {
@@ -53,7 +56,7 @@ public class RakuSdkListConfigurable extends RakuStructureConfigurable {
     @NotNull
     private final ProjectSdksModel myJdksTreeModel;
 
-    protected RakuSdkListConfigurable(@NotNull Project project) {
+    RakuSdkListConfigurable(@NotNull Project project) {
         super(project);
         myJdksTreeModel = org.raku.project.structure.RakuProjectStructureConfigurable.getInstance(project).getProjectSdksModel();
     }
@@ -73,22 +76,20 @@ public class RakuSdkListConfigurable extends RakuStructureConfigurable {
         }
     }
 
-    public boolean addSdkNode(final Sdk sdk, final boolean selectInTree) {
+    public void addSdkNode(final Sdk sdk, final boolean selectInTree) {
         if (!myUiDisposed) {
             addNode(new MyNode(new RakuSdkConfigurable((ProjectJdkImpl)sdk, myJdksTreeModel, TREE_UPDATER, myHistory, myProject)), myRoot);
             if (selectInTree) {
                 selectNodeInTree(MasterDetailsComponent.findNodeByObject(myRoot, sdk));
             }
-            return true;
         }
-        return false;
     }
 
     @Override
     protected @NotNull ArrayList<AnAction> createActions(boolean fromPopup) {
         ArrayList<AnAction> defaultActions = super.createActions(fromPopup);
         AnAction addNewAction = new AddSdkAction();
-        defaultActions.add(0, addNewAction);
+        defaultActions.addFirst(addNewAction);
         return defaultActions;
     }
 
@@ -178,6 +179,9 @@ public class RakuSdkListConfigurable extends RakuStructureConfigurable {
         public void update(@NotNull AnActionEvent e) {
             e.getPresentation().setEnabledAndVisible(true);
         }
+
+        @Override
+        public @NotNull ActionUpdateThread getActionUpdateThread() { return ActionUpdateThread.EDT; }
 
         @Override
         public void actionPerformed(@NotNull AnActionEvent e) {

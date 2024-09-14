@@ -39,7 +39,7 @@ public class TypeWizardStepForm extends ModuleWizardStep implements Disposable {
     @Override
     public void updateDataModel() {
         String selectedType = getSelectedType();
-        builder.setPerl6ModuleType(RakuProjectType.fromTypeLabel(selectedType));
+        builder.setRakuModuleType(RakuProjectType.fromTypeLabel(selectedType));
     }
 
     public void createUIComponents() {
@@ -51,7 +51,7 @@ public class TypeWizardStepForm extends ModuleWizardStep implements Disposable {
         list1.addListSelectionListener(e -> {
             if (e.getValueIsAdjusting()) return;
             RakuProjectType type = RakuProjectType.fromTypeLabel(getSelectedType());
-            builder.setPerl6ModuleType(type);
+            builder.setRakuModuleType(type);
             description.setText("<html>" + RakuProjectType.getDescription(type) + "</html>");
         });
     }

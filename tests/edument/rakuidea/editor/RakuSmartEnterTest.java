@@ -17,7 +17,7 @@ public class RakuSmartEnterTest extends CommaFixtureTestCase {
 
     public void doTest() {
         myFixture.configureByFile(getTestName(false) + ".p6");
-        final List<SmartEnterProcessor> processors = SmartEnterProcessors.INSTANCE.forKey(RakuLanguage.INSTANCE);
+        final List<SmartEnterProcessor> processors = SmartEnterProcessors.INSTANCE.forKey(RakuLanguage.getInstance());
         WriteCommandAction.writeCommandAction(myFixture.getProject()).run(() -> {
             final Editor editor = myFixture.getEditor();
             for (SmartEnterProcessor processor : processors) {

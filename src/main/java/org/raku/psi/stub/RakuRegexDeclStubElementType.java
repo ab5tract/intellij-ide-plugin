@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class RakuRegexDeclStubElementType extends IStubElementType<RakuRegexDeclStub, RakuRegexDecl> {
     public RakuRegexDeclStubElementType() {
-        super("REGEX_DECLARATION", RakuLanguage.INSTANCE);
+        super("REGEX_DECLARATION", RakuLanguage.getInstance());
     }
 
     @Override

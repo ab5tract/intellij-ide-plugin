@@ -15,7 +15,7 @@ public class RakuPodFileType extends LanguageFileType implements RakuMultiExtens
     public static final RakuPodFileType INSTANCE = new RakuPodFileType();
 
     private RakuPodFileType() {
-        super(RakuLanguage.INSTANCE);
+        super(RakuLanguage.getInstance());
     }
 
     @NotNull

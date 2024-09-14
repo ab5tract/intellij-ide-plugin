@@ -16,7 +16,7 @@ public class RakuScriptFileType extends LanguageFileType implements RakuMultiExt
     public static final RakuScriptFileType INSTANCE = new RakuScriptFileType();
 
     private RakuScriptFileType() {
-        super(RakuLanguage.INSTANCE);
+        super(RakuLanguage.getInstance());
     }
 
     @NotNull

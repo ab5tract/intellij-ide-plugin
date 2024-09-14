@@ -25,7 +25,7 @@ import javax.swing.*;
 
 @InternalIgnoreDependencyViolation
 public class RakuActionProvider implements InspectionWidgetActionProvider {
-    public static final Key<RakuReaderModeState> RAKU_EDITOR_MODE_STATE = new Key<>("rakuidea.module.view.state.key");
+    public static final Key<RakuReaderModeState> RAKU_EDITOR_MODE_STATE = new Key<>("raku.module.view.state.key");
 
     @Nullable
     @Override
@@ -61,31 +61,20 @@ public class RakuActionProvider implements InspectionWidgetActionProvider {
 
         @Override
         public void update(@NotNull AnActionEvent e) {
-            if (myEditor.getProject() == null)
-                return;
+            if (myEditor.getProject() == null) return;
             Presentation presentation = e.getPresentation();
             PsiFile file = PsiDocumentManager.getInstance(myEditor.getProject()).getPsiFile(myEditor.getDocument());
-            if (file == null)
-                return;
+            if (file == null) return;
             RakuReaderModeState currentState = file.getUserData(RAKU_EDITOR_MODE_STATE);
             presentation.setEnabledAndVisible(currentState != RakuReaderModeState.SPLIT &&
                                               (currentState == null && myState != RakuReaderModeState.CODE ||
                                               currentState != null && currentState != myState));
             presentation.setText(myState.toString());
-            String descriptionText;
-            switch (myState) {
-                case CODE:
-                    descriptionText = "Display default editor view presenting Raku source code";
-                    break;
-                case DOCS:
-                    descriptionText = "Display special editor view presenting rendered module documentation";
-                    break;
-                case SPLIT:
-                    descriptionText = "Display special editor view presenting both Raku source code and rendered module documentation";
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + myState);
-            }
+            String descriptionText = switch (myState) {
+                case CODE -> "Display default editor view presenting Raku source code";
+                case DOCS -> "Display special editor view presenting rendered module documentation";
+                case SPLIT -> "Display special editor view presenting both Raku source code and rendered module documentation";
+            };
             presentation.setDescription(descriptionText);
         }
 
@@ -117,17 +106,20 @@ public class RakuActionProvider implements InspectionWidgetActionProvider {
         CodeModeAction(@NotNull Editor editor) {
             super(RakuReaderModeState.CODE, editor);
         }
+        @Override public @NotNull ActionUpdateThread getActionUpdateThread() { return ActionUpdateThread.EDT; }
     }
 
     private static class DocsModeAction extends RotatedStateAction {
         DocsModeAction(@NotNull Editor editor) {
             super(RakuReaderModeState.DOCS, editor);
         }
+        @Override public @NotNull ActionUpdateThread getActionUpdateThread() { return ActionUpdateThread.EDT; }
     }
 
     private static class SplitModeAction extends RotatedStateAction {
         SplitModeAction(@NotNull Editor editor) {
             super(RakuReaderModeState.SPLIT, editor);
         }
+        @Override public @NotNull ActionUpdateThread getActionUpdateThread() { return ActionUpdateThread.EDT; }
     }
 }

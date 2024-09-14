@@ -68,8 +68,7 @@ public class RakuLaunchReplAction extends AnAction {
 
     protected static String getSdkHome(@NotNull AnActionEvent e) {
         Project project = e.getProject();
-        if (project == null)
-            return null;
+        if (project == null) return null;
         Sdk sdk = ProjectRootManager.getInstance(project).getProjectSdk();
         if (sdk != null && sdk.getSdkType() instanceof RakuSdkType) {
             return sdk.getHomePath();

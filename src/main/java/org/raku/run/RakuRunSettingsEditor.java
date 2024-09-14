@@ -124,7 +124,7 @@ public class RakuRunSettingsEditor extends SettingsEditor<RakuRunConfiguration> 
                 return file.isDirectory() ||
                        file.getExtension() == null
                        ||
-                       Arrays.asList("pm6", "pl6", "p6", "t", "rakumod", "rakuidea", "rakutest", "rakudoc", "").contains(file.getExtension());
+                       Arrays.asList("pm6", "pl6", "p6", "t", "rakumod", "raku", "rakutest", "rakudoc", "").contains(file.getExtension());
             }
         };
         myParams = new CommonProgramParametersPanel() {

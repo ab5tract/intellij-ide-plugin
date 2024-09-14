@@ -43,7 +43,7 @@ public class RakuFormattingModelBuilder implements FormattingModelBuilder {
         final PsiFile psiFile = formattingContext.getContainingFile();
         List<BiFunction<RakuBlock, RakuBlock, Spacing>> rules = new ArrayList<>();
         CodeStyleSettings settings = formattingContext.getCodeStyleSettings();
-        CommonCodeStyleSettings commonSettings = settings.getCommonSettings(RakuLanguage.INSTANCE);
+        CommonCodeStyleSettings commonSettings = settings.getCommonSettings(RakuLanguage.getInstance());
         RakuCodeStyleSettings customSettings = settings.getCustomSettings(RakuCodeStyleSettings.class);
         initRules(rules, commonSettings, customSettings);
         final RakuBlock block = new RakuBlock(psiFile.getNode(), null, null, commonSettings, customSettings, rules);
@@ -199,14 +199,15 @@ public class RakuFormattingModelBuilder implements FormattingModelBuilder {
         rules.add((left, right) -> {
             boolean leftInfix = left.getNode().getElementType() == REGEX_INFIX;
             boolean rightInfix = right.getNode().getElementType() == REGEX_INFIX;
-            if (!leftInfix && !rightInfix)
-                return null;
+            if (!leftInfix && !rightInfix) return null;
 
             // FIXME we handle only || here, because e.g. `&& a` turned into `&&a` becomes a call
-            if (leftInfix && left.getNode().getText().equals("||"))
+            if (leftInfix && left.getNode().getText().equals("||")) {
                 return customSettings.AFTER_REGEX_INFIX_SPACING ? SINGLE_SPACE_SPACING : CONSTANT_EMPTY_SPACING;
-            else if (rightInfix && right.getNode().getText().equals("||"))
+            }
+            else if (rightInfix && right.getNode().getText().equals("||")) {
                 return customSettings.BEFORE_REGEX_INFIX_SPACING ? SINGLE_SPACE_SPACING : CONSTANT_EMPTY_SPACING;
+            }
             return SINGLE_SPACE_SPACING;
         });
 
@@ -218,20 +219,31 @@ public class RakuFormattingModelBuilder implements FormattingModelBuilder {
                               right.getNode().getElementType() == REGEX_QUANTIFIER;
             if (!isLeft && !isRight) return null;
             String text = isLeft ? left.getNode().getText() : right.getNode().getText();
-            if (!(text.startsWith("**") || text.startsWith("%") || text.startsWith("%%")))
-                return null;
-            if (isLeft)
-                return customSettings.AFTER_REGEX_SEPARATOR_SPACING ? SINGLE_SPACE_SPACING : CONSTANT_EMPTY_SPACING;
-            else
-                return customSettings.BEFORE_REGEX_SEPARATOR_SPACING ? SINGLE_SPACE_SPACING : CONSTANT_EMPTY_SPACING;
+            if (!(text.startsWith("**") || text.startsWith("%") || text.startsWith("%%"))) return null;
+            if (isLeft) {
+                return customSettings.AFTER_REGEX_SEPARATOR_SPACING
+                            ? SINGLE_SPACE_SPACING
+                            : CONSTANT_EMPTY_SPACING;
+            }
+            else {
+                return customSettings.BEFORE_REGEX_SEPARATOR_SPACING
+                            ? SINGLE_SPACE_SPACING
+                            : CONSTANT_EMPTY_SPACING;
+            }
         });
 
         // Regex quantifier
         rules.add((left, right) -> {
-            if (left.getNode().getElementType() == RakuElementTypes.REGEX_QUANTIFIER)
-                return customSettings.AFTER_REGEX_QUANTIFIER_SPACING ? SINGLE_SPACE_SPACING : CONSTANT_EMPTY_SPACING;
-            if (right.getNode().getElementType() == RakuElementTypes.REGEX_QUANTIFIER)
-                return customSettings.BEFORE_REGEX_QUANTIFIER_SPACING ? SINGLE_SPACE_SPACING : CONSTANT_EMPTY_SPACING;
+            if (left.getNode().getElementType() == RakuElementTypes.REGEX_QUANTIFIER) {
+                return customSettings.AFTER_REGEX_QUANTIFIER_SPACING
+                            ? SINGLE_SPACE_SPACING
+                            : CONSTANT_EMPTY_SPACING;
+            }
+            if (right.getNode().getElementType() == RakuElementTypes.REGEX_QUANTIFIER) {
+                return customSettings.BEFORE_REGEX_QUANTIFIER_SPACING
+                            ? SINGLE_SPACE_SPACING
+                            : CONSTANT_EMPTY_SPACING;
+            }
             return null;
         });
     }
@@ -240,6 +252,7 @@ public class RakuFormattingModelBuilder implements FormattingModelBuilder {
         return node != null && node.getElementType() == RakuElementTypes.NULL_TERM;
     }
 
+    //TODO: Migrate every rule to a generator sub
     private void initLineBreakRules(CommonCodeStyleSettings commonSettings,
                                     RakuCodeStyleSettings customSettings,
                                     List<BiFunction<RakuBlock, RakuBlock, Spacing>> rules) {
@@ -248,21 +261,24 @@ public class RakuFormattingModelBuilder implements FormattingModelBuilder {
         rules.add((left, right) -> right.getNode().getElementType() == RakuElementTypes.BLOCKOID &&
                                    right.getNode().getTreeParent().getElementType() == RakuElementTypes.PACKAGE_DECLARATION
                                    ? (customSettings.PACKAGE_DECL_BRACE_STYLE == 1
-                                      ? SINGLE_SPACE_SPACING : SINGLE_LINE_BREAK)
+                                        ? SINGLE_SPACE_SPACING
+                                        : SINGLE_LINE_BREAK)
                                    : null);
 
         // Brace style for routine
         rules.add((left, right) -> right.getNode().getElementType() == RakuElementTypes.BLOCKOID &&
                                    right.getNode().getTreeParent().getElementType() == RakuElementTypes.ROUTINE_DECLARATION
                                    ? (customSettings.ROUTINE_DECL_BRACE_STYLE == 1
-                                      ? SINGLE_SPACE_SPACING : SINGLE_LINE_BREAK)
+                                        ? SINGLE_SPACE_SPACING
+                                        : SINGLE_LINE_BREAK)
                                    : null);
 
         // Brace style for regex
         rules.add((left, right) -> right.getNode().getElementType() == RakuElementTypes.BLOCKOID &&
                                    right.getNode().getTreeParent().getElementType() == RakuElementTypes.REGEX_DECLARATION
                                    ? (customSettings.REGEX_DECL_BRACE_STYLE == 1
-                                      ? SINGLE_SPACE_SPACING : SINGLE_LINE_BREAK)
+                                        ? SINGLE_SPACE_SPACING
+                                        : SINGLE_LINE_BREAK)
                                    : null);
 
         // Brace style for phasers and everything else
@@ -273,9 +289,11 @@ public class RakuFormattingModelBuilder implements FormattingModelBuilder {
             return right.getNode().getElementType() == RakuElementTypes.BLOCK
                    ? (right.getNode().getTreeParent().getElementType() == RakuElementTypes.PHASER
                       ? (customSettings.PHASER_BRACE_STYLE == 1
-                         ? SINGLE_SPACE_SPACING : SINGLE_LINE_BREAK)
+                            ? SINGLE_SPACE_SPACING
+                            : SINGLE_LINE_BREAK)
                       : (customSettings.OTHER_BRACE_STYLE == 1
-                         ? SINGLE_SPACE_SPACING : SINGLE_LINE_BREAK))
+                            ? SINGLE_SPACE_SPACING
+                            : SINGLE_LINE_BREAK))
                    : null;
         });
 
@@ -301,21 +319,22 @@ public class RakuFormattingModelBuilder implements FormattingModelBuilder {
                 PsiElement[] children = inner == null ? PsiElement.EMPTY_ARRAY : inner.getChildren();
                 int statementCount = children.length;
                 if (statementCount == 0) {
+                    //TODO: Break this down to conceptually absorbable pieces
                     if (source instanceof RakuPackageDecl && customSettings.PACKAGE_DECLARATION_IN_ONE_LINE ||
                         source instanceof RakuRoutineDecl && customSettings.ROUTINES_DECLARATION_IN_ONE_LINE ||
                         source instanceof RakuRegexDecl && customSettings.REGEX_DECLARATION_IN_ONE_LINE ||
                         source instanceof RakuPointyBlock && customSettings.POINTY_BLOCK_IN_ONE_LINE ||
-                        (source instanceof RakuStatement ||
-                         source instanceof RakuBlockOrHash ||
-                         source instanceof org.raku.psi.RakuBlock) && commonSettings.KEEP_SIMPLE_BLOCKS_IN_ONE_LINE) {
+                        (source instanceof RakuStatement || source instanceof RakuBlockOrHash || source instanceof org.raku.psi.RakuBlock)
+                        && commonSettings.KEEP_SIMPLE_BLOCKS_IN_ONE_LINE)
+                    {
                         return Spacing.createSpacing(0, 0, 0, true, 1);
                     }
                 }
                 else if (statementCount == 1) {
-                    if ((source instanceof RakuStatement ||
-                         source instanceof RakuBlockOrHash ||
-                         source instanceof org.raku.psi.RakuBlock) && commonSettings.KEEP_SIMPLE_BLOCKS_IN_ONE_LINE ||
-                        source instanceof RakuPointyBlock && customSettings.POINTY_BLOCK_IN_ONE_LINE) {
+                    if ((source instanceof RakuStatement || source instanceof RakuBlockOrHash || source instanceof org.raku.psi.RakuBlock)
+                        && commonSettings.KEEP_SIMPLE_BLOCKS_IN_ONE_LINE ||
+                        source instanceof RakuPointyBlock && customSettings.POINTY_BLOCK_IN_ONE_LINE)
+                    {
                         return Spacing.createSpacing(1, 1, 0, true, 1);
                     }
                     if (source instanceof RakuRegexDecl && customSettings.REGEX_DECLARATION_IN_ONE_LINE) {
@@ -324,22 +343,32 @@ public class RakuFormattingModelBuilder implements FormattingModelBuilder {
                             spaces = 0;
                         return Spacing.createSpacing(spaces, spaces, 0, true, 1);
                     }
-                    if (source instanceof RakuRoutineDecl && PsiTreeUtil.findChildOfType(source, RakuStubCode.class) != null)
+                    if (source instanceof RakuRoutineDecl && PsiTreeUtil.findChildOfType(source, RakuStubCode.class) != null) {
                         return Spacing.createSpacing(0, 0, 0, false, 0);
+                    }
                 }
                 if (statementCount < 2) {
                     return Spacing.createSpacing(0, 0, 1, false, 0);
                 }
             }
             int lineFeeds = 1;
-            if (left.getNode().getElementType() == RakuElementTypes.REGEX && left.getNode().getText().replaceAll(" ", "").endsWith("\n"))
+            boolean lhsElementIsRegex = left.getNode().getElementType() == RakuElementTypes.REGEX;
+            boolean lhsElementHasNewline = left.getNode().getText().replaceAll(" ", "").endsWith("\n");
+            if (lhsElementIsRegex && lhsElementHasNewline) {
                 lineFeeds = 0;
+            }
             return Spacing.createSpacing(0, 0, lineFeeds, true, 1);
         });
 
-        rules.add((left, right) -> (STATEMENTS.contains(left.getNode().getElementType())
-                                   || STATEMENTS.contains(right.getNode().getElementType())) && !(left.getNode().getTreeParent().getElementType() == SEMI_LIST
-                                                                                                  || right.getNode().getTreeParent().getElementType() == SEMI_LIST)
-                                   ? SINGLE_LINE_BREAK : null);
+        rules.add(semiListRule());
+    }
+
+    private BiFunction<RakuBlock, RakuBlock, Spacing> semiListRule() {
+        return (left, right) ->
+                (STATEMENTS.contains(left.getNode().getElementType()) || STATEMENTS.contains(right.getNode().getElementType()))
+                && !(left.getNode().getTreeParent().getElementType() == SEMI_LIST
+                || right.getNode().getTreeParent().getElementType() == SEMI_LIST)
+                    ? SINGLE_LINE_BREAK
+                    : null;
     }
 }

@@ -37,10 +37,12 @@ public class RakuModuleBuilderScript implements RakuModuleBuilderGeneric {
                                     boolean shouldFill,
                                     RakuLanguageVersion languageVersion) {
         List<String> lines = new ArrayList<>(Collections.singletonList("#!/usr/bin/env rakuidea"));
-        if (languageVersion != null)
+        if (languageVersion != null) {
             lines.add(String.format("use v%s;", languageVersion));
-        if (shouldFill)
+        }
+        if (shouldFill) {
             lines.addAll(Arrays.asList("", "", "sub MAIN() { }"));
+        }
         Path path = moduleLibraryPath.resolve(scriptName);
         RakuUtils.writeCodeToPath(path, lines);
         return path.toString();
@@ -49,7 +51,8 @@ public class RakuModuleBuilderScript implements RakuModuleBuilderGeneric {
     @Override
     public void modifySettingsStep(SettingsStep step) {
         final ModuleNameLocationSettings nameField = step.getModuleNameLocationSettings();
-        if (myScriptName != null && nameField != null)
+        if (myScriptName != null && nameField != null) {
             nameField.setModuleName(StringUtil.sanitizeJavaIdentifier(myScriptName));
+        }
     }
 }

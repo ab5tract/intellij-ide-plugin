@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class RakuFileSystem extends ArchiveFileSystem {
-    public static final String PROTOCOL = "rakuidea";
+    public static final String PROTOCOL = "raku";
 
     public static RakuFileSystem getInstance() {
         return (RakuFileSystem)VirtualFileManager.getInstance().getFileSystem(PROTOCOL);

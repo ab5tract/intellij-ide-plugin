@@ -226,11 +226,11 @@ public class RakuDependenciesPanelImpl extends JPanel {
                     Module currentlyEditedModule = myModel.getState().getCurrentRootModel().getModule();
                     Module[] modules = ModuleManager.getInstance(myProject).getModules();
                     for (Module module : modules) {
-                        if (module.equals(currentlyEditedModule))
-                            continue;
+                        if (module.equals(currentlyEditedModule)) continue;
                         RakuMetaDataComponent component = module.getService(RakuMetaDataComponent.class);
-                        if (component != null && component.getName() != null)
+                        if (component != null && component.getName() != null) {
                             localNames.add(component.getName());
+                        }
                     }
                     myNameField.setVariants(Stream.concat(names.stream(), localNames.stream()).collect(Collectors.toSet()));
                 }

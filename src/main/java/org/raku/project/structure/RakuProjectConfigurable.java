@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.Objects;
 
 public class RakuProjectConfigurable extends NamedConfigurable<Project> implements DetailsComponent.Facade {
     private final Project myProject;
@@ -27,8 +28,7 @@ public class RakuProjectConfigurable extends NamedConfigurable<Project> implemen
     private RakuPackageManagerConfigurable myPackageManagerConfigurable;
     private RakuLanguageVersionConfigurable myLanguageVersionConfigurable;
 
-    public RakuProjectConfigurable(Project project, RakuStructureConfigurableContext context,
-                                   ProjectSdksModel model) {
+    public RakuProjectConfigurable(Project project, ProjectSdksModel model) {
         myProject = project;
         model.reset(myProject);
         initUI(model);
@@ -47,9 +47,9 @@ public class RakuProjectConfigurable extends NamedConfigurable<Project> implemen
         myProjectSdkConfigurable = new RakuProjectSdkConfigurable(myProject, model);
         myPanel.add(myProjectSdkConfigurable.createComponent(), "shrink 0, wrap");
         myPackageManagerConfigurable = new RakuPackageManagerConfigurable(myProject);
-        myPanel.add(myPackageManagerConfigurable.createComponent(), "shrink 0, wrap");
+        myPanel.add(Objects.requireNonNull(myPackageManagerConfigurable.createComponent()), "shrink 0, wrap");
         myLanguageVersionConfigurable = new RakuLanguageVersionConfigurable(myProject);
-        myPanel.add(myLanguageVersionConfigurable.createComponent(), "shrink 0");
+        myPanel.add(Objects.requireNonNull(myLanguageVersionConfigurable.createComponent()), "shrink 0");
     }
 
     @Override

@@ -87,15 +87,15 @@ public class RakuProjectSdkConfigurable implements UnnamedConfigurable {
 
     private void reloadModel() {
         final Sdk projectJdk = myJdksModel.getProjectSdk();
-        if (myCbProjectJdk != null)
-            myCbProjectJdk.reloadModel();
+        if (myCbProjectJdk != null) myCbProjectJdk.reloadModel();
         final String sdkName = projectJdk == null ? ProjectRootManager.getInstance(myProject).getProjectSdkName() : projectJdk.getName();
         if (sdkName != null) {
             final Sdk jdk = myJdksModel.findSdk(sdkName);
-            if (jdk != null)
+            if (jdk != null) {
                 myCbProjectJdk.setSelectedJdk(jdk);
-            else
+            } else {
                 myCbProjectJdk.setInvalidJdk(sdkName);
+            }
         } else
             myCbProjectJdk.setSelectedJdk(null);
     }
@@ -118,12 +118,14 @@ public class RakuProjectSdkConfigurable implements UnnamedConfigurable {
         final String sdkName = ProjectRootManager.getInstance(myProject).getProjectSdkName();
         if (sdkName != null) {
             final Sdk jdk = myJdksModel.findSdk(sdkName);
-            if (jdk != null)
+            if (jdk != null) {
                 myCbProjectJdk.setSelectedJdk(jdk);
-            else
+            } else {
                 myCbProjectJdk.setInvalidJdk(sdkName);
-        } else
+            }
+        } else {
             myCbProjectJdk.setSelectedJdk(null);
+        }
     }
 
     @Override

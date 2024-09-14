@@ -1,13 +1,11 @@
 package org.raku.language;
 
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.Service;
-import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.*;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 
-@Service
-@State(name = "org.raku.language.RakuLanguageVersionService")
+@Service(Service.Level.PROJECT)
+@State(name = "org.raku.language.RakuLanguageVersionService", storages = @Storage(StoragePathMacros.WORKSPACE_FILE))
 public final class RakuLanguageVersionService implements PersistentStateComponent<Element> {
     private RakuLanguageVersion myVersion = RakuLanguageVersion.D;
     private boolean myIsExplicit = true;
@@ -39,10 +37,11 @@ public final class RakuLanguageVersionService implements PersistentStateComponen
     @Override
     public void loadState(@NotNull Element state) {
         String version = state.getAttributeValue("version");
-        if (version != null)
+        if (version != null) {
             myVersion = RakuLanguageVersion.valueOf(version);
-        else
+        } else {
             myVersion = RakuLanguageVersion.D;
+        }
         String is_explicit = state.getAttributeValue("explicit-for-new");
         myIsExplicit = is_explicit == null || is_explicit.equals("true");
     }

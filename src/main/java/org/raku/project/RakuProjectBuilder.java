@@ -95,7 +95,7 @@ public class RakuProjectBuilder extends ProjectBuilder {
                 modelToPatch.commit();
                 rootModel.commit();
                 final PropertiesComponent properties = PropertiesComponent.getInstance(project);
-                final String selectedJdkProperty = "rakuidea.sdk.selected";
+                final String selectedJdkProperty = "raku.sdk.selected";
                 String sdkHome = properties.getValue(selectedJdkProperty);
                 if (sdkHome != null) {
                     Sdk sdk = ProjectJdkTable.getInstance().findJdk(sdkHome);

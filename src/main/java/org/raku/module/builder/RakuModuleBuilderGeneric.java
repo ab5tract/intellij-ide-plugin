@@ -20,10 +20,12 @@ public interface RakuModuleBuilderGeneric {
 
     default List<Pair<String, String>> getSourcePaths(@Nullable String moduleRootPath) {
         List<Pair<String, String>> paths = new ArrayList<>();
-        if (moduleRootPath == null)
+        if (moduleRootPath == null) {
             return paths;
-        for (String dir : getSourceDirectories())
+        }
+        for (String dir : getSourceDirectories()) {
             paths.add(new Pair<>(moduleRootPath, dir));
+        }
         return paths;
     }
 

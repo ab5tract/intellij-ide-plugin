@@ -73,16 +73,13 @@ public class SdkSettingsStep extends ModuleWizardStep {
     myJdkPanel = new JPanel(new GridBagLayout());
 
     final PropertiesComponent component = project == null ? PropertiesComponent.getInstance() : PropertiesComponent.getInstance(project);
-    final String selectedJdkProperty = "rakuidea.sdk.selected";
-    myJdkComboBox.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Sdk jdk = myJdkComboBox.getSelectedJdk();
-        if (jdk != null) {
-          component.setValue(selectedJdkProperty, jdk.getName());
-        }
-        onSdkSelected(jdk);
+    final String selectedJdkProperty = "raku.sdk.selected";
+    myJdkComboBox.addActionListener(e -> {
+      Sdk jdk = myJdkComboBox.getSelectedJdk();
+      if (jdk != null) {
+        component.setValue(selectedJdkProperty, jdk.getName());
       }
+      onSdkSelected(jdk);
     });
 
     preselectSdk(project, component.getValue(selectedJdkProperty), sdkTypeIdFilter);

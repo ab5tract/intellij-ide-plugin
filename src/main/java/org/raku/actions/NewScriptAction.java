@@ -1,7 +1,6 @@
 package org.raku.actions;
 
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -18,10 +17,9 @@ public final class NewScriptAction extends NewRakuFileAction<NewScriptDialog> {
         String fileName = dialog.getScriptName();
         boolean shouldFill = dialog.shouldAddTemplate();
         // If user cancelled action.
-        if (fileName == null)
-            return;
+        if (fileName == null) return;
 
-        RakuLanguageVersionService service = ApplicationManager.getApplication().getService(RakuLanguageVersionService.class);
+        RakuLanguageVersionService service = project.getService(RakuLanguageVersionService.class);
         scriptPath = RakuModuleBuilderScript.stubScript(
             Paths.get(scriptPath), fileName, shouldFill, service.getVersion());
         VirtualFile scriptFile = LocalFileSystem.getInstance().refreshAndFindFileByPath(scriptPath);

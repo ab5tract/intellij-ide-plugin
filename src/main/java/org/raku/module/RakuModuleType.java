@@ -17,7 +17,7 @@ import javax.swing.*;
 
 @InternalIgnoreDependencyViolation
 public class RakuModuleType extends ModuleType<RakuModuleBuilder> {
-    public static final String ID = "PERL6_MODULE_TYPE";
+    public static final String ID = "RAKU_MODULE_TYPE";
 
     public RakuModuleType() {
         super(ID);

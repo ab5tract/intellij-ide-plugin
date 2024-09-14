@@ -5,6 +5,7 @@ import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.SettingsStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.ModifiableModuleModel;
@@ -39,7 +40,7 @@ import java.util.Map;
 
 public class RakuModuleBuilder extends ModuleBuilder {
     private static final Logger LOG = Logger.getInstance(RakuModuleBuilder.class);
-    private RakuProjectType myModuleType = RakuProjectType.PERL6_SCRIPT;
+    private RakuProjectType myModuleType = RakuProjectType.RAKU_SCRIPT;
     private RakuModuleBuilderGeneric myBuilder = new RakuModuleBuilderScript();
 
     @Override
@@ -64,10 +65,11 @@ public class RakuModuleBuilder extends ModuleBuilder {
             Project project = model.getProject();
             RakuLanguageVersion prefix;
             RakuLanguageVersionService langVersionService = project.getService(RakuLanguageVersionService.class);
-            if (langVersionService.getIsExplicit())
+            if (langVersionService.getIsExplicit()) {
                 prefix = langVersionService.getVersion();
-            else
+            } else {
                 prefix = null;
+            }
             myBuilder.setupRootModelOfPath(model, sourcePath, prefix);
         }
     }
@@ -80,17 +82,18 @@ public class RakuModuleBuilder extends ModuleBuilder {
         }
         if (myBuilder.shouldBeMarkedAsRoot(sourcePathPair.second)) {
             VirtualFile sourceRoot = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(sourcePath.toFile());
-            if (sourceRoot != null)
+            if (sourceRoot != null) {
                 contentEntry.addSourceFolder(sourceRoot, sourcePathPair.second.equals("t"), sourcePathPair.second);
+            }
         }
         return sourcePath;
     }
 
     protected void updateBuilder() {
         Map<RakuProjectType, Class<?>> typeToBuilderPairs = new HashMap<>();
-        typeToBuilderPairs.put(RakuProjectType.PERL6_SCRIPT, RakuModuleBuilderScript.class);
-        typeToBuilderPairs.put(RakuProjectType.PERL6_MODULE, RakuModuleBuilderModule.class);
-        typeToBuilderPairs.put(RakuProjectType.PERL6_APPLICATION, RakuModuleBuilderApplication.class);
+        typeToBuilderPairs.put(RakuProjectType.RAKU_SCRIPT, RakuModuleBuilderScript.class);
+        typeToBuilderPairs.put(RakuProjectType.RAKU_MODULE, RakuModuleBuilderModule.class);
+        typeToBuilderPairs.put(RakuProjectType.RAKU_APPLICATION, RakuModuleBuilderApplication.class);
         typeToBuilderPairs.put(RakuProjectType.CRO_WEB_APPLICATION, CroModuleBuilderApplication.class);
         Class<?> currentTypeBuilder = typeToBuilderPairs.get(myModuleType);
         if (currentTypeBuilder.isInstance(myBuilder))
@@ -109,7 +112,7 @@ public class RakuModuleBuilder extends ModuleBuilder {
     public List<Module> commit(@NotNull Project project, ModifiableModuleModel model, ModulesProvider modulesProvider) {
         List<Module> modules = super.commit(project, model, modulesProvider);
         if (model != null)
-            WriteAction.run(() -> model.commit());
+            WriteAction.run(model::commit);
         if (modules != null) {
             for (Module module : modules) {
                 module.getService(RakuMetaDataComponent.class).triggerMetaBuild();
@@ -147,11 +150,11 @@ public class RakuModuleBuilder extends ModuleBuilder {
         return step;
     }
 
-    public RakuProjectType getPerl6ModuleType() {
+    public RakuProjectType getRakuModuleType() {
         return myModuleType;
     }
 
-    public void setPerl6ModuleType(RakuProjectType type) {
+    public void setRakuModuleType(RakuProjectType type) {
         this.myModuleType = type;
     }
 

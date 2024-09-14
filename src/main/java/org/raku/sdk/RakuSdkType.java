@@ -89,8 +89,8 @@ public class RakuSdkType extends SdkType {
         BINARY_NAMES.add("perl6");
         BINARY_NAMES.add("perl6.bat");
         BINARY_NAMES.add("perl6.exe");
-        BINARY_NAMES.add("rakuidea");
-        BINARY_NAMES.add("rakuidea.exe");
+        BINARY_NAMES.add("raku");
+        BINARY_NAMES.add("raku.exe");
         BINARY_NAMES.add("rakudo");
         BINARY_NAMES.add("rakudo.exe");
     }

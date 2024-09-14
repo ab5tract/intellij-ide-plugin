@@ -36,11 +36,11 @@ public class RakuModuleWizardStep extends ModuleWizardStep {
 
     // Cro application fields
     private final JCheckBox myWebsocketSupport = new JCheckBox();
-    private final JCheckBox myTemplatingSUpport = new JCheckBox();
+    private final JCheckBox myTemplatingSupport = new JCheckBox();
 
     RakuModuleWizardStep(RakuModuleBuilder builder) {
         this.builder = builder;
-        this.currentType = builder.getPerl6ModuleType();
+        this.currentType = builder.getRakuModuleType();
         updateInputs();
     }
 
@@ -50,17 +50,17 @@ public class RakuModuleWizardStep extends ModuleWizardStep {
         Border margin = JBUI.Borders.empty(10);
         myMainPanel.setBorder(new CompoundBorder(border, margin));
         myMainPanel.setLayout(new MigLayout());
-        switch (builder.getPerl6ModuleType()) {
-            case PERL6_SCRIPT:
+        switch (builder.getRakuModuleType()) {
+            case RAKU_SCRIPT:
                 myMainPanel.add(new JLabel("Script name"));
                 myMainPanel.add(myScriptName, "wrap");
                 break;
-            case PERL6_MODULE: {
+            case RAKU_MODULE: {
                 myMainPanel.add(new JLabel("Module name"));
                 myMainPanel.add(myModuleName, "wrap");
                 break;
             }
-            case PERL6_APPLICATION: {
+            case RAKU_APPLICATION: {
                 myMainPanel.add(new JLabel("Module name"));
                 myMainPanel.add(myModuleName, "wrap");
                 myMainPanel.add(new JLabel("Entry point name"));
@@ -73,7 +73,7 @@ public class RakuModuleWizardStep extends ModuleWizardStep {
                 myMainPanel.add(new JLabel("WebSocket support"));
                 myMainPanel.add(myWebsocketSupport, "wrap");
                 myMainPanel.add(new JLabel("Templating support"));
-                myMainPanel.add(myTemplatingSUpport, "wrap");
+                myMainPanel.add(myTemplatingSupport, "wrap");
                 break;
             }
         }
@@ -82,8 +82,8 @@ public class RakuModuleWizardStep extends ModuleWizardStep {
     @Override
     public JComponent getComponent() {
         // If the module type was changed, we need to re-draw UI
-        if (builder.getPerl6ModuleType() != currentType) {
-            currentType = builder.getPerl6ModuleType();
+        if (builder.getRakuModuleType() != currentType) {
+            currentType = builder.getRakuModuleType();
             updateInputs();
         }
         return myMainPanel;
@@ -91,15 +91,15 @@ public class RakuModuleWizardStep extends ModuleWizardStep {
 
     @Override
     public boolean validate() throws ConfigurationException {
-        switch (builder.getPerl6ModuleType()) {
-            case PERL6_SCRIPT:
+        switch (builder.getRakuModuleType()) {
+            case RAKU_SCRIPT:
                 checkScriptName();
                 break;
-            case PERL6_MODULE:
+            case RAKU_MODULE:
             case CRO_WEB_APPLICATION:
                 checkModuleName();
                 break;
-            case PERL6_APPLICATION:
+            case RAKU_APPLICATION:
                 checkModuleName();
                 checkEntryPointName();
                 break;
@@ -135,7 +135,7 @@ public class RakuModuleWizardStep extends ModuleWizardStep {
         formData.put(MODULE_NAME, myModuleName.getText());
         formData.put(ENTRY_POINT_NAME, myEntryName.getText());
         formData.put(WEBSOCKET_SUPPORT, String.valueOf(myWebsocketSupport.isSelected()));
-        formData.put(TEMPLATE_SUPPORT, String.valueOf(myTemplatingSUpport.isSelected()));
+        formData.put(TEMPLATE_SUPPORT, String.valueOf(myTemplatingSupport.isSelected()));
         builder.updateLocalBuilder(formData);
     }
 }

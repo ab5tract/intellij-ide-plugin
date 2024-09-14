@@ -41,8 +41,8 @@ public class UpdateExtensionsAction extends AnAction {
     private static final Map<String, String> nonLegacyExts = new HashMap<>();
 
     static {
-        nonLegacyExts.put("p6", "rakuidea");
-        nonLegacyExts.put("pl6", "rakuidea");
+        nonLegacyExts.put("p6", "raku");
+        nonLegacyExts.put("pl6", "raku");
         nonLegacyExts.put("pm6", "rakumod");
         nonLegacyExts.put("pm", "rakumod");
         nonLegacyExts.put("pod6", "rakudoc");

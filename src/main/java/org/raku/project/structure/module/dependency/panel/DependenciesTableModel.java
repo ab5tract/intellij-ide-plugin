@@ -39,7 +39,7 @@ public class DependenciesTableModel extends ListTableModel<RakuDependencyTableIt
     private Set<RakuDependencyTableItem> myInitialSet = new HashSet<>();
 
     public DependenciesTableModel(ModuleConfigurationState state) {
-        super(new Perl6DependencyTableItemColumnInfo(), SCOPE_COLUMN_INFO);
+        super(new RakuDependencyTableItemColumnInfo(), SCOPE_COLUMN_INFO);
         myState = state;
         init();
     }
@@ -86,8 +86,8 @@ public class DependenciesTableModel extends ListTableModel<RakuDependencyTableIt
         return !(myInitialSet.containsAll(getItems()) && new HashSet<>(getItems()).containsAll(myInitialSet));
     }
 
-    private static class Perl6DependencyTableItemColumnInfo extends ColumnInfo<RakuDependencyTableItem, RakuDependencyTableItem> {
-        Perl6DependencyTableItemColumnInfo() {
+    private static class RakuDependencyTableItemColumnInfo extends ColumnInfo<RakuDependencyTableItem, RakuDependencyTableItem> {
+        RakuDependencyTableItemColumnInfo() {
             super("");
         }
 

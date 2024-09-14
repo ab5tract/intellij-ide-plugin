@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class RakuTraitStubElementType extends IStubElementType<RakuTraitStub, RakuTrait> {
     public RakuTraitStubElementType() {
-        super("TRAIT", RakuLanguage.INSTANCE);
+        super("TRAIT", RakuLanguage.getInstance());
     }
 
     @Override

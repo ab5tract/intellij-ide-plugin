@@ -5,7 +5,7 @@ import org.raku.psi.RakuSubCall;
 
 public class CroIndexKeys {
     public static final StubIndexKey<String, RakuSubCall> CRO_ROUTES
-            = StubIndexKey.createIndexKey("rakuidea.cro.routes");
+            = StubIndexKey.createIndexKey("raku.cro.routes");
     public static final StubIndexKey<String, RakuSubCall> CRO_TEMPLATE
-            = StubIndexKey.createIndexKey("rakuidea.cro.template");
+            = StubIndexKey.createIndexKey("raku.cro.template");
 }

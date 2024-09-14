@@ -5,6 +5,7 @@ import com.intellij.ide.plugins.newui.TwoLineProgressIndicator;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
@@ -194,9 +195,7 @@ public class RakuSdkEditor implements Configurable, Place.Navigator {
     }
 
     private void clearAllPaths() {
-        for (PathEditor editor : myPathEditors.values()) {
-            editor.clearList();
-        }
+        myPathEditors.values().forEach(PathEditor::clearList);
     }
 
     private void setHomePathValue(String absolutePath) {

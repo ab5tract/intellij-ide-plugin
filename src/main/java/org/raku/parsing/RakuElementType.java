@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NonNls;
 
 public class RakuElementType extends IElementType {
     public RakuElementType(@NonNls String debugName) {
-        super(debugName, RakuLanguage.INSTANCE);
+        super(debugName, RakuLanguage.getInstance());
     }
 
     public String toString() {

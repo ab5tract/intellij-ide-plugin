@@ -68,7 +68,8 @@
     <fileTypeDetector implementation="org.raku.filetypes.RakuFileShebangTypeDetector"/>
     <fileTypeDetector implementation="org.raku.filetypes.RakuFileShebangTypeDetector"/>
     <fileTypeDetector implementation="org.raku.filetypes.RakudoFileShebangTypeDetector"/>
-<!--    <moduleType id="Raku_MODULE_TYPE" />-->
+    <moduleType id="RAKU_MODULE_TYPE" implementationClass="org.raku.module.RakuModuleType" />
+    <moduleBuilder builderClass="org.raku.module.RakuModuleBuilder"/>
     <sdkType implementation="org.raku.sdk.RakuSdkType"/>
     <programRunner implementation="org.raku.debugger.RakuDebugRunner"/>
     <xdebugger.breakpointType implementation="org.raku.debugger.RakuLineBreakpointType"/>
@@ -482,10 +483,6 @@
             text="New Project..." description="Create a project">
       <add-to-group group-id="NewProjectOrModuleGroup" />
     </action>
-
-      <group id="org.raku.actions.NewActionGroup" class="org.raku.actions.NewActionGroup" text="NewActionGroup">
-          <add-to-group group-id="NewProjectOrModuleGroup" anchor="first"/>
-      </group>
   </actions>
 
   <applicationListeners>

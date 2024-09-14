@@ -67,7 +67,7 @@ public class CreateLocalModuleFix implements IntentionAction {
 
         NewModuleDialog dialog = new NewModuleDialog(project, moduleLibraryPath, moduleName.getText());
         boolean isOk = dialog.showAndGet();
-        if (!isOk) return;
+        if (! isOk) return;
 
         RakuLanguageVersionService langVersionService = project.getService(RakuLanguageVersionService.class);
         String newModulePath = RakuModuleBuilderModule.stubModule(
@@ -89,7 +89,6 @@ public class CreateLocalModuleFix implements IntentionAction {
             OpenFileDescriptor descriptor = new OpenFileDescriptor(project, moduleFile);
             descriptor.navigate(true);
         }
-
     }
 
     @Override

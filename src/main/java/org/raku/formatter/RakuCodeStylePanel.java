@@ -6,7 +6,6 @@ import com.intellij.openapi.editor.colors.EditorColorsScheme;
 import com.intellij.openapi.editor.highlighter.EditorHighlighter;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeEditorHighlighterProviders;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import org.raku.RakuLanguage;
@@ -18,7 +17,7 @@ import javax.swing.*;
 
 public class RakuCodeStylePanel extends TabbedLanguageCodeStylePanel {
     public RakuCodeStylePanel(CodeStyleSettings settings, CodeStyleSettings originalSettings) {
-        super(RakuLanguage.INSTANCE, settings, originalSettings);
+        super(RakuLanguage.getInstance(), settings, originalSettings);
     }
 
     @Override
@@ -49,9 +48,9 @@ public class RakuCodeStylePanel extends TabbedLanguageCodeStylePanel {
         }
 
         @Override
-        protected @Nullable EditorHighlighter createHighlighter(EditorColorsScheme scheme) {
+        protected @Nullable EditorHighlighter createHighlighter(@NotNull EditorColorsScheme scheme) {
             FileType fileType = getFileType();
-            return FileTypeEditorHighlighterProviders.INSTANCE.forFileType(fileType).getEditorHighlighter(
+            return FileTypeEditorHighlighterProviders.getInstance().forFileType(fileType).getEditorHighlighter(
                 null, fileType, null, scheme);
         }
 
@@ -66,7 +65,7 @@ public class RakuCodeStylePanel extends TabbedLanguageCodeStylePanel {
         }
 
         @Override
-        public void apply(CodeStyleSettings settings) throws ConfigurationException {
+        public void apply(CodeStyleSettings settings) {
             settings.getCustomSettings(RakuCodeStyleSettings.class).CONVERT_TO_UNICODE = myConvertToUnicodeCB.isSelected();
         }
 
