@@ -4,7 +4,6 @@ package org.raku.project.projectWizard.components;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.popup.ListItemDescriptorAdapter;
-import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
@@ -22,7 +21,6 @@ import org.jetbrains.annotations.TestOnly;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -63,7 +61,7 @@ public class ProjectTemplateList extends JPanel {
     }
 
     public void setTemplates(List<? extends ProjectTemplate> list, boolean preserveSelection) {
-        Collections.sort(list, (o1, o2) -> Comparing.compare(o1 instanceof ArchivedProjectTemplate, o2 instanceof ArchivedProjectTemplate));
+        list.sort((o1, o2) -> Boolean.compare(o1 instanceof ArchivedProjectTemplate, o2 instanceof ArchivedProjectTemplate));
 
         int index = preserveSelection ? myList.getSelectedIndex() : -1;
         myList.setModel(new CollectionListModel<>(list));

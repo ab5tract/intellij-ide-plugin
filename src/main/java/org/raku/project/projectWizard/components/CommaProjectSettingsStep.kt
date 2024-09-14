@@ -162,6 +162,7 @@ class CommaProjectSettingsStep(private val myWizardContext: WizardContext) : Mod
         addField(label, field, panel)
     }
 
+    @Deprecated("thisIsBaseCode", ReplaceWith("nothing", "ignore"), DeprecationLevel.HIDDEN)
     override fun getModuleNameField(): JTextField {
         return nameComponent
     }

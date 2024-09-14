@@ -3,8 +3,6 @@ package org.raku.application;
 import com.intellij.formatting.commandLine.MessageOutput;
 import com.intellij.ide.impl.ProjectUtil;
 import com.intellij.openapi.application.ApplicationStarter;
-import com.intellij.openapi.application.ex.ApplicationInfoEx;
-import com.intellij.openapi.application.impl.ApplicationInfoImpl;
 import com.intellij.openapi.extensions.InternalIgnoreDependencyViolation;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -35,6 +33,7 @@ import java.util.Map;
 public class RakuDocStarter implements ApplicationStarter {
     public static final String RAKU_DOC_COMMAND_NAME = "rakuidea-doc";
 
+    // TODO: Deal with nonsensical advice in super-class for replacing deprecation
     @Override
     public @NonNls String getCommandName() {
         return RAKU_DOC_COMMAND_NAME;
@@ -64,7 +63,7 @@ public class RakuDocStarter implements ApplicationStarter {
                 if (ArrayUtil.contains(args.get(i), "-o", "--output")) {
                     i++;
                     if (i >= args.size()) {
-                        fatalError(messageOutput, "Missing output directory path.\n");
+                        fatalError(messageOutput);
                     }
                     else {
                         outputPrefix = args.get(i);
@@ -84,8 +83,8 @@ public class RakuDocStarter implements ApplicationStarter {
         System.exit(0);
     }
 
-    private static void fatalError(MessageOutput messageOutput, String message) {
-        messageOutput.error("ERROR: " + message);
+    private static void fatalError(MessageOutput messageOutput) {
+        messageOutput.error("ERROR: Missing output directory path.\n");
         System.exit(1);
     }
 
@@ -135,10 +134,13 @@ public class RakuDocStarter implements ApplicationStarter {
                                        @Nullable String outputPrefix,
                                        Path originalDistDirectory,
                                        MessageOutput messageOutput,
-                                       Map<String, Object> map) {
+                                       Map<String, Object> map)
+    {
         Path outputPath = Paths.get(outputPrefix != null ? outputPrefix : "output");
         File outputDirectory = outputPath.toFile();
-        outputDirectory.mkdirs();
+        if (! outputDirectory.mkdirs()) {
+            messageOutput.error("Could not create output directory '" + outputPath + "'\n");
+        }
         messageOutput.info("Started processing the module\n");
         for (String key : map.keySet()) {
             String relativeFilePathString = map.get(key) instanceof String ? (String)map.get(key) : null;
@@ -160,7 +162,9 @@ public class RakuDocStarter implements ApplicationStarter {
                 String htmlForModule = ((RakuFile)psiFile).renderPod();
                 Path path = outputPath.resolve(relativeFilePathString).resolveSibling(psiFile.getName().replaceFirst("[.][^.]+$", "") + ".html");
                 messageOutput.info(path + "\n");
-                path.getParent().toFile().mkdirs();
+                if (! path.getParent().toFile().mkdirs()) {
+                    messageOutput.error("Could not create path '" + path + "'\n");
+                }
                 try {
                     Files.writeString(path, htmlForModule);
                 }

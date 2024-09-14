@@ -65,10 +65,10 @@ public class PercentageTableCellRenderer implements TableCellRenderer {
                 // We want a light gray under both themes (otherwise the contrast on the
                 // graph looks bad), thus this contortion to pick the color of the non-shaded
                 // part of the bar.
-                g.setColor(UIUtil.isUnderDarcula() ? JBColor.DARK_GRAY : JBColor.LIGHT_GRAY);
+                g.setColor(JBColor.isBright() ? JBColor.DARK_GRAY : JBColor.LIGHT_GRAY);
                 g.fillRect(PADDING + shaded, PADDING, width - shaded - PADDING, barHeight);
             }
-            g.setColor(UIUtil.isUnderDarcula() ? Color.BLACK : JBColor.WHITE);
+            g.setColor(JBColor.isBright() ? JBColor.BLACK : JBColor.WHITE);
             String percents = PERCENT_FORMAT.format(ratio * 100);
             String stringToPrint = String.format("%s%% (%s)", percents, MS_FORMAT.format(value));
             int textWidth = g.getFontMetrics().stringWidth(String.valueOf(stringToPrint));

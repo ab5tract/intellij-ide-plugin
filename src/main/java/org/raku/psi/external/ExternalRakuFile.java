@@ -74,8 +74,9 @@ public class ExternalRakuFile implements RakuFile {
             } else {
                 collector.offerSymbol(symbol);
             }
-            if (collector.isSatisfied())
+            if (collector.isSatisfied()) {
                 return;
+            }
         }
     }
 
@@ -219,14 +220,10 @@ public class ExternalRakuFile implements RakuFile {
     }
 
     @Override
-    public void accept(@NotNull PsiElementVisitor visitor) {
-
-    }
+    public void accept(@NotNull PsiElementVisitor visitor) { }
 
     @Override
-    public void acceptChildren(@NotNull PsiElementVisitor visitor) {
-
-    }
+    public void acceptChildren(@NotNull PsiElementVisitor visitor) { }
 
     @Override
     public PsiElement copy() {
@@ -312,14 +309,10 @@ public class ExternalRakuFile implements RakuFile {
 
     @Nullable
     @Override
-    public <T> T getCopyableUserData(Key<T> key) {
-        return null;
-    }
+    public <T> T getCopyableUserData(@NotNull Key<T> key) { return null; }
 
     @Override
-    public <T> void putCopyableUserData(Key<T> key, @Nullable T value) {
-
-    }
+    public <T> void putCopyableUserData(@NotNull Key<T> key, @Nullable T value) { }
 
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
@@ -399,13 +392,7 @@ public class ExternalRakuFile implements RakuFile {
     }
 
     @Override
-    public void subtreeChanged() {
-
-    }
-
-    @Override
-    public void clearCaches() {
-    }
+    public void subtreeChanged() { }
 
     @Override
     public void checkSetName(String name) throws IncorrectOperationException {
@@ -431,19 +418,7 @@ public class ExternalRakuFile implements RakuFile {
     }
 
     @Override
-    public void navigate(boolean requestFocus) {
-
-    }
-
-    @Override
-    public boolean canNavigate() {
-        return false;
-    }
-
-    @Override
-    public boolean canNavigateToSource() {
-        return false;
-    }
+    public void navigate(boolean requestFocus) { }
 
     @Nullable
     @Override
@@ -468,7 +443,5 @@ public class ExternalRakuFile implements RakuFile {
     }
 
     @Override
-    public <T> void putUserData(@NotNull Key<T> key, @Nullable T value) {
-
-    }
+    public <T> void putUserData(@NotNull Key<T> key, @Nullable T value) { }
 }

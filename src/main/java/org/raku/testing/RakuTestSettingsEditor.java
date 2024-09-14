@@ -1,6 +1,5 @@
 package org.raku.testing;
 
-import com.intellij.ProjectTopics;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.module.Module;
@@ -27,8 +26,6 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -127,12 +124,7 @@ public class RakuTestSettingsEditor extends SettingsEditor<RakuTestRunConfigurat
 
         // Create controls
         myKindField = new ComboBox<>(RakuTestKind.values());
-        myKindField.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                reloadSpecificItems();
-            }
-        });
+        myKindField.addItemListener(e -> reloadSpecificItems());
 
         myModuleNameField = new ComboBox<>();
         myModuleNameField.setModel(new RakuModuleModel(myProject));
@@ -231,10 +223,10 @@ public class RakuTestSettingsEditor extends SettingsEditor<RakuTestRunConfigurat
                     moduleNames.add(module.getName());
                 }
             }
-            project.getMessageBus().connect().subscribe(ProjectTopics.MODULES, new ModuleListener() {
+            project.getMessageBus().connect().subscribe(ModuleListener.TOPIC, new ModuleListener() {
                 @Override
-                public void moduleAdded(@NotNull Project project, @NotNull Module module) {
-                    moduleNames.add(module.getName());
+                public void modulesAdded(@NotNull Project project, @NotNull List<? extends Module> modules) {
+                    modules.forEach(module -> moduleNames.add(module.getName()));
                 }
 
                 @Override

@@ -79,14 +79,9 @@ public class SidePanel extends JPanel {
             }
 
             @Override
-            protected SeparatorWithText createSeparator() {
-                return new SidePanelSeparator();
-            }
-
-            @Override
             protected void layout() {
                 myRendererComponent.add(mySeparatorComponent, BorderLayout.NORTH);
-                myExtraPanel.add(myComponent, BorderLayout.CENTER);
+                myExtraPanel.add(getItemComponent(), BorderLayout.CENTER);
                 myExtraPanel.add(myCountLabel, BorderLayout.EAST);
                 myRendererComponent.add(myExtraPanel, BorderLayout.CENTER);
             }

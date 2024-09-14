@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 
-@InternalIgnoreDependencyViolation
 public class RakuProjectOpenProcessor extends ProjectOpenProcessor {
     @Override
     public @NotNull @Nls String getName() {

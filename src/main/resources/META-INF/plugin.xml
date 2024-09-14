@@ -483,6 +483,9 @@
       <add-to-group group-id="NewProjectOrModuleGroup" />
     </action>
 
+      <group id="org.raku.actions.NewActionGroup" class="org.raku.actions.NewActionGroup" text="NewActionGroup">
+          <add-to-group group-id="NewProjectOrModuleGroup" anchor="first"/>
+      </group>
   </actions>
 
   <applicationListeners>
