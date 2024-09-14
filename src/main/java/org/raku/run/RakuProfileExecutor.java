@@ -12,7 +12,7 @@ import javax.swing.*;
 
 @InternalIgnoreDependencyViolation
 public class RakuProfileExecutor extends Executor {
-    public static final String EXECUTOR_ID = "Perl6Profile";
+    public static final String EXECUTOR_ID = "RakuProfile";
 
     @Override
     @NotNull
@@ -69,9 +69,7 @@ public class RakuProfileExecutor extends Executor {
 	}
 
     @Override
-    public String getContextActionId() {
-        return "Perl6RunProfile";
-    }
+    public String getContextActionId() { return "RakuRunProfile"; }
 
     @Override
     public String getHelpId() {

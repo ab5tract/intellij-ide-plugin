@@ -6,7 +6,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.openapi.projectRoots.SdkTypeId;
-import com.intellij.openapi.projectRoots.SimpleJavaSdkType;
 import com.intellij.openapi.roots.ui.configuration.*;
 import com.intellij.openapi.roots.ui.configuration.SdkListItem.SdkItem;
 import com.intellij.openapi.roots.ui.configuration.projectRoot.ProjectSdksModel;
@@ -15,13 +14,11 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.Conditions;
 import com.intellij.util.Consumer;
-import org.raku.project.structure.RakuProjectStructureConfigurable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
  * @author Eugene Zhuravlev
@@ -104,30 +101,14 @@ public class JdkComboBox extends SdkComboBoxBase<JdkComboBox.JdkComboBoxItem> {
   }
 
   @NotNull
-  private static SdkListItem unwrapItem(@Nullable JdkComboBoxItem item) {
-    if (item == null) item = new ProjectJdkComboBoxItem();
-
-    if (item instanceof InnerComboBoxItem) {
-      return ((InnerComboBoxItem)item).getItem();
-    }
-    throw new RuntimeException("Failed to unwrap " + item.getClass().getName() + ": " + item);
-  }
-
-  @NotNull
   private static JdkComboBoxItem wrapItem(@NotNull SdkListItem item) {
-    if (item instanceof SdkItem) {
-      return new ActualJdkInnerItem((SdkItem)item);
-    }
-
-    if (item instanceof SdkListItem.NoneSdkItem) {
-      return new NoneJdkComboBoxItem();
-    }
-
-    if (item instanceof SdkListItem.ProjectSdkItem) {
-      return new ProjectJdkComboBoxItem();
-    }
-
-    return new InnerJdkComboBoxItem(item);
+      return switch (item) {
+          case SdkListItem.NoneSdkItem noneSdkItem -> new NoneJdkComboBoxItem();
+          case SdkListItem.ProjectSdkItem projectSdkItem -> new ProjectJdkComboBoxItem();
+          case SdkListItem.ActionItem actionItem -> new ActionJdkComboBoxItem(actionItem);
+          case SdkItem sdkItem -> new ActualJdkInnerItem(sdkItem);
+          default -> new InnerJdkComboBoxItem(item);
+      };
   }
 
   /**
@@ -164,26 +145,6 @@ public class JdkComboBox extends SdkComboBoxBase<JdkComboBox.JdkComboBoxItem> {
     mySetUpButton.setVisible(false);
   }
 
-  public void setEditButton(@NotNull JButton editButton,
-                            @NotNull Project project,
-                            @NotNull Supplier<? extends Sdk> retrieveJDK) {
-    editButton.addActionListener(e -> {
-      final Sdk projectJdk = retrieveJDK.get();
-      if (projectJdk != null) {
-        org.raku.project.structure.RakuProjectStructureConfigurable.getInstance(project).select(projectJdk, true);
-      }
-    });
-    addActionListener(e -> {
-      final JdkComboBoxItem selectedItem = getSelectedItem();
-      if (selectedItem instanceof ProjectJdkComboBoxItem) {
-        editButton.setEnabled(RakuProjectStructureConfigurable.getInstance(project).getProjectSdksModel().getProjectSdk() != null);
-      }
-      else {
-        editButton.setEnabled(selectedItem != null && selectedItem.getJdk() != null);
-      }
-    });
-  }
-
   /**
    *
    * @deprecated the popup shown by the SetUp button is now included
@@ -200,7 +161,7 @@ public class JdkComboBox extends SdkComboBoxBase<JdkComboBox.JdkComboBoxItem> {
   @Nullable
   @Override
   public JdkComboBoxItem getSelectedItem() {
-    return (JdkComboBoxItem)super.getSelectedItem();
+    return (JdkComboBoxItem) super.getSelectedItem();
   }
 
   @Nullable
@@ -495,6 +456,22 @@ public class JdkComboBox extends SdkComboBoxBase<JdkComboBox.JdkComboBoxItem> {
     @Override
     public boolean equals(Object obj) {
       return obj instanceof NoneJdkComboBoxItem;
+    }
+  }
+
+  public static class ActionJdkComboBoxItem extends JdkComboBoxItem implements InnerComboBoxItem, SelectableComboBoxItem {
+    private final SdkListItem.ActionItem myItem;
+
+    public ActionJdkComboBoxItem(SdkListItem.ActionItem item) { myItem = item; }
+
+    @Override
+    public @NotNull SdkListItem getItem() {
+      return myItem;
+    }
+
+    @Override
+    public @NotNull String toString() {
+      return myItem.toString();
     }
   }
 

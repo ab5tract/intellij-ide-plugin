@@ -58,7 +58,7 @@ public final class RakuSdkListConfigurable extends RakuStructureConfigurable {
 
     RakuSdkListConfigurable(@NotNull Project project) {
         super(project);
-        myJdksTreeModel = org.raku.project.structure.RakuProjectStructureConfigurable.getInstance(project).getProjectSdksModel();
+        myJdksTreeModel = RakuProjectStructureConfigurable.getInstance(project).getProjectSdksModel();
     }
 
     public static RakuSdkListConfigurable getInstance(Project project) {
@@ -77,7 +77,7 @@ public final class RakuSdkListConfigurable extends RakuStructureConfigurable {
     }
 
     public void addSdkNode(final Sdk sdk, final boolean selectInTree) {
-        if (!myUiDisposed) {
+        if (! myUiDisposed) {
             addNode(new MyNode(new RakuSdkConfigurable((ProjectJdkImpl)sdk, myJdksTreeModel, TREE_UPDATER, myHistory, myProject)), myRoot);
             if (selectInTree) {
                 selectNodeInTree(MasterDetailsComponent.findNodeByObject(myRoot, sdk));
@@ -138,7 +138,7 @@ public final class RakuSdkListConfigurable extends RakuStructureConfigurable {
 
     @Override
     public @NotNull String getId() {
-        return "rakuidea.sdk.list";
+        return "raku.sdk.list";
     }
 
     @Override

@@ -66,8 +66,7 @@ public final class RakuBackupSDKService implements PersistentStateComponent<Raku
         instance.invalidateCaches(myProject);
         for (Module module : ModuleManager.getInstance(myProject).getModules()) {
             RakuMetaDataComponent component = module.getService(RakuMetaDataComponent.class);
-            if (component != null)
-                component.triggerMetaBuild();
+            if (component != null) component.triggerMetaBuild();
         }
     }
 

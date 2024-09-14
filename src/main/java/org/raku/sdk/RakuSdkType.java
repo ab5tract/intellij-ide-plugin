@@ -115,21 +115,21 @@ public class RakuSdkType extends SdkType {
         // There might be different installations, such as package,
         // rakudobrew, p6env etc, so for now just return the first one
         // from PATH we can find
-        return findPerl6SdkDirInPath();
+        return findRakuSdkDirInPath();
     }
 
     @Nullable
-    private static String findPerl6SdkDirInPath() {
+    private static String findRakuSdkDirInPath() {
         final String path = System.getenv("PATH");
         for (String root : path.split(File.pathSeparator)) {
-            final String file = findPerl6InSdkHome(root);
+            final String file = findRakuInSdkHome(root);
             if (file != null) return root;
         }
         return null;
     }
 
     @Nullable
-    public static String findPerl6InSdkHome(String home) {
+    public static String findRakuInSdkHome(String home) {
         for (String command : BINARY_NAMES) {
             final File file = new File(home, command);
             if (file.exists() && file.isFile() && file.canExecute()) {
@@ -156,8 +156,7 @@ public class RakuSdkType extends SdkType {
     public boolean isValidSdkHome(@NotNull String path) {
         for (String exe : BINARY_NAMES) {
             File file = Paths.get(path, exe).toFile();
-            if (file.exists() && file.isFile() && file.canExecute())
-                return true;
+            if (file.exists() && file.isFile() && file.canExecute()) return true;
         }
         return false;
     }
@@ -175,7 +174,7 @@ public class RakuSdkType extends SdkType {
     @Nullable
     @Override
     public String getVersionString(@NotNull String path) {
-        String binPath = findPerl6InSdkHome(path);
+        String binPath = findRakuInSdkHome(path);
         if (binPath == null)
             return null;
         String[] command = {binPath, "-e", "say $*PERL.compiler.version"};

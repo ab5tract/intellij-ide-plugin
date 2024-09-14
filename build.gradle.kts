@@ -12,7 +12,7 @@ plugins {
 }
 
 group = properties("pluginGroup")
-version = properties("pluginVersion")
+version = "2.0"
 
 // Configure project's dependencies
 repositories {
@@ -62,6 +62,7 @@ dependencies {
     implementation(files("libs/moarvmremote.jar"))
     implementation("io.airlift:aircompressor:2.0.2")
     implementation("org.json:json:20240303")
+    // TODO: Remove this due to multiple unpatch CVEs
     implementation("org.tap4j:tap4j:4.4.2")
 }
 
@@ -70,33 +71,3 @@ tasks {
         formsDirs = files("src/main/org/raku/project/projectWizard/components")
     }
 }
-
-// Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
-//intellij {
-//    pluginName.set(properties("pluginName"))
-//    version.set(properties("platformVersion"))
-//    type.set(properties("platformType"))
-//
-//    // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
-//    plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
-//}
-//
-//tasks {
-//    // Set the JVM compatibility versions
-//    properties("javaVersion").let {
-//        withType<JavaCompile> {
-//            sourceCompatibility = it
-//            targetCompatibility = it
-//        }
-//    }
-//
-//    wrapper {
-//        gradleVersion = properties("gradleVersion")
-//    }
-//
-//    patchPluginXml {
-//        version.set(properties("pluginVersion"))
-//        sinceBuild.set(properties("pluginSinceBuild"))
-//        untilBuild.set(properties("pluginUntilBuild"))
-//    }
-//}

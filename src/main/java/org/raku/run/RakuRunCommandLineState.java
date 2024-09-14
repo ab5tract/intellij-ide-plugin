@@ -35,8 +35,9 @@ public class RakuRunCommandLineState extends CommandLineState {
 
     protected void setInterpreterParameters() {
         String params = ((RakuRunConfiguration)runConfiguration).getInterpreterParameters();
-        if (params != null && !params.trim().isEmpty())
+        if (params != null && !params.trim().isEmpty()) {
             command.addAll(Arrays.asList(params.split(" ")));
+        }
     }
 
     @NotNull
@@ -50,22 +51,27 @@ public class RakuRunCommandLineState extends CommandLineState {
         setScript();
         GeneralCommandLine cmd;
         if (isDebug) {
-            if (System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("win"))
-                cmd = new RakuCommandLine(getEnvironment().getProject(), ((RakuRunConfiguration)runConfiguration).getDebugPort());
-            else
-                cmd = new RakuScriptRunner(getEnvironment().getProject(), ((RakuRunConfiguration)runConfiguration).getDebugPort());
+            if (System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("win")) {
+                cmd = new RakuCommandLine(getEnvironment().getProject(), ((RakuRunConfiguration) runConfiguration).getDebugPort());
+            }
+            else {
+                cmd = new RakuScriptRunner(getEnvironment().getProject(), ((RakuRunConfiguration) runConfiguration).getDebugPort());
+            }
         } else {
-            if (System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("win"))
+            if (System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("win")) {
                 cmd = new RakuCommandLine(getEnvironment().getProject());
-            else
+            }
+            else {
                 cmd = new RakuScriptRunner(getEnvironment().getProject());
+            }
         }
         cmd.setWorkDirectory(((RakuRunConfiguration)runConfiguration).getWorkingDirectory());
         cmd.addParameters(command);
         setEnvironment(cmd);
         KillableColoredProcessHandler handler = new KillableColoredProcessHandler(cmd);
         ProcessTerminatedListener.attach(handler, getEnvironment().getProject());
-        setListeners(handler);
+        //TODO - This used to exist as a no-op. Investigate necessity
+        //setListeners(handler);
         return handler;
     }
 
@@ -76,8 +82,9 @@ public class RakuRunCommandLineState extends CommandLineState {
      */
     protected void checkSdk() throws ExecutionException {
         String path = RakuSdkType.getSdkHomeByProject(getEnvironment().getProject());
-        if (path == null)
+        if (path == null) {
             throw new ExecutionException("Raku SDK is not set for the project, please set one");
+        }
     }
 
     protected void setEnvironment(GeneralCommandLine cmd) {
@@ -88,13 +95,12 @@ public class RakuRunCommandLineState extends CommandLineState {
         }
     }
 
-    protected void setListeners(KillableColoredProcessHandler handler) {}
-
     private void setScript() {
         command.add(((RakuRunConfiguration)runConfiguration).getScriptPath());
         String params = ((RakuRunConfiguration)runConfiguration).getProgramParameters();
-        // To avoid a call like `rakuidea script.p6 ""`
-        if (params != null && !params.trim().isEmpty())
+        // To avoid a call like `raku script.p6 ""`
+        if (params != null && !params.trim().isEmpty()) {
             command.addAll(Arrays.asList(params.split(" ")));
+        }
     }
 }

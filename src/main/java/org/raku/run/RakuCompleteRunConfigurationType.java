@@ -1,5 +1,6 @@
 package org.raku.run;
 
+import com.intellij.coverage.CoverageExecutor;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.ConfigurationFactory;
@@ -22,11 +23,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class RakuCompleteRunConfigurationType extends ConfigurationTypeBase {
-    protected static final String PERL6_RUN_CONFIGURATION_ID = "PERL6_RUN_CONFIGURATION";
+    protected static final String RAKU_RUN_CONFIGURATION_ID = "RAKU_RUN_CONFIGURATION";
 
     protected RakuCompleteRunConfigurationType() {
-        super(PERL6_RUN_CONFIGURATION_ID, "Raku",
-              "Raku run configuration", RakuIcons.CAMELIA);
+        super(RAKU_RUN_CONFIGURATION_ID, "Raku", "Raku run configuration", RakuIcons.CAMELIA);
         addFactory(new ConfigurationFactory(this) {
             @Override
             public @NotNull String getId() {
@@ -43,35 +43,28 @@ public class RakuCompleteRunConfigurationType extends ConfigurationTypeBase {
 
     @NotNull
     public static RakuCompleteRunConfigurationType getInstance() {
-        return CONFIGURATION_TYPE_EP.findExtension(RakuCompleteRunConfigurationType.class);
+        return Objects.requireNonNull(CONFIGURATION_TYPE_EP.findExtension(RakuCompleteRunConfigurationType.class));
     }
 
     private static class RakuCompleteRunConfiguration extends RakuRunConfiguration {
         public RakuCompleteRunConfiguration(Project project,
                                              ConfigurationFactory factory,
-                                             String name) {
+                                             String name)
+        {
             super(project, factory, name);
         }
 
         @Nullable
         @Override
         public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException {
-            if (executor instanceof DefaultDebugExecutor) {
-                return new RakuDebugCommandLineState(environment);
-            }
-            else if (executor instanceof RakuProfileExecutor) {
-                return new RakuProfileCommandLineState(environment);
-            }
-            else if (executor instanceof RakuHeapSnapshotExecutor) {
-                return new RakuHeapSnapshotCommandLineState(environment);
-            }
-            if (Objects.equals(executor.getClass().getSimpleName(), "CoverageExecutor")) {
-                return new RakuCoverageCommandLineState(environment);
-            }
-            else if (executor instanceof RakuTimelineExecutor) {
-                return new RakuTimelineCommandLineState(environment);
-            }
-            return new RakuRunCommandLineState(environment);
+            return switch (executor) {
+                case DefaultDebugExecutor x     -> new RakuDebugCommandLineState(environment);
+                case RakuProfileExecutor x      -> new RakuProfileCommandLineState(environment);
+                case RakuHeapSnapshotExecutor x -> new RakuHeapSnapshotCommandLineState(environment);
+                case CoverageExecutor x         -> new RakuCoverageCommandLineState(environment);
+                case RakuTimelineExecutor x     -> new RakuTimelineCommandLineState(environment);
+                default                         -> new RakuRunCommandLineState(environment);
+            };
         }
     }
 }

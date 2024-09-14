@@ -32,7 +32,7 @@ public class RakuFormattingModelBuilder implements FormattingModelBuilder {
                                                             HASH_INDEX_BRACKET_OPEN, SIGNATURE_BRACKET_OPEN);
     private static final TokenSet CLOSERS = TokenSet.create(ARRAY_COMPOSER_CLOSE, ARRAY_INDEX_BRACKET_CLOSE,
                                                             HASH_INDEX_BRACKET_CLOSE, SIGNATURE_BRACKET_CLOSE);
-    public static final Spacing CONSTANT_EMPTY_SPACING = Spacing.createSpacing(0, 0, 0, false, 0);
+    public Spacing CONSTANT_EMPTY_SPACING;
     public Spacing EMPTY_SPACING;
     public Spacing SINGLE_SPACE_SPACING;
     public Spacing SINGLE_LINE_BREAK;
@@ -58,6 +58,7 @@ public class RakuFormattingModelBuilder implements FormattingModelBuilder {
         SINGLE_SPACE_SPACING = Spacing.createSpacing(1, 1, 0, commonSettings.KEEP_LINE_BREAKS, commonSettings.KEEP_LINE_BREAKS ? 3 : 1);
         SINGLE_LINE_BREAK = Spacing.createSpacing(0, 0, 1, commonSettings.KEEP_LINE_BREAKS, commonSettings.KEEP_LINE_BREAKS ? 3 : 1);
         DOUBLE_LINE_BREAK = Spacing.createSpacing(0, 0, 2, commonSettings.KEEP_LINE_BREAKS, commonSettings.KEEP_LINE_BREAKS ? 3 : 1);
+        CONSTANT_EMPTY_SPACING = Spacing.createSpacing(0, 0, 0, false, 0);
 
         // Init spacing rule sets
         initLineBreakRules(commonSettings, customSettings, rules);
@@ -106,7 +107,7 @@ public class RakuFormattingModelBuilder implements FormattingModelBuilder {
             return null;
         });
 
-        // Nothing inside of different types of braces, parens etc (block ones are handled in line break rules set
+        // Nothing inside different types of braces, parens etc. (block ones are handled in line break rules set
         rules.add((left, right) -> OPENERS.contains(left.getNode().getElementType()) ? EMPTY_SPACING : null);
         rules.add((left, right) -> CLOSERS.contains(right.getNode().getElementType()) ? EMPTY_SPACING : null);
 

@@ -37,7 +37,8 @@ import java.util.List;
 public class RakuProjectStructureConfigurable extends BaseConfigurable implements Disposable,
                                                                                   SearchableConfigurable,
                                                                                   Place.Navigator, Configurable.NoMargin,
-                                                                                  Configurable.NoScroll {
+                                                                                  Configurable.NoScroll
+{
     private static final String CATEGORY = "category";
     public static final DataKey<RakuProjectStructureConfigurable> KEY = DataKey.create("RakuProjectStructureConfiguration");
     protected final RakuProjectStructureConfigurable.UIState myUiState = new RakuProjectStructureConfigurable.UIState();

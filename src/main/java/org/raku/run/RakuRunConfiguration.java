@@ -13,20 +13,20 @@ import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 abstract public class RakuRunConfiguration extends LocatableConfigurationBase implements CommonProgramRunConfigurationParameters,
-                                                                                         RakuDebuggableConfiguration {
+                                                                                         RakuDebuggableConfiguration
+{
     private static final String SCRIPT_PATH = "SCRIPT_PATH";
     private static final String SCRIPT_ARGS = "SCRIPT_ARGS";
     private static final String WORKING_DIRECTORY = "WORKING_DIRECTORY";
     private static final String ENV_VARS = "ENV_VARS";
     private static final String PASS_ENVIRONMENT = "PASS_ENVIRONMENT";
-    private static final String PERL6_PARAMS = "PERL6_PARAMS";
+    private static final String RAKU_PARAMS = "RAKU_PARAMS";
     private static final String DEBUG_PORT = "DEBUG_PORT";
     private static final String START_SUSPENDED = "START_SUSPENDED";
     private static final String LOG_TIMELINE_EVENTS = "LOG_TIMELINE_EVENTS";
@@ -76,13 +76,13 @@ abstract public class RakuRunConfiguration extends LocatableConfigurationBase im
         Element workDirectoryElem = element.getChild(WORKING_DIRECTORY);
         Element envVarsElem = element.getChild(ENV_VARS);
         Element passEnvElem = element.getChild(PASS_ENVIRONMENT);
-        Element perl6ParamsElem = element.getChild(PERL6_PARAMS);
+        Element rakuParamsElem = element.getChild(RAKU_PARAMS);
         Element debugPortElem = element.getChild(DEBUG_PORT);
         Element startSuspendedElem = element.getChild(START_SUSPENDED);
         Element logTimelineEvents = element.getChild(LOG_TIMELINE_EVENTS);
         if (scriptPathElem == null || scriptArgsElem == null ||
             workDirectoryElem == null || envVarsElem == null ||
-            passEnvElem == null || perl6ParamsElem == null ||
+            passEnvElem == null || rakuParamsElem == null ||
             debugPortElem == null || startSuspendedElem == null) {
             throw new InvalidDataException();
         }
@@ -93,10 +93,10 @@ abstract public class RakuRunConfiguration extends LocatableConfigurationBase im
             Map<String, String> env = new HashMap<>();
             envVarsElem.getChildren().forEach(c -> env.put(c.getName(), c.getValue()));
             envVars = env;
-            passParentEnvs = Boolean.valueOf(passEnvElem.getText());
-            interpreterParameters = perl6ParamsElem.getText();
-            myDebugPort = Integer.valueOf(debugPortElem.getText());
-            myStartSuspended = Boolean.valueOf(startSuspendedElem.getText());
+            passParentEnvs = Boolean.parseBoolean(passEnvElem.getText());
+            interpreterParameters = rakuParamsElem.getText();
+            myDebugPort = Integer.parseInt(debugPortElem.getText());
+            myStartSuspended = Boolean.parseBoolean(startSuspendedElem.getText());
             if (logTimelineEvents == null) {
                 myLogTimelineEvents = Strings.join(Arrays.asList("await", "file", "process", "socket", "start"), ";");
             }
@@ -115,7 +115,7 @@ abstract public class RakuRunConfiguration extends LocatableConfigurationBase im
         envVars.keySet().forEach(key -> envVarsElement.addContent(new Element(key).setText(envVars.get(key))));
         element.addContent(envVarsElement);
         element.addContent(new Element(PASS_ENVIRONMENT).setText(String.valueOf(passParentEnvs)));
-        element.addContent(new Element(PERL6_PARAMS).setText(interpreterParameters));
+        element.addContent(new Element(RAKU_PARAMS).setText(interpreterParameters));
         element.addContent(new Element(DEBUG_PORT).setText(String.valueOf(myDebugPort)));
         element.addContent(new Element(START_SUSPENDED).setText(String.valueOf(myStartSuspended)));
         element.addContent(new Element(LOG_TIMELINE_EVENTS).setText(myLogTimelineEvents));
@@ -123,8 +123,7 @@ abstract public class RakuRunConfiguration extends LocatableConfigurationBase im
 
     @Override
     public void checkConfiguration() throws RuntimeConfigurationException {
-        Path path = Paths.get(scriptPath);
-        if (!path.toFile().exists()) {
+        if (scriptPath == null  || ! Paths.get(scriptPath).toFile().exists()) {
             throw new RuntimeConfigurationError("Path to main script must be specified");
         }
     }
